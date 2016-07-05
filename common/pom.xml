@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>ds-api</artifactId>
-        <groupId>com.ds</groupId>
+        <artifactId>magent-api</artifactId>
+        <groupId>com.magent</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>distancesales.common</artifactId>
+    <artifactId>magent.common</artifactId>
     <version>1.0.2-SNAPSHOT</version>
 
 

@@ -5,21 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>ds-api</artifactId>
-        <groupId>com.ds</groupId>
+        <artifactId>magent-api</artifactId>
+        <groupId>com.magent</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
     <packaging>war</packaging>
-    <artifactId>distancesales.main</artifactId>
+    <artifactId>magent.main</artifactId>
     <build>
         <finalName>ds-api</finalName>
     </build>
 
     <dependencies>
         <dependency>
-            <groupId>com.ds</groupId>
-            <artifactId>distancesales.common</artifactId>
+            <groupId>com.magent</groupId>
+            <artifactId>magent.common</artifactId>
             <version>1.0.2-SNAPSHOT</version>
         </dependency>
         <!--DATASOURCE-->

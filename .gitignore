@@ -5,8 +5,9 @@
 /common/target
 /main/target
 /*.iml
+/integration/target
+/main/magent.main.iml
 /.idea
-/integration/distancesales.integration.iml
-/main/distancesales.main.iml
-/common/distancesales.common.iml
+/common/magent.common.iml
+/integration/magent.integration.iml
 # Created by .ignore support plugin (hsz.mobi)

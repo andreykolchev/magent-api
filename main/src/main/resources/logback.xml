@@ -18,7 +18,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.ds" level="info,warn">
+    <logger name="com.magent" level="info,warn">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="fileAppender"/>
     </logger>

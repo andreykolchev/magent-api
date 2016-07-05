@@ -21,7 +21,7 @@
             <!-- Use the HibernateAware mapper instead of the default -->
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper">
-                    <bean class="com.ds.config.HibernateObjectMapper"/>
+                    <bean class="com.magent.config.HibernateObjectMapper"/>
                 </property>
             </bean>
         </mvc:message-converters>
