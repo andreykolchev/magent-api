@@ -50,7 +50,7 @@ public class Application extends SpringBootServletInitializer {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Distance sales Swagger Api Info")
+                .title("Magent Swagger Api Info")
                 .version("unknown version before production ")
                 //filters info
                 //passwords information

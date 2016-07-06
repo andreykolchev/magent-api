@@ -56,7 +56,8 @@ public class JpaConfig {
     private boolean orderInserts;
     @Value("${db.hibernate.order.updates}")
     private boolean orderUpdates;
-
+    @Value("${dm.conn.max.life}")
+    private long connTimeOut;
     @Bean
     @Profile("production")
     public DataSource dataSource() {
@@ -68,6 +69,8 @@ public class JpaConfig {
         hikariConfig.setJdbcUrl(jdbcUrl);
         hikariConfig.setUsername(dbuser);
         hikariConfig.setPassword(dbpassword);
+        hikariConfig.setConnectionTimeout(connTimeOut);
+
         //datasource
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
         return dataSource;
