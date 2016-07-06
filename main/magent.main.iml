@@ -20,15 +20,6 @@
         </fileset>
       </configuration>
     </facet>
-    <facet type="jpa" name="JPA">
-      <configuration>
-        <setting name="validation-enabled" value="true" />
-        <setting name="provider-name" value="Hibernate" />
-        <datasource-mapping>
-          <factory-entry name="entityManagerFactory" value="0be63c9e-a009-4d17-96e1-433f60208a6e" />
-        </datasource-mapping>
-      </configuration>
-    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
@@ -160,10 +151,10 @@
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-envers:0.2.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:4.1.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:4.1.8.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-envers:4.3.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-envers:4.3.11.Final" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: cglib:cglib:2.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: asm:asm:3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:4.3.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:4.3.11.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.1.3.GA" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging-annotations:1.2.0.Beta1" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.0.0.Final" level="project" />
@@ -173,7 +164,7 @@
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.18.1-GA" level="project" />
     <orderEntry type="library" name="Maven: antlr:antlr:2.7.7" level="project" />
     <orderEntry type="library" name="Maven: org.jboss:jandex:1.1.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:4.3.8.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-entitymanager:4.3.11.Final" level="project" />
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.4.1208.jre7" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.h2database:h2:1.4.185" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:annotations:3.0.0" level="project" />
