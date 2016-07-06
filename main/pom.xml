@@ -13,7 +13,7 @@
     <packaging>war</packaging>
     <artifactId>magent.main</artifactId>
     <build>
-        <finalName>ds-api</finalName>
+        <finalName>magent-api</finalName>
     </build>
 
     <dependencies>
