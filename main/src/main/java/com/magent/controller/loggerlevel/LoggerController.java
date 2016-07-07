@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.RollbackException;
+import javax.xml.bind.ValidationException;
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -57,7 +58,7 @@ public class LoggerController {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({OnBoardingValidatorImpl.InvalidOnboardEntity.class, ImageValidatorImpl.NotCorrectImageExtension.class})
+    @ExceptionHandler({OnBoardingValidatorImpl.InvalidOnboardEntity.class, ImageValidatorImpl.NotCorrectImageExtension.class, ValidationException.class})
     public void badOnboardEntity(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
         response.getWriter().println("invalid onboard entity " + e.getMessage());
         LOGGER.info("invalid onboard exception: " + request.getRequestURI() + " with exception " + e);
