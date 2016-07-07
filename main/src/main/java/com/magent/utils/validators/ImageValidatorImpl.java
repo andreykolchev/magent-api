@@ -1,10 +1,12 @@
 package com.magent.utils.validators;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javax.xml.bind.ValidationException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -15,8 +17,12 @@ import java.io.InputStream;
  */
 @Component
 public class ImageValidatorImpl implements ImageValidator {
+    @Value("${json.max.size}")
+    private int maxFileSize;
+
     @Override
-    public boolean isSizeCorrect(byte[] imageBody, String formatName) throws IOException {
+    public boolean isSizeCorrect(byte[] imageBody, String formatName) throws IOException, ValidationException {
+        if (imageBody.length > (maxFileSize * 1000000)) throw new ValidationException("image should be not less than 2 mb");
         InputStream inputStream = new ByteArrayInputStream(imageBody);
         ImageInputStream imageInputStream = ImageIO.createImageInputStream(inputStream);
         ImageReader reader = ImageIO.getImageReadersByFormatName(formatName).next();
@@ -36,7 +42,7 @@ public class ImageValidatorImpl implements ImageValidator {
     @Override
     public String getImageFormat(String fileName) throws NotCorrectImageExtension {
         String[] tmp = fileName.split("\\.");
-        if (tmp.length!=2)throw new NotCorrectImageExtension("file name doesn't have extension");
+        if (tmp.length != 2) throw new NotCorrectImageExtension("file name doesn't have extension");
         if (isFormatCorrect(tmp[1])) return tmp[1];
         else throw new NotCorrectImageExtension("Not correct image extension. Supports only svg and png extensions");
     }

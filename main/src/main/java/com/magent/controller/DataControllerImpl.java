@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.xml.bind.ValidationException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -140,7 +141,7 @@ public class DataControllerImpl implements GeneralController {
             " Max length of content is 50 characters, min length 0 characters. " +
             " Max lenght of description is 250 characters, min 0 characters.")
     @RequestMapping(method = RequestMethod.POST, value = "/onboards")
-    public ResponseEntity<OnBoarding> createOnBoardEntity(@RequestBody OnBoarding onBoarding) throws IOException, ImageValidatorImpl.NotCorrectImageExtension, OnBoardingValidatorImpl.InvalidOnboardEntity {
+    public ResponseEntity<OnBoarding> createOnBoardEntity(@RequestBody OnBoarding onBoarding) throws IOException, ImageValidatorImpl.NotCorrectImageExtension, OnBoardingValidatorImpl.InvalidOnboardEntity, ValidationException {
         if (onBoardingValidator.isOnBoardEntityValid(onBoarding))
             return new ResponseEntity<>((OnBoarding) onBoardGenService.save(onBoarding), HttpStatus.CREATED);
         else throw new OnBoardingValidatorImpl.InvalidOnboardEntity("Invalid image entity");
@@ -148,7 +149,7 @@ public class DataControllerImpl implements GeneralController {
 
     @ApiOperation(value = "update Onboard entity.",notes = "Description see POST method")
     @RequestMapping(method = RequestMethod.PUT, value = "/onboards")
-    public ResponseEntity<OnBoarding> updateOnBoardEntity(@RequestBody OnBoarding onBoarding) throws IOException, ImageValidatorImpl.NotCorrectImageExtension, OnBoardingValidatorImpl.InvalidOnboardEntity {
+    public ResponseEntity<OnBoarding> updateOnBoardEntity(@RequestBody OnBoarding onBoarding) throws IOException, ImageValidatorImpl.NotCorrectImageExtension, OnBoardingValidatorImpl.InvalidOnboardEntity, ValidationException {
         if (onBoardingValidator.isOnBoardEntityValid(onBoarding))
             return new ResponseEntity<>((OnBoarding) onBoardGenService.save(onBoarding), HttpStatus.OK);
         else throw new OnBoardingValidatorImpl.InvalidOnboardEntity("Invalid image entity");

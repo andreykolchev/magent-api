@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import javax.xml.bind.ValidationException;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -18,7 +19,7 @@ public class OnBoardingValidatorImpl implements OnBoardingValidator {
     private ImageValidator imageValidator;
 
     @Override
-    public boolean isOnBoardEntityValid(OnBoarding onBoarding) throws ImageValidatorImpl.NotCorrectImageExtension, IOException {
+    public boolean isOnBoardEntityValid(OnBoarding onBoarding) throws ImageValidatorImpl.NotCorrectImageExtension, IOException, ValidationException {
         if (imageValidator.getImageFormat(onBoarding.getFullFileName()).equalsIgnoreCase("svg"))return true;
         return (imageValidator
                 .isSizeCorrect
