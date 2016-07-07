@@ -44,6 +44,7 @@ public class DataControllerImpl implements GeneralController {
     private GeneralService onBoardGenService;
 
     @Autowired
+    @Qualifier("onBoardingValidatorImpl")
     private OnBoardingValidator onBoardingValidator;
 
     /**

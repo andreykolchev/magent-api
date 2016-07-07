@@ -202,13 +202,14 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
         Assert.assertEquals(1,onBoardGeneralService.getAll().size());
     }
     @Test
-    @Sql("classpath:data.sql")
+//    @Sql("classpath:data.sql")
     public void createOnBoardEntityTestPositiveSVG() throws Exception {
         mvc.perform(post("/data/onboards")
                 .header(authorizationHeader, getAccessAdminToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPositiveSVG())))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andDo(print());
         //additional assert for db
         Assert.assertEquals(1,onBoardGeneralService.getAll().size());
     }

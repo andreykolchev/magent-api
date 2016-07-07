@@ -17,7 +17,8 @@ public class Test {
 //        System.out.println(firstHash);
 //        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/mAgent.png")))));
         ObjectMapper mapper=new ObjectMapper();
-        byte[]bytes=mapper.writeValueAsBytes(EntityGenerator.getOnBoardPossitivePng());
+        byte[]bytes=mapper.writeValueAsBytes(EntityGenerator.getOnBoardPositiveSVG());
         System.out.println(new String(bytes));
+//        new org.apache.crimson.parser.XMLReaderImpl();
     }
 }

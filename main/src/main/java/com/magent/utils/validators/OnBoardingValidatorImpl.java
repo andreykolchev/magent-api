@@ -2,6 +2,7 @@ package com.magent.utils.validators;
 
 import com.magent.domain.OnBoarding;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -13,10 +14,12 @@ import java.util.Objects;
 @Component
 public class OnBoardingValidatorImpl implements OnBoardingValidator {
     @Autowired
+    @Qualifier("imageValidatorImpl")
     private ImageValidator imageValidator;
 
     @Override
     public boolean isOnBoardEntityValid(OnBoarding onBoarding) throws ImageValidatorImpl.NotCorrectImageExtension, IOException {
+        if (imageValidator.getImageFormat(onBoarding.getFullFileName()).equalsIgnoreCase("svg"))return true;
         return (imageValidator
                 .isSizeCorrect
                         (onBoarding.getImage(), imageValidator.getImageFormat(onBoarding.getFullFileName())) &&

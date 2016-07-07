@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
- 
+
 @Entity
 @Table(name="ma_call")
 public class Call implements ChangeableEntity,Identifiable<Long> {
