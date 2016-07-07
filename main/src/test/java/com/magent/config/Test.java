@@ -1,9 +1,9 @@
 package com.magent.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.magent.utils.EntityGenerator;
-
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created on 08.06.2016.
@@ -16,9 +16,12 @@ public class Test {
 //        System.out.println(secondHash);
 //        System.out.println(firstHash);
 //        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/mAgent.png")))));
-        ObjectMapper mapper=new ObjectMapper();
+        /*ObjectMapper mapper=new ObjectMapper();
         byte[]bytes=mapper.writeValueAsBytes(EntityGenerator.getOnBoardPositiveSVG());
-        System.out.println(new String(bytes));
+        System.out.println(new String(bytes));*/
 //        new org.apache.crimson.parser.XMLReaderImpl();
+        List<String>phonesList=new ArrayList<>(Arrays.asList("+380978090838","+380632356941","+480111234567"));
+        for (String s:phonesList);
+
     }
 }
