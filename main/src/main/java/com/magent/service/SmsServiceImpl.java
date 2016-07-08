@@ -97,9 +97,9 @@ public class SmsServiceImpl implements SmsService {
 
     private static final class OtpConstants {
 
-        private static final String SEND_LOGIN_CONFIRMATION = "mAgent vash vremeniy parol dlya vhoda ";
+        private static final String SEND_LOGIN_CONFIRMATION = "mAgent your temporary password is  ";
         private static final String PATTERN_FOR_SMS_GATE = "/?phone={phone}&message={sms}";
-        private static final String REGISTER_CONFIRMATION = "your activation code for account is ";
+        private static final String REGISTER_CONFIRMATION = "mAgent your activation code for account is ";
         private static final String SUCCESS_REGISTRATION = " mAgent successful registration for login ";
     }
 }
