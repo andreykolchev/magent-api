@@ -1,5 +1,6 @@
 package com.magent.utils.validators;
 
+import com.magent.utils.validators.interfaces.ImageValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

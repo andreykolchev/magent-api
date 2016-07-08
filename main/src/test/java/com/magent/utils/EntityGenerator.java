@@ -274,4 +274,8 @@ public final class EntityGenerator {
         String content = "onboard content";
         return new OnBoarding(imageBody, content, pngFileName, desc);
     }
+
+    public static TemporaryUser generateUserForRegistration(){
+        return new TemporaryUser("device","test@gmail.com","Tester","Testov","+380978090838",SecurityUtils.hashPassword("pass"));
+    }
 }

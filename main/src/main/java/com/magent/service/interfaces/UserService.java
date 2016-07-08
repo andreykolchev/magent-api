@@ -1,9 +1,11 @@
 package com.magent.service.interfaces;
 
+import com.magent.domain.TemporaryUser;
 import com.magent.domain.User;
 import com.magent.domain.dto.ChangePasswordDto;
 import javassist.NotFoundException;
 
+import javax.xml.bind.ValidationException;
 import java.util.List;
 
 /**
@@ -15,5 +17,6 @@ public interface UserService {
     User findUserByLogin(String login);
     List<User> getUsersForBalanceReport();
     boolean isPasswordCorrect(String login,String pass);
-
+    TemporaryUser isNewUserSaved(TemporaryUser temporaryUser) throws ValidationException;
+    User confirmRegistration(String login,String otp) throws NotFoundException;
 }

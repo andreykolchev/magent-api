@@ -1,16 +1,22 @@
 package com.magent.service;
 
+import com.magent.domain.TemporaryUser;
 import com.magent.domain.User;
 import com.magent.domain.dto.ChangePasswordDto;
 import com.magent.domain.enums.UserRoles;
+import com.magent.repository.DeviceRepository;
+import com.magent.repository.TemporaryUserRepository;
 import com.magent.repository.UserRepository;
+import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.UserService;
 import com.magent.utils.SecurityUtils;
+import com.magent.utils.validators.interfaces.GeneralValidator;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.bind.ValidationException;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -24,6 +30,17 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private GeneralValidator generalValidator;
+
+    @Autowired
+    private SmsService smsService;
+
+    @Autowired
+    private TemporaryUserRepository temporaryUserRepository;
+
+    @Autowired
+    private DeviceRepository deviceRepository;
 
     @Override
     public List<User> getUsersByFilter(String filter) throws NotFoundException {
@@ -41,10 +58,11 @@ public class UserServiceImpl implements UserService {
                 case "login":
                     login = value;
                     break;
-                 case "role":
+                case "role":
                     u_role = UserRoles.getByString(value).getRoleId();
                     break;
-                 default:throw new NotFoundException(" filter parameters incorrect ");
+                default:
+                    throw new NotFoundException(" filter parameters incorrect ");
             }
         }
         return userRepository.findUsersByFilter(id, login, u_role);
@@ -75,9 +93,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isPasswordCorrect(String login,String pass) {
+    public boolean isPasswordCorrect(String login, String pass) {
         String passFromLoginForm = SecurityUtils.hashPassword(pass);
         return userRepository.findByLogin(login).getPassword().equals(passFromLoginForm);
+    }
+
+    //password comes already hashed from frontend
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public TemporaryUser isNewUserSaved(TemporaryUser temporaryUser) throws ValidationException {
+        if (!generalValidator.isEmailValid(temporaryUser.getEmail())) throw new ValidationException("email not valid");
+        if (!generalValidator.isNameCorrect(temporaryUser.getFirstName()))
+            throw new ValidationException("Name not valid. Name must start with big letter and mustn't contains numbers min length 2 characters");
+        if (!generalValidator.isNameCorrect(temporaryUser.getLastName()))
+            throw new ValidationException("Last name not valid.Last name must start with big letter and mustn't contains numbers and min length 2 characters");
+        if (!generalValidator.isPhoneValid(temporaryUser.getLogin()))
+            throw new ValidationException("login not valid. Login must be phone number");
+
+        return smsService.sendConfirmationAndSaveUser(temporaryUser);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public User confirmRegistration(String login, String otp) throws NotFoundException {
+        TemporaryUser tmpUser=temporaryUserRepository.getByLoginAndOtp(login, otp);
+        if (Objects.isNull(tmpUser))throw new NotFoundException("current user not found");
+
+        User user=new User(tmpUser);
+        userRepository.save(user);
+        deviceRepository.save(user.getDevices());
+
+        //delete from temp users
+        TemporaryUser temporaryUser=temporaryUserRepository.getByLogin(login);
+        if (Objects.nonNull(temporaryUser))temporaryUserRepository.delete(temporaryUser);
+
+        return user;
     }
 
 }

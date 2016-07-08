@@ -1,7 +1,7 @@
 package com.magent.utilbeanstest;
 
 import com.magent.config.ServiceConfig;
-import com.magent.utils.validators.ImageValidator;
+import com.magent.utils.validators.interfaces.ImageValidator;
 import com.magent.utils.validators.ImageValidatorImpl;
 import org.junit.Assert;
 import org.junit.Test;

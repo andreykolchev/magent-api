@@ -8,10 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javassist.NotFoundException;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "ma_user")
@@ -62,6 +59,20 @@ public class User implements Identifiable<Long> {
 
     @Column(name = "e_mail")
     private String email;
+
+    public User() {
+    }
+
+    public User(TemporaryUser temporaryUser) {
+        this.login=temporaryUser.getLogin();
+        this.email=temporaryUser.getEmail();
+        this.role=UserRoles.SALES_AGENT_FREELANCER_LEAD_GEN.getRoleId();
+        this.enabled=true;
+        this.firstName=temporaryUser.getFirstName();
+        this.lastName=temporaryUser.getLastName();
+        this.password=temporaryUser.getHashedPwd();
+        this.devices=new ArrayList<>(Arrays.asList(new Device(temporaryUser.getDevicesId())));
+    }
 
     public Long getId() {
         return id;

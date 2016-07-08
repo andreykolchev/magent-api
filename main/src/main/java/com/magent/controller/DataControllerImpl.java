@@ -11,7 +11,7 @@ import com.magent.service.interfaces.GeneralService;
 import com.magent.service.interfaces.UserService;
 import com.magent.utils.ariphmeticbeans.ComissionCalculatorImpl;
 import com.magent.utils.validators.ImageValidatorImpl;
-import com.magent.utils.validators.OnBoardingValidator;
+import com.magent.utils.validators.interfaces.OnBoardingValidator;
 import com.magent.utils.validators.OnBoardingValidatorImpl;
 import io.swagger.annotations.ApiOperation;
 import javassist.NotFoundException;

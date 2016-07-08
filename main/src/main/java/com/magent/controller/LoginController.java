@@ -1,5 +1,7 @@
 package com.magent.controller;
 
+import com.magent.controller.interfaces.GeneralController;
+import com.magent.domain.TemporaryUser;
 import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.UserService;
 import com.magent.service.interfaces.secureservice.OauthService;
@@ -16,17 +18,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.xml.bind.ValidationException;
 import java.io.IOException;
 
 @Api("Authorization controller")
 @RestController
 @RequestMapping("/")
-public class LoginController {
+public class LoginController implements GeneralController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
@@ -90,6 +90,25 @@ public class LoginController {
                                                         @RequestParam(required = true) String otpPass) {
         OAuth2AccessToken accessToken = otpOauthService.getToken(username, hashPass(password, otpPass));
         return new ResponseEntity(accessToken, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public ResponseEntity registerNewUser(@RequestBody TemporaryUser temporaryUser) throws ValidationException {
+        return getDefaultResponceStatusOnly(userService.isNewUserSaved(temporaryUser), HttpStatus.OK, HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/recentotp", method = RequestMethod.POST)
+    public ResponseEntity recentOtpForUnregisteredUser(@RequestParam("login") String login) throws NotFoundException {
+        return getDefaultResponceStatusOnly(smsService.recentConfirmation(login), HttpStatus.OK, HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value = "/registerconfirm",method = RequestMethod.POST)
+    public ResponseEntity confirmRegistration(@RequestParam("login")String login,
+                                              @RequestParam("otp")String otp) throws NotFoundException {
+
+        ResponseEntity responseEntity= getDefaultResponceStatusOnly(userService.confirmRegistration(login, otp),HttpStatus.OK,HttpStatus.NOT_FOUND);
+        smsService.sendSuccessfullRegistration(login);
+        return responseEntity;
     }
 
     private String hashPass(String pass, String otpPass) {

@@ -1,7 +1,9 @@
 package com.magent.service.scheduleservice;
 
 import com.magent.domain.SmsPassword;
+import com.magent.domain.TemporaryUser;
 import com.magent.repository.SmsPasswordRepository;
+import com.magent.repository.TemporaryUserRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,11 +20,13 @@ import java.util.List;
  * end period for otp password calculated (current time + 15 minutes)
  */
 @Service
-public class OldSmsCleanerService {
+public class SheduleService {
 
-    private static final Logger LOGGER = Logger.getLogger(OldSmsCleanerService.class);
+    private static final Logger LOGGER = Logger.getLogger(SheduleService.class);
     @Autowired
     private SmsPasswordRepository smsPasswordRepository;
+    @Autowired
+    private TemporaryUserRepository temporaryUserRepository;
     //fixed rate in milliseconds
     @Scheduled(fixedRate = (1000*60*5))
     public void cleanOldOtpPasswords() {
@@ -32,6 +36,14 @@ public class OldSmsCleanerService {
             LOGGER.info("old otp password are cleaned " + list.toString());
         }
     }
-
+    //fixed rate in milliseconds
+    @Scheduled(fixedRate = (1000*60*5))
+    public void cleanOldNonRegisteredUsers(){
+    List<TemporaryUser>list=temporaryUserRepository.usersWithExpiredTerm(new Date());
+        if (list.size()>0){
+            temporaryUserRepository.delete(list);
+            LOGGER.info("old non registered users are cleaned " + list.toString());
+        }
+    }
 
 }

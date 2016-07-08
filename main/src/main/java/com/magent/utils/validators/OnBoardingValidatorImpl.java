@@ -1,6 +1,8 @@
 package com.magent.utils.validators;
 
 import com.magent.domain.OnBoarding;
+import com.magent.utils.validators.interfaces.ImageValidator;
+import com.magent.utils.validators.interfaces.OnBoardingValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;

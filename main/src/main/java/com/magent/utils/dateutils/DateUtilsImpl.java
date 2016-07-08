@@ -18,14 +18,14 @@ public class DateUtilsImpl implements DateUtils {
 
     @Override
     public String getOneDayMinus(String date) throws ParseException {
-        Calendar calendar=getCalendarOnlyForDays(date);
+        Calendar calendar = getCalendarOnlyForDays(date);
         calendar.add(Calendar.DATE, -1);
         return formatOnlyDays.format(calendar.getTime());
     }
 
     @Override
     public String getOneDayPlus(String date) throws ParseException {
-        Calendar calendar=getCalendarOnlyForDays(date);
+        Calendar calendar = getCalendarOnlyForDays(date);
         calendar.add(Calendar.DATE, +1);
         return formatOnlyDays.format(calendar.getTime());
     }
@@ -35,6 +35,14 @@ public class DateUtilsImpl implements DateUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
         calendar.add(Calendar.MINUTE, +15);
+        return calendar.getTime();
+    }
+
+    @Override
+    public Date add5Minutes(Date currentDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        calendar.add(Calendar.MINUTE, +5);
         return calendar.getTime();
     }
 

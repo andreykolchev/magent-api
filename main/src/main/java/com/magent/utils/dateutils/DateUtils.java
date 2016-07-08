@@ -17,6 +17,8 @@ public interface DateUtils {
 
     Date add15Minutes(Date currentDate);
 
+    Date add5Minutes(Date currentDate);
+
     String formatToSqlDate(Date date);
 
     DateFormat getformatOnlyDays();
