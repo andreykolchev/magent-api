@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -28,6 +29,7 @@ import static com.magent.domain.enums.UserRoles.*;
  */
 @Configuration
 @EnableResourceServer
+@EnableWebMvcSecurity
 @ComponentScan("com.magent.config.auth")
 public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
 
@@ -107,7 +109,10 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/data/onboards").permitAll()
 
                 //*SPRING 20 TASK SAP-13*//*
-                .antMatchers("/templates/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.GET,"/templates/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.POST,"/templates/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.PUT,"/templates/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.DELETE,"/templates/**").hasAnyAuthority(ADMIN.toString())
 
                 .antMatchers(HttpMethod.GET, "/assignments/**").hasAnyAuthority(ADMIN.toString(), BACK_OFFICE_EMPLOYEE.toString())
                 .antMatchers(HttpMethod.POST, "/assignments/**").hasAnyAuthority(ADMIN.toString(), BACK_OFFICE_EMPLOYEE.toString())
@@ -118,7 +123,10 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/users/**").hasAnyAuthority(ADMIN.toString())
                 .antMatchers(HttpMethod.PUT, "/users/**").hasAnyAuthority(ADMIN.toString())
 
-                .antMatchers("/data/**").hasAnyAuthority(ADMIN.toString(), REMOTE_SELLER_STAFFER.toString())
+                .antMatchers(HttpMethod.GET,"/data/**").hasAnyAuthority(ADMIN.toString(), REMOTE_SELLER_STAFFER.toString())
+                .antMatchers(HttpMethod.PUT,"/data/**").hasAnyAuthority(ADMIN.toString(), REMOTE_SELLER_STAFFER.toString())
+                .antMatchers(HttpMethod.POST,"/data/**").hasAnyAuthority(ADMIN.toString(), REMOTE_SELLER_STAFFER.toString())
+                .antMatchers(HttpMethod.DELETE,"/data/**").hasAnyAuthority(ADMIN.toString(), REMOTE_SELLER_STAFFER.toString())
                 //on board get by id , and modifying this info allowed only for admin According to SAP_45
                 .antMatchers("/data/onboards/**").hasAnyAuthority(ADMIN.toString())
                 .antMatchers(HttpMethod.POST, "/data/onboards").hasAnyAuthority(ADMIN.toString())
@@ -132,7 +140,11 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
 
                 .antMatchers("/devices/**").authenticated()
 
-                .antMatchers("/reasons/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.GET,"/reasons/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.PUT,"/reasons/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.POST,"/reasons/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.DELETE,"/reasons/**").hasAnyAuthority(ADMIN.toString())
+
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
