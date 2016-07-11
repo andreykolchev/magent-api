@@ -13,7 +13,8 @@ import org.junit.runners.Suite;
         TransactionsXlsReaderImplTest.class,
         TransactionsXlsWriterImplTest.class,
         CsvReaderImplTest.class,
-        BalanceUploaderXlsWriterImplTest.class
+        BalanceUploaderXlsWriterImplTest.class,
+        GeneralValidatorImplTest.class
 
 })
 public class UtilsTestSuite {

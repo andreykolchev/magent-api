@@ -1,5 +1,7 @@
 package com.magent.controller;
 
+import com.magent.controller.interfaces.GeneralController;
+import com.magent.domain.TemporaryUser;
 import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.UserService;
 import com.magent.service.interfaces.secureservice.OauthService;
@@ -16,17 +18,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.xml.bind.ValidationException;
 import java.io.IOException;
 
 @Api("Authorization controller")
 @RestController
 @RequestMapping("/")
-public class LoginController {
+public class LoginController implements GeneralController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
@@ -61,7 +61,7 @@ public class LoginController {
             return new ResponseEntity(token, HttpStatus.OK);
         } else {
             if (userService.isPasswordCorrect(username, password)) {
-                smsService.isConfirmationSended(username);
+                smsService.sendOtpForRegisteredUser(username);
                 return new ResponseEntity(HttpStatus.OK);
             } else {
                 throw new NotFoundException("password incorrect");
@@ -84,12 +84,47 @@ public class LoginController {
         return new ResponseEntity(accessToken, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/login/otp", method = RequestMethod.POST)
+    @RequestMapping(value = "/login/confirmotp", method = RequestMethod.POST)
     public ResponseEntity<OAuth2AccessToken> confirmOtp(@RequestParam(required = true) String username,
                                                         @RequestParam(required = true) String password,
                                                         @RequestParam(required = true) String otpPass) {
         OAuth2AccessToken accessToken = otpOauthService.getToken(username, hashPass(password, otpPass));
         return new ResponseEntity(accessToken, HttpStatus.OK);
+    }
+
+    /**
+     * @param login    - present login from DB
+     * @param password - hashed one time password
+     * @return
+     * @throws NotFoundException - if not present in db
+     * @throws IOException       - if can't recent otp
+     */
+    @RequestMapping(value = "/login/recentotp", method = RequestMethod.POST)
+    public ResponseEntity recentOtpForTegisteredUser(@RequestParam String login,
+                                                     @RequestParam String password) throws NotFoundException, IOException {
+        if (userService.isPasswordCorrect(login, password)) {
+            smsService.sendOtpForRegisteredUser(login);
+            return new ResponseEntity(HttpStatus.OK);
+        } else throw new NotFoundException("password not correct");
+    }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public ResponseEntity<String> registerNewUser(@RequestBody TemporaryUser temporaryUser) throws ValidationException {
+        return getDefaultResponce(userService.isNewUserSaved(temporaryUser).getEndPeriod().getTime(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/signup/recentotp", method = RequestMethod.POST)
+    public ResponseEntity recentOtpForUnregisteredUser(@RequestParam("login") String login) throws NotFoundException {
+        return getDefaultResponceStatusOnly(smsService.recentConfirmation(login), HttpStatus.OK, HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value = "/signup/registerconfirm", method = RequestMethod.POST)
+    public ResponseEntity confirmRegistration(@RequestParam("login") String login,
+                                              @RequestParam("otp") String otp) throws NotFoundException {
+
+        ResponseEntity responseEntity = getDefaultResponceStatusOnly(userService.confirmRegistration(login, otp), HttpStatus.OK, HttpStatus.NOT_FOUND);
+        smsService.sendSuccessfullRegistration(login);
+        return responseEntity;
     }
 
     private String hashPass(String pass, String otpPass) {

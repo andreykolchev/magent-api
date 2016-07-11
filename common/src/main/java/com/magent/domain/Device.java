@@ -37,6 +37,12 @@ public class Device implements ChangeableEntity, Identifiable<String> {
         this.lastChange = lastChange;
     }
 
+    public Device() {
+    }
+
+    public Device(String deviceId) {
+        this.deviceId = deviceId;
+    }
 
     public String getId() {
         return deviceId;

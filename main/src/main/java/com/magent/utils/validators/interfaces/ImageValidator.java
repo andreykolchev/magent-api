@@ -1,5 +1,8 @@
-package com.magent.utils.validators;
+package com.magent.utils.validators.interfaces;
 
+import com.magent.utils.validators.ImageValidatorImpl;
+
+import javax.xml.bind.ValidationException;
 import java.io.IOException;
 
 /**
@@ -8,7 +11,7 @@ import java.io.IOException;
 public interface ImageValidator {
     // check correct size. According to SAP_45 task, image size must be 170x170
     // for svg format see open source TwelveMonkeys plugin https://github.com/haraldk/TwelveMonkeys
-    boolean isSizeCorrect(byte[] imageBody,String formatName) throws IOException;
+    boolean isSizeCorrect(byte[] imageBody,String formatName) throws IOException, ValidationException;
     // According to SAP_45 task, allowed only svg and png formats
     String getImageFormat(String fileName) throws ImageValidatorImpl.NotCorrectImageExtension;
 }

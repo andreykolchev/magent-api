@@ -102,6 +102,7 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/login*").permitAll()
                 .antMatchers("/refresh*").permitAll()
                 .antMatchers("/login/otp*").permitAll()
+                .antMatchers("/signup").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/data/onboards").permitAll()
 
