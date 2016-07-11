@@ -46,7 +46,7 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void isConfirmationSended(String toPhone) throws IOException {
+    public void sendOtpForRegisteredUser(String toPhone) throws IOException {
         //storing
         User user = userRepository.findByLogin(toPhone);
         String sendSms = generator.generate();
@@ -83,6 +83,7 @@ public class SmsServiceImpl implements SmsService {
         if (Objects.isNull(temporaryUser)) throw new NotFoundException("user not present in db. Please register again");
         String sendSms = generator.generate();
         String storeSms = SecurityUtils.hashPassword(sendSms);
+
         temporaryUser.setHashedOtp(storeSms);
         temporaryUser.setEndPeriod(dateUtils.add5Minutes(new Date()));
         template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, temporaryUser.getLogin(), OtpConstants.REGISTER_CONFIRMATION + sendSms);

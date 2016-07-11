@@ -34,7 +34,7 @@ public class SmsServiceImplTest extends MockWebSecurityConfig {
     @Ignore
     @Sql("classpath:data.sql")
     public void sensSimpleSmsTest() throws IOException {
-        smsService.isConfirmationSended("+380978090838");
+        smsService.sendOtpForRegisteredUser("+380978090838");
     }
     @Test
     @Sql("classpath:data.sql")

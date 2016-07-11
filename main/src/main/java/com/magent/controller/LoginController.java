@@ -61,7 +61,7 @@ public class LoginController implements GeneralController {
             return new ResponseEntity(token, HttpStatus.OK);
         } else {
             if (userService.isPasswordCorrect(username, password)) {
-                smsService.isConfirmationSended(username);
+                smsService.sendOtpForRegisteredUser(username);
                 return new ResponseEntity(HttpStatus.OK);
             } else {
                 throw new NotFoundException("password incorrect");
@@ -84,7 +84,7 @@ public class LoginController implements GeneralController {
         return new ResponseEntity(accessToken, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/login/otp", method = RequestMethod.POST)
+    @RequestMapping(value = "/login/confirmotp", method = RequestMethod.POST)
     public ResponseEntity<OAuth2AccessToken> confirmOtp(@RequestParam(required = true) String username,
                                                         @RequestParam(required = true) String password,
                                                         @RequestParam(required = true) String otpPass) {
@@ -92,21 +92,37 @@ public class LoginController implements GeneralController {
         return new ResponseEntity(accessToken, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseEntity registerNewUser(@RequestBody TemporaryUser temporaryUser) throws ValidationException {
-        return getDefaultResponceStatusOnly(userService.isNewUserSaved(temporaryUser), HttpStatus.OK, HttpStatus.BAD_REQUEST);
+    /**
+     * @param login    - present login from DB
+     * @param password - hashed one time password
+     * @return
+     * @throws NotFoundException - if not present in db
+     * @throws IOException       - if can't recent otp
+     */
+    @RequestMapping(value = "/login/recentotp", method = RequestMethod.POST)
+    public ResponseEntity recentOtpForTegisteredUser(@RequestParam String login,
+                                                     @RequestParam String password) throws NotFoundException, IOException {
+        if (userService.isPasswordCorrect(login, password)) {
+            smsService.sendOtpForRegisteredUser(login);
+            return new ResponseEntity(HttpStatus.OK);
+        } else throw new NotFoundException("password not correct");
     }
 
-    @RequestMapping(value = "/recentotp", method = RequestMethod.POST)
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public ResponseEntity<String> registerNewUser(@RequestBody TemporaryUser temporaryUser) throws ValidationException {
+        return getDefaultResponce(userService.isNewUserSaved(temporaryUser).getEndPeriod().getTime(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/signup/recentotp", method = RequestMethod.POST)
     public ResponseEntity recentOtpForUnregisteredUser(@RequestParam("login") String login) throws NotFoundException {
         return getDefaultResponceStatusOnly(smsService.recentConfirmation(login), HttpStatus.OK, HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/registerconfirm",method = RequestMethod.POST)
-    public ResponseEntity confirmRegistration(@RequestParam("login")String login,
-                                              @RequestParam("otp")String otp) throws NotFoundException {
+    @RequestMapping(value = "/signup/registerconfirm", method = RequestMethod.POST)
+    public ResponseEntity confirmRegistration(@RequestParam("login") String login,
+                                              @RequestParam("otp") String otp) throws NotFoundException {
 
-        ResponseEntity responseEntity= getDefaultResponceStatusOnly(userService.confirmRegistration(login, otp),HttpStatus.OK,HttpStatus.NOT_FOUND);
+        ResponseEntity responseEntity = getDefaultResponceStatusOnly(userService.confirmRegistration(login, otp), HttpStatus.OK, HttpStatus.NOT_FOUND);
         smsService.sendSuccessfullRegistration(login);
         return responseEntity;
     }
