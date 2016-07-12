@@ -55,7 +55,7 @@ public class LoginController implements GeneralController {
                                                    @ApiParam(value = "Hashed password", required = true)
                                                    @RequestParam(required = true) String password,
                                                    @RequestParam(required = false) boolean withSms) throws IOException, NotFoundException {
-//        LOGGER.debug("Loggin in " + username);
+        LOGGER.info("Loggin in " + username);
         if (!withSms) {
             OAuth2AccessToken token = oauthService.getToken(username, password);
             return new ResponseEntity(token, HttpStatus.OK);
