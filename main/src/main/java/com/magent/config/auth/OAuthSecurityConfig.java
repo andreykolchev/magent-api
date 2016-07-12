@@ -128,10 +128,10 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/data/**").hasAnyAuthority(ADMIN.toString(), REMOTE_SELLER_STAFFER.toString())
                 .antMatchers(HttpMethod.DELETE,"/data/**").hasAnyAuthority(ADMIN.toString(), REMOTE_SELLER_STAFFER.toString())
                 //on board get by id , and modifying this info allowed only for admin According to SAP_45
-                .antMatchers("/data/onboards/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.GET,"/data/onboards/**").hasAnyAuthority(ADMIN.toString())
                 .antMatchers(HttpMethod.POST, "/data/onboards").hasAnyAuthority(ADMIN.toString())
                 .antMatchers(HttpMethod.PUT, "/data/onboards").hasAnyAuthority(ADMIN.toString())
-                .antMatchers(HttpMethod.DELETE, "/data/onboards").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.DELETE, "/data/onboards/**").hasAnyAuthority(ADMIN.toString())
 
                 .antMatchers("/tracking/**").authenticated()
 

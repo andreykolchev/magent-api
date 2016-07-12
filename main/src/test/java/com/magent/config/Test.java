@@ -41,7 +41,10 @@ public class Test {
       /*  System.out.println(isNameCorrect("Igor"));//positive
         System.out.println(isNameCorrect("Taras"));
         System.out.println(isNameCorrect("tar"));//negative*/
+        String test="merdoc";
         System.out.println(SecurityUtils.hashPassword("merdoc"));
+        System.out.println(SecurityUtils.hashPassword(test));
+        System.out.println(SecurityUtils.hashPassword(SecurityUtils.hashPassword(test)));
     }
 
     private static boolean isNameCorrect(String name) {
