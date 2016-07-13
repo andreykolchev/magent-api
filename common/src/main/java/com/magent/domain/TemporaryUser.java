@@ -18,7 +18,7 @@ public class TemporaryUser implements Identifiable<Long> {
     @JsonIgnore
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "login",nullable = false, unique = true)
     private String username;
 
     @Column(name = "tmp_pwd", nullable = false)
