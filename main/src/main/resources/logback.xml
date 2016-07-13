@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${catalina.home}/logs/magent-api.log</file>
+        <file>${catalina.home}/logs/ magent-api.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${catalina.home}/logs/magent-api.%d{yyyy-MM-dd}.log</fileNamePattern>
         </rollingPolicy>

@@ -55,7 +55,7 @@ public class Application extends SpringBootServletInitializer {
                 //filters info
                 //passwords information
                 .description("0. ---- Short information about security filters for testers : "+"\r\n"+
-                        "1. url - /login - permit all "+"\r\n"+
+                        "1. url - /username - permit all "+"\r\n"+
                         "2. url - /refresh - permit all "+"\r\n"+
                         "3. url - /templates/** - permit only for ADMIN "+"\r\n"+
                         "4. url - /assignments/** methods GET,POST,PUT permit only for ADMIN,BACK_OFFICE_EMPLOYEE"+"\r\n"+

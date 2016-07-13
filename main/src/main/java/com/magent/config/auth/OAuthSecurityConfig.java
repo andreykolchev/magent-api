@@ -101,9 +101,9 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login*").permitAll()
+                .antMatchers("/username*").permitAll()
                 .antMatchers("/refresh*").permitAll()
-                .antMatchers("/login/otp*").permitAll()
+                .antMatchers("/username/otp*").permitAll()
                 .antMatchers("/signup").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/data/onboards").permitAll()
@@ -152,7 +152,7 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .authorizeRequests()
                 // .antMatchers("/testOauth*").hasAnyAuthority(UserRoles.ADMIN.toString())
          .antMatchers("/testOauth*").authenticated()
-         .antMatchers("/login*").permitAll()
+         .antMatchers("/username*").permitAll()
          .antMatchers("/refresh").permitAll()
          .antMatchers("/user/create").permitAll()
          .antMatchers("/users*").permitAll()

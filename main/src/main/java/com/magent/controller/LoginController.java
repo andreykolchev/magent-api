@@ -93,17 +93,17 @@ public class LoginController implements GeneralController {
     }
 
     /**
-     * @param login    - present login from DB
+     * @param username    - present username from DB
      * @param password - hashed one time password
      * @return
-     * @throws NotFoundException - if not present in db
+     * @throws NotFoundException - if password not correct
      * @throws IOException       - if can't recent otp
      */
     @RequestMapping(value = "/login/recentotp", method = RequestMethod.POST)
-    public ResponseEntity recentOtpForTegisteredUser(@RequestParam String login,
+    public ResponseEntity recentOtpForTegisteredUser(@RequestParam String username,
                                                      @RequestParam String password) throws NotFoundException, IOException {
-        if (userService.isPasswordCorrect(login, password)) {
-            smsService.sendOtpForRegisteredUser(login);
+        if (userService.isPasswordCorrect(username, password)) {
+            smsService.sendOtpForRegisteredUser(username);
             return new ResponseEntity(HttpStatus.OK);
         } else throw new NotFoundException("password not correct");
     }
@@ -113,17 +113,23 @@ public class LoginController implements GeneralController {
         return getDefaultResponce(userService.isNewUserSaved(temporaryUser).getEndPeriod().getTime(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     *
+     * @param username - phone number (login)
+     * @return - HttpStatus
+     * @throws NotFoundException - if user not present in db
+     */
     @RequestMapping(value = "/signup/recentotp", method = RequestMethod.POST)
-    public ResponseEntity recentOtpForUnregisteredUser(@RequestParam("login") String login) throws NotFoundException {
-        return getDefaultResponceStatusOnly(smsService.recentConfirmation(login), HttpStatus.OK, HttpStatus.NOT_FOUND);
+    public ResponseEntity recentOtpForUnregisteredUser(@RequestParam("username") String username) throws NotFoundException {
+        return getDefaultResponceStatusOnly(smsService.recentConfirmation(username), HttpStatus.OK, HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/signup/registerconfirm", method = RequestMethod.POST)
-    public ResponseEntity confirmRegistration(@RequestParam("login") String login,
+    public ResponseEntity confirmRegistration(@RequestParam("username") String username,
                                               @RequestParam("otp") String otp) throws NotFoundException {
 
-        ResponseEntity responseEntity = getDefaultResponceStatusOnly(userService.confirmRegistration(login, otp), HttpStatus.OK, HttpStatus.NOT_FOUND);
-        smsService.sendSuccessfullRegistration(login);
+        ResponseEntity responseEntity = getDefaultResponceStatusOnly(userService.confirmRegistration(username, otp), HttpStatus.OK, HttpStatus.NOT_FOUND);
+        smsService.sendSuccessfullRegistration(username);
         return responseEntity;
     }
 
