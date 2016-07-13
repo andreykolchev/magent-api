@@ -60,9 +60,9 @@ public class SmsServiceImpl implements SmsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public TemporaryUser sendConfirmationAndSaveUser(TemporaryUser temporaryUser) throws ValidationException {
-        if (Objects.nonNull(temporaryUserRepository.getByLogin(temporaryUser.getLogin())))
+        if (Objects.nonNull(temporaryUserRepository.getByLogin(temporaryUser.getUsername())))
             throw new ValidationException("current user already waited for registration");
-        if (Objects.nonNull(userRepository.findByLogin(temporaryUser.getLogin())))
+        if (Objects.nonNull(userRepository.findByLogin(temporaryUser.getUsername())))
             throw new ValidationException("current user already registered");
 
         String sendSms = generator.generate();
@@ -71,7 +71,7 @@ public class SmsServiceImpl implements SmsService {
 
         TemporaryUser tmpUser = new TemporaryUser(temporaryUser, dateUtils.add5Minutes(new Date()), storeSms, hashedPwd);
         tmpUser = temporaryUserRepository.save(tmpUser);
-        template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, temporaryUser.getLogin(), OtpConstants.REGISTER_CONFIRMATION + sendSms);
+        template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, temporaryUser.getUsername(), OtpConstants.REGISTER_CONFIRMATION + sendSms);
 
         return tmpUser;
     }
@@ -86,7 +86,7 @@ public class SmsServiceImpl implements SmsService {
 
         temporaryUser.setHashedOtp(storeSms);
         temporaryUser.setEndPeriod(dateUtils.add5Minutes(new Date()));
-        template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, temporaryUser.getLogin(), OtpConstants.REGISTER_CONFIRMATION + sendSms);
+        template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, temporaryUser.getUsername(), OtpConstants.REGISTER_CONFIRMATION + sendSms);
         temporaryUserRepository.save(temporaryUser);
         return temporaryUser;
     }

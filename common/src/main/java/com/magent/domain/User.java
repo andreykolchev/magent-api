@@ -64,7 +64,7 @@ public class User implements Identifiable<Long> {
     }
 
     public User(TemporaryUser temporaryUser) {
-        this.login=temporaryUser.getLogin();
+        this.login=temporaryUser.getUsername();
         this.email=temporaryUser.getEmail();
         this.role=UserRoles.SALES_AGENT_FREELANCER_LEAD_GEN.getRoleId();
         this.enabled=true;

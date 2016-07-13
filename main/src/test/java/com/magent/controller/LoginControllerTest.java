@@ -114,10 +114,10 @@ public class LoginControllerTest extends MockWebSecurityConfig {
 
         //check it saves
         Assert.assertNotNull(smsService.sendConfirmationAndSaveUser(temporaryUser));
-        Assert.assertNotNull(temporaryUserRepository.getByLogin(temporaryUser.getLogin()));
+        Assert.assertNotNull(temporaryUserRepository.getByLogin(temporaryUser.getUsername()));
         //and than confirm registration.
 
-        Assert.assertNotNull(userService.confirmRegistration(temporaryUser.getLogin(),SecurityUtils.hashPassword(sendSms)));
+        Assert.assertNotNull(userService.confirmRegistration(temporaryUser.getUsername(),SecurityUtils.hashPassword(sendSms)));
 
     }
 

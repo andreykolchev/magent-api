@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("Name not valid. Name must start with big letter and mustn't contains numbers min length 2 characters");
         if (!generalValidator.isNameCorrect(temporaryUser.getLastName()))
             throw new ValidationException("Last name not valid.Last name must start with big letter and mustn't contains numbers and min length 2 characters");
-        if (!generalValidator.isPhoneValid(temporaryUser.getLogin()))
+        if (!generalValidator.isPhoneValid(temporaryUser.getUsername()))
             throw new ValidationException("login not valid. Login must be phone number");
 
         return smsService.sendConfirmationAndSaveUser(temporaryUser);

@@ -19,7 +19,7 @@ public class TemporaryUser implements Identifiable<Long> {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String login;
+    private String username;
 
     @Column(name = "tmp_pwd", nullable = false)
     private String hashedPwd;
@@ -55,16 +55,16 @@ public class TemporaryUser implements Identifiable<Long> {
         this.firstName=temporaryUser.getFirstName();
         this.hashedOtp=hashedOtp;
         this.lastName=temporaryUser.getLastName();
-        this.login=temporaryUser.getLogin();
+        this.username =temporaryUser.getUsername();
         this.hashedPwd=hashedPwd;
     }
 
-    public TemporaryUser(String devicesId,String email,String firstName,String lastName,String login,String hashedPwd){
+    public TemporaryUser(String devicesId, String email, String firstName, String lastName, String username, String hashedPwd){
         this.devicesId=devicesId;
         this.email=email;
         this.firstName=firstName;
         this.lastName=lastName;
-        this.login=login;
+        this.username = username;
         this.hashedPwd=hashedPwd;
         this.endPeriod=new Date();
     }
@@ -76,12 +76,12 @@ public class TemporaryUser implements Identifiable<Long> {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String login) {
+        this.username = login;
     }
 
     public String getHashedPwd() {

@@ -15,12 +15,12 @@ import java.util.List;
 @Repository
 public interface TemporaryUserRepository extends JpaRepository<TemporaryUser, Long> {
 
-    @Query("select tmp from TemporaryUser tmp where tmp.login=:login")
+    @Query("select tmp from TemporaryUser tmp where tmp.username=:login")
     TemporaryUser getByLogin(@Param("login") String login);
 
     @Query("select tmp from TemporaryUser tmp where tmp.endPeriod<:currentDate")
     List<TemporaryUser> usersWithExpiredTerm(@Param("currentDate")Date date);
 
-    @Query("select tmp from TemporaryUser tmp where tmp.login=:login and tmp.hashedOtp=:otp")
+    @Query("select tmp from TemporaryUser tmp where tmp.username=:login and tmp.hashedOtp=:otp")
     TemporaryUser getByLoginAndOtp(@Param("login")String login,@Param("otp")String otp);
 }
