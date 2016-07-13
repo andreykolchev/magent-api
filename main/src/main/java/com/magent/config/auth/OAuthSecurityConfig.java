@@ -101,9 +101,9 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/username*").permitAll()
+                .antMatchers("/login*").permitAll()
                 .antMatchers("/refresh*").permitAll()
-                .antMatchers("/username/otp*").permitAll()
+                .antMatchers("/login/otp*").permitAll()
                 .antMatchers("/signup").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/data/onboards").permitAll()
