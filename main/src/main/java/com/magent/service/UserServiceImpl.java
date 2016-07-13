@@ -1,9 +1,11 @@
 package com.magent.service;
 
+import com.magent.domain.Account;
 import com.magent.domain.TemporaryUser;
 import com.magent.domain.User;
 import com.magent.domain.dto.ChangePasswordDto;
 import com.magent.domain.enums.UserRoles;
+import com.magent.repository.AccountRepository;
 import com.magent.repository.DeviceRepository;
 import com.magent.repository.TemporaryUserRepository;
 import com.magent.repository.UserRepository;
@@ -35,6 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private SmsService smsService;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     private TemporaryUserRepository temporaryUserRepository;
@@ -122,6 +127,7 @@ public class UserServiceImpl implements UserService {
         User user=new User(tmpUser);
         userRepository.save(user);
         deviceRepository.save(user.getDevices());
+        accountRepository.save(new Account(user));
 
         //delete from temp users
         TemporaryUser temporaryUser=temporaryUserRepository.getByLogin(login);
