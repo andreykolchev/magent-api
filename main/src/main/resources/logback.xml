@@ -24,7 +24,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.magent" level="info,warn">
+    <logger name="com.magent" level="info,warn,trace">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="fileAppender"/>
     </logger>
