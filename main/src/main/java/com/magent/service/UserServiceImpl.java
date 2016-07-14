@@ -3,12 +3,10 @@ package com.magent.service;
 import com.magent.domain.Account;
 import com.magent.domain.TemporaryUser;
 import com.magent.domain.User;
+import com.magent.domain.UserPersonal;
 import com.magent.domain.dto.ChangePasswordDto;
 import com.magent.domain.enums.UserRoles;
-import com.magent.repository.AccountRepository;
-import com.magent.repository.DeviceRepository;
-import com.magent.repository.TemporaryUserRepository;
-import com.magent.repository.UserRepository;
+import com.magent.repository.*;
 import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.UserService;
 import com.magent.utils.SecurityUtils;
@@ -46,6 +44,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private DeviceRepository deviceRepository;
+    @Autowired
+    private UserPersonalRepository userPersonalRepository;
 
     @Override
     public List<User> getUsersByFilter(String filter) throws NotFoundException {
@@ -76,11 +76,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean changePassword(Long id, ChangePasswordDto chPassDto) {
-        User user = userRepository.findByIdAndPassword(id, SecurityUtils.hashPassword(chPassDto.getOldPassword()));
-        if (user != null) {
+        UserPersonal userPersonal = userPersonalRepository.findByIdAndPassword(id, SecurityUtils.hashPassword(chPassDto.getOldPassword()));
+        if (userPersonal != null) {
             if (Objects.nonNull(chPassDto.getNewPassword())) {
-                user.setPassword(SecurityUtils.hashPassword(chPassDto.getNewPassword()));
-                userRepository.saveAndFlush(user);
+                userPersonal.setPassword(SecurityUtils.hashPassword(chPassDto.getNewPassword()));
+                userPersonalRepository.saveAndFlush(userPersonal);
                 return true;
             }
         }
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isPasswordCorrect(String login, String pass) {
         String passFromLoginForm = SecurityUtils.hashPassword(pass);
-        return userRepository.findByLogin(login).getPassword().equals(passFromLoginForm);
+        return userRepository.findByLogin(login).getUserPersonal().getPassword().equals(passFromLoginForm);
     }
 
     //password comes already hashed from frontend
@@ -125,9 +125,10 @@ public class UserServiceImpl implements UserService {
         if (Objects.isNull(tmpUser))throw new NotFoundException("current user not found");
 
         User user=new User(tmpUser);
-        userRepository.save(user);
+        user=userRepository.save(user);
         deviceRepository.save(user.getDevices());
         accountRepository.save(new Account(user));
+        userPersonalRepository.save(new UserPersonal(user.getId(),tmpUser.getHashedPwd()));
 
         //delete from temp users
         TemporaryUser temporaryUser=temporaryUserRepository.getByLogin(login);

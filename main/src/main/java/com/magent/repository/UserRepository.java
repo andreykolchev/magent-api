@@ -20,8 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.id = :id OR u.login = :login OR u.role  = :role")
     List<User> findUsersByFilter(@Param("id") Long id, @Param("login") String login, @Param("role") Long role);
 
-    User findByIdAndPassword(Long id, String password);
-
     User findByLogin(String login);
 
     @Query("select users from User users where exists (select acc from Account acc where acc.userId=users.id)")

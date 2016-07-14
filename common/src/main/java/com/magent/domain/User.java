@@ -21,9 +21,6 @@ public class User implements Identifiable<Long> {
     @Column(nullable = false, unique = true)
     private String login;
 
-    @Column(name = "pwd", nullable = false)
-    private String password;
-
     @Column(name = "u_role", nullable = false)
     private Long role;
 
@@ -60,6 +57,11 @@ public class User implements Identifiable<Long> {
     @Column(name = "e_mail")
     private String email;
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @JsonBackReference(value = "userPersonal")
+    private UserPersonal userPersonal;
+
     public User() {
     }
 
@@ -70,7 +72,6 @@ public class User implements Identifiable<Long> {
         this.enabled=true;
         this.firstName=temporaryUser.getFirstName();
         this.lastName=temporaryUser.getLastName();
-        this.password=temporaryUser.getHashedPwd();
         this.devices=new ArrayList<>(Arrays.asList(new Device(temporaryUser.getDevicesId())));
     }
 
@@ -88,14 +89,6 @@ public class User implements Identifiable<Long> {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public UserRoles getRole() throws NotFoundException {
@@ -154,6 +147,14 @@ public class User implements Identifiable<Long> {
         this.email = email;
     }
 
+    public UserPersonal getUserPersonal() {
+        return userPersonal;
+    }
+
+    public void setUserPersonal(UserPersonal userPersonal) {
+        this.userPersonal = userPersonal;
+    }
+
     public boolean addDevice(Device curDevice) {
         if (devices == null) {
             devices = new ArrayList<>();
@@ -193,7 +194,6 @@ public class User implements Identifiable<Long> {
         return "User{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 ", enabled=" + enabled +
                 ", expirationDate=" + expirationDate +

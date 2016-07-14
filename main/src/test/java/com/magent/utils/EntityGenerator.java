@@ -215,7 +215,7 @@ public final class EntityGenerator {
         User user = new User();
         user.setId(1L);
         user.setLogin("user1");
-        user.setPassword("edd8279b8ebe50c5652ff42e32c3561dd6f85e93");
+        user.setUserPersonal(new UserPersonal(user.getId(),"edd8279b8ebe50c5652ff42e32c3561dd6f85e93"));
         user.setRole(UserRoles.ADMIN);
         user.setEmail("test@test.com");
         user.setFirstName("ComissionCalculatorImplTest");
@@ -230,7 +230,7 @@ public final class EntityGenerator {
     public static User getNewTestUser(){
         User user = new User();
         user.setLogin("user_test");
-        user.setPassword("test");
+        user.setUserPersonal(new UserPersonal(user.getId(),"test"));
         user.setRole(UserRoles.ADMIN);
         user.setEmail("test@test.com");
         user.setFirstName("ComissionCalculatorImplTest");

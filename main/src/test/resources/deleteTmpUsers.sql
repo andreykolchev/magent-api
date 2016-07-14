@@ -1,6 +1,7 @@
 TRUNCATE
 ma_temporary_user,
 ma_user_roles,
+ma_user_personal,
 ma_settings,
 ma_activity,
 ma_location,

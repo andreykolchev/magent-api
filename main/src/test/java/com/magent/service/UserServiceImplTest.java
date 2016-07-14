@@ -65,7 +65,7 @@ public class UserServiceImplTest extends ServiceConfig {
         Assert.assertTrue(userService.changePassword(testUser.getId(), changePasswordDto));
         String hashedPass = SecurityUtils.hashPassword(newUserPassword);
         User updated = (User) userGenService.getById(testUser.getId());
-        String newPassFromBd = updated.getPassword();
+        String newPassFromBd = updated.getUserPersonal().getPassword();
         Assert.assertEquals("check is changed", hashedPass, newPassFromBd);
 
     }
