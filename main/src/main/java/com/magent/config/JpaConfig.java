@@ -13,8 +13,6 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.view.jasperreports.JasperReportsMultiFormatView;
-import org.springframework.web.servlet.view.jasperreports.JasperReportsViewResolver;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -114,17 +112,5 @@ public class JpaConfig {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
-    }
-
-    @Bean
-    public JasperReportsViewResolver getJasperReportsViewResolver() {
-        JasperReportsViewResolver resolver = new JasperReportsViewResolver();
-        resolver.setPrefix("classpath:/reports");
-        resolver.setSuffix(".jrxml");
-        resolver.setJdbcDataSource(dataSource());
-        resolver.setViewNames("report*");
-        resolver.setViewClass(JasperReportsMultiFormatView.class);
-        resolver.setOrder(0);
-        return resolver;
     }
 }

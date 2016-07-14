@@ -46,15 +46,16 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void sendOtpForRegisteredUser(String toPhone) throws IOException {
-        //storing
+    public SmsPassword sendOtpForRegisteredUser(String toPhone) throws IOException {
+
         User user = userRepository.findByLogin(toPhone);
         String sendSms = generator.generate();
         String storeSms = SecurityUtils.hashPassword(sendSms);
         storeSms = SecurityUtils.hashPassword(storeSms);
-        otpRepository.save(new SmsPassword(user.getId(), user.getId(), storeSms, dateUtils.add15Minutes(new Date())));
         //Sending sms via sms gate
         template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, toPhone, OtpConstants.SEND_LOGIN_CONFIRMATION + sendSms);
+        //storing
+        return otpRepository.save(new SmsPassword(user.getId(), user.getId(), storeSms, dateUtils.add15Minutes(new Date())));
     }
 
     @Override

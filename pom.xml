@@ -109,15 +109,6 @@
             <artifactId>annotations</artifactId>
             <version>3.0.0</version>
         </dependency>
-        <!--Jasper reports dependency-->
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports</artifactId>
-            <version>6.2.0</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <!--Jasper end-->
     </dependencies>
     <build>
         <plugins>

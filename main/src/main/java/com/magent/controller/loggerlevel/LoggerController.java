@@ -77,7 +77,6 @@ public class LoggerController {
     @SuppressFBWarnings("CRLF_INJECTION_LOGS")
     private void notFoundDefault(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
         response.getWriter().println("message " + e.getMessage());
-
         LOGGER.info("not found exception in: " + request.getRequestURI() + " with exception " + e);
     }
 }

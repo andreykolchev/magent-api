@@ -61,8 +61,7 @@ public class LoginController implements GeneralController {
             return new ResponseEntity(token, HttpStatus.OK);
         } else {
             if (userService.isPasswordCorrect(username, password)) {
-                smsService.sendOtpForRegisteredUser(username);
-                return new ResponseEntity(HttpStatus.OK);
+                return getDefaultResponce(smsService.sendOtpForRegisteredUser(username).getEndPeriod().getTime(),HttpStatus.OK,HttpStatus.BAD_REQUEST);
             } else {
                 throw new NotFoundException("password incorrect");
             }
@@ -93,18 +92,17 @@ public class LoginController implements GeneralController {
     }
 
     /**
-     * @param username    - present username from DB
+     * @param username - present username from DB
      * @param password - hashed one time password
      * @return
      * @throws NotFoundException - if password not correct
      * @throws IOException       - if can't recent otp
      */
     @RequestMapping(value = "/login/recentotp", method = RequestMethod.POST)
-    public ResponseEntity recentOtpForTegisteredUser(@RequestParam String username,
-                                                     @RequestParam String password) throws NotFoundException, IOException {
+    public ResponseEntity<String> recentOtpForTegisteredUser(@RequestParam String username,
+                                                             @RequestParam String password) throws NotFoundException, IOException {
         if (userService.isPasswordCorrect(username, password)) {
-            smsService.sendOtpForRegisteredUser(username);
-            return new ResponseEntity(HttpStatus.OK);
+            return getDefaultResponce(smsService.sendOtpForRegisteredUser(username).getEndPeriod().getTime(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
         } else throw new NotFoundException("password not correct");
     }
 
@@ -114,14 +112,13 @@ public class LoginController implements GeneralController {
     }
 
     /**
-     *
      * @param username - phone number (login)
      * @return - HttpStatus
      * @throws NotFoundException - if user not present in db
      */
     @RequestMapping(value = "/signup/recentotp", method = RequestMethod.POST)
-    public ResponseEntity recentOtpForUnregisteredUser(@RequestParam("username") String username) throws NotFoundException {
-        return getDefaultResponceStatusOnly(smsService.recentConfirmation(username), HttpStatus.OK, HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> recentOtpForUnregisteredUser(@RequestParam("username") String username) throws NotFoundException {
+        return getDefaultResponce(smsService.recentConfirmation(username).getEndPeriod().getTime(), HttpStatus.OK, HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/signup/registerconfirm", method = RequestMethod.POST)
