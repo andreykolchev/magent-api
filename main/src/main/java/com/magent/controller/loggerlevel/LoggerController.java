@@ -60,8 +60,8 @@ public class LoggerController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({OnBoardingValidatorImpl.InvalidOnboardEntity.class, ImageValidatorImpl.NotCorrectImageExtension.class, ValidationException.class})
     public void badOnboardEntity(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
-        response.getWriter().println("invalid onboard entity " + e.getMessage());
-        LOGGER.info("invalid onboard exception: " + request.getRequestURI() + " with exception " + e);
+        response.getWriter().println("bad request : " + e.getMessage());
+        LOGGER.info("bad request : " + request.getRequestURI() + " with exception " + e);
     }
 
     @SuppressFBWarnings({"XSS_REQUEST_PARAMETER_TO_SERVLET_WRITER", "CRLF_INJECTION_LOGS"})
