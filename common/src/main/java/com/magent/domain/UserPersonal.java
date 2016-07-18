@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class UserPersonal {
 
     @Id
-    @Column(name = "user_pers_id",nullable = false,updatable = false)
+    @Column(name = "user_pers_pk",nullable = false,updatable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
@@ -24,7 +24,7 @@ public class UserPersonal {
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "ma_usr_id",referencedColumnName = "id",insertable = false,updatable = false)
+    @JoinColumn(name = "ma_usr_id",referencedColumnName = "usr_pk",insertable = false,updatable = false)
     private User user;
 
     public UserPersonal() {

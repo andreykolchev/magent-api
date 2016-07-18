@@ -16,7 +16,7 @@ public class Assignment implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "id")
+    @Column(name = "assign_pk")
     private Long id;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -70,7 +70,7 @@ public class Assignment implements Identifiable<Long> {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id",referencedColumnName = "id",insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_user_id"))
+    @JoinColumn(name = "user_id",referencedColumnName = "usr_pk",insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_user_id"))
     private User user;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -79,7 +79,7 @@ public class Assignment implements Identifiable<Long> {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "reason_id",referencedColumnName = "id",insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_reason_id"))
+    @JoinColumn(name = "reason_id",referencedColumnName = "reason_pk",insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_reason_id"))
     private Reason reason;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

@@ -16,6 +16,7 @@ public class Call implements ChangeableEntity,Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @Column(name = "call_pk")
     private Long id;
 
     @Column(name = "call_number")
@@ -60,7 +61,7 @@ public class Call implements ChangeableEntity,Identifiable<Long> {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.DETACH)
-    @JoinColumn(name="assignment_id",referencedColumnName = "id",nullable = true,insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_assignment_id"))
+    @JoinColumn(name="assignment_id",referencedColumnName = "assign_pk",nullable = true,insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_assignment_id"))
     @JsonBackReference(value = "assignmentCalls")
     private Assignment assignment;
 

@@ -14,6 +14,7 @@ public class TemplateTask implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "temp_tk_pk")
     private Long id;
 
     @Column(name = "description")

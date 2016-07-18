@@ -15,6 +15,7 @@ public class TemporaryUser implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "temp_usr_pk")
     @JsonIgnore
     private Long id;
 

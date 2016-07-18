@@ -16,6 +16,7 @@ public class User implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "usr_pk")
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -26,7 +27,7 @@ public class User implements Identifiable<Long> {
 
     @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "u_role", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "u_role", referencedColumnName = "usr_rol_pk", insertable = false, updatable = false)
     private Roles uRole;
 
     @Column
@@ -39,8 +40,8 @@ public class User implements Identifiable<Long> {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinTable(
             name = "ma_user_device",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "device_id", referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "usr_pk")},
+            inverseJoinColumns = {@JoinColumn(name = "device_id", referencedColumnName = "device_pk")})
     private List<Device> devices;
 
     @JsonIgnore

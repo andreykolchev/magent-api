@@ -15,6 +15,7 @@ public class AssignmentTask implements ChangeableEntity,Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "asign_tas_pk")
     private Long id;
 
     @Column(name = "description")
@@ -41,7 +42,7 @@ public class AssignmentTask implements ChangeableEntity,Identifiable<Long> {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.DETACH)
-    @JoinColumn(name = "assignment_id",referencedColumnName = "id",nullable = false, insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_assignment_id"))
+    @JoinColumn(name = "assignment_id",referencedColumnName = "assign_pk",nullable = false, insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_assignment_id"))
     @JsonBackReference(value = "assignment")
     private Assignment assignment;
 

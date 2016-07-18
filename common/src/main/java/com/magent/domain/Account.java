@@ -28,7 +28,7 @@ public class Account {
 
     @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id",insertable = false,updatable = false)
+    @JoinColumn(name = "user_id",referencedColumnName = "usr_pk",insertable = false,updatable = false)
     private User user;
 
     public Account() {

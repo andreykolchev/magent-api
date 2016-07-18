@@ -13,6 +13,7 @@ public class Template implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "templ_pk")
     private Long id;
 
     @Column(nullable = false)

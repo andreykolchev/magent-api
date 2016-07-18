@@ -11,6 +11,7 @@ public class Settings implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @Column(name = "sett_pk")
     private Long id;
 
     @Column(name = "is_upload_location")

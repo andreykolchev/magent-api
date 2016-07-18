@@ -13,6 +13,7 @@ import java.util.Date;
 public class SmsPassword {
 
     @Id
+    @Column(name = "sms_pwd_pk")
     private Long smsId;
 
     @Column(name = "sms_user_id",unique = true,nullable = false)
@@ -20,7 +21,7 @@ public class SmsPassword {
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "sms_user_id",referencedColumnName = "id",insertable = false,updatable = false)
+    @JoinColumn(name = "sms_user_id",referencedColumnName = "usr_pk",insertable = false,updatable = false)
     private User user;
 
     @JsonIgnore
