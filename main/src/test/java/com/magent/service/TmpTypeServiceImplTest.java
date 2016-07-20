@@ -19,7 +19,7 @@ import java.util.Arrays;
 /**
  * Created by artomov.ihor on 19.07.2016.
  */
-public class TemplateTypeServiceImplTest extends ServiceConfig {
+public class TmpTypeServiceImplTest extends ServiceConfig {
     @Autowired
     private TemplateTypeService templateTypeService;
     @Autowired
