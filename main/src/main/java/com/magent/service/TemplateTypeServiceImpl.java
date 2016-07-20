@@ -37,5 +37,11 @@ public class TemplateTypeServiceImpl implements TemplateTypeService {
         return templateTypeRpository.getAllChilds(parentId);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<TemplateType> getTemplateTypesForMobApp(Long role) {
+        return templateTypeRpository.getAllowedByRole(role);
+    }
+
 
 }

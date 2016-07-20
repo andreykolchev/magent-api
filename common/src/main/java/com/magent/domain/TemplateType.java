@@ -49,10 +49,21 @@ public class TemplateType implements Identifiable<Long> {
     @JsonBackReference(value = "parentTmpType")
     private Set<TemplateType> childTemplatesTypes;
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "templateType")
+    private Template template;
+
+    @Transient
+    @JsonSerialize
+    @JsonDeserialize
+    private Long templateId;
+
     @Transient
     @JsonSerialize
     @JsonDeserialize
     private List<UserRoles> userRolesList;
+
+
 
     public TemplateType() {
 
@@ -114,9 +125,17 @@ public class TemplateType implements Identifiable<Long> {
         this.userRolesList = userRolesList;
     }
 
+    public Template getTemplate() {
+        return template;
+    }
 
     public void setChildTemplatesTypes(Set<TemplateType> childTemplatesTypes) {
         this.childTemplatesTypes = childTemplatesTypes;
+    }
+
+    public Long getTemplateId() {
+        if (Objects.nonNull(getTemplate()))this.templateId=getTemplate().getId();
+        return templateId;
     }
 
     @PrePersist

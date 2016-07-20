@@ -3,19 +3,23 @@ package com.magent.controller;
 import com.magent.controller.interfaces.GeneralController;
 import com.magent.domain.*;
 import com.magent.domain.dto.UpdateDataDto;
+import com.magent.domain.enums.UserRoles;
 import com.magent.service.interfaces.DataService;
 import com.magent.service.interfaces.GeneralService;
+import com.magent.service.interfaces.TemplateTypeService;
 import com.magent.service.interfaces.UserService;
 import com.magent.utils.ariphmeticbeans.ComissionCalculatorImpl;
 import com.magent.utils.validators.ImageValidatorImpl;
-import com.magent.utils.validators.interfaces.OnBoardingValidator;
 import com.magent.utils.validators.OnBoardingValidatorImpl;
+import com.magent.utils.validators.interfaces.OnBoardingValidator;
 import io.swagger.annotations.ApiOperation;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,6 +49,8 @@ public class DataControllerImpl implements GeneralController {
     @Qualifier("onBoardingValidatorImpl")
     private OnBoardingValidator onBoardingValidator;
 
+    @Autowired
+    private TemplateTypeService templateTypeService;
     /**
      * @param syncId
      * @return
@@ -160,7 +166,8 @@ public class DataControllerImpl implements GeneralController {
 
 
     @RequestMapping(method = RequestMethod.GET,value = "/template-types")
-    public List<TemplateType>getAll(){
-        return null;
+    public List<TemplateType>getAll() throws NotFoundException {
+        List<GrantedAuthority>authorities= (List<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        return templateTypeService.getTemplateTypesForMobApp(UserRoles.getByString(authorities.get(0).toString()).getRoleId());
     }
 }

@@ -12,4 +12,5 @@ import java.util.List;
 public interface TemplateTypeService {
     TemplateType update(TemplateType templateType,Long id) throws BadHttpRequest, NotFoundException;
     List<TemplateType>getChild(Long parentId);
+    List<TemplateType>getTemplateTypesForMobApp(Long role);
 }
