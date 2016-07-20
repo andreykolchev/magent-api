@@ -1,4 +1,6 @@
 TRUNCATE
+ma_tmp_types_roles,
+ma_template_types,
 ma_user_roles,
 ma_user_personal,
 ma_settings,
@@ -84,12 +86,15 @@ INSERT INTO ma_reason (reason_pk, parent_id, description, name) VALUES (1, NULL,
 INSERT INTO ma_reason (reason_pk, parent_id, description, name) VALUES (2, NULL, 'По вине агента', 'По вине агента');
 INSERT INTO ma_reason (reason_pk, parent_id, description, name) VALUES (3, 1, 'По вине клиента child', 'По вине клиента');
 
+INSERT INTO ma_template_types(temp_type_pk, temp_type_desc, parent_temp_tp_pk) VALUES (1,'test',NULL );
+
+INSERT INTO ma_tmp_types_roles(temp_type_pk, usr_rol_pk) VALUES (1,1);
 --
 -- Data for Name: ds_template; Type: TABLE DATA; Schema: public; Owner: magent
 --
 
-INSERT INTO ma_template (templ_pk, name, description) VALUES (1, 'Кредитная карта', 'Кредитная карта "Кредитка"');
-INSERT INTO ma_template (templ_pk, name, description) VALUES (2, 'Кредитная карта For Delete', 'Кредитная карта "Кредитка"');
+INSERT INTO ma_template (templ_pk, name, description,tmp_tmp_type_id) VALUES (1, 'Кредитная карта', 'Кредитная карта "Кредитка"',1);
+INSERT INTO ma_template (templ_pk, name, description,tmp_tmp_type_id) VALUES (2, 'Кредитная карта For Delete', 'Кредитная карта "Кредитка"',1);
 
 --
 -- Data for Name: ds_template_attribute; Type: TABLE DATA; Schema: public; Owner: magent

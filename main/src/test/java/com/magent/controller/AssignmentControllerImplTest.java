@@ -35,6 +35,7 @@ public class AssignmentControllerImplTest extends MockWebSecurityConfig  {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getNewAssignment())))
                 .andExpect(status().isCreated())
+                .andDo(print())
                 .andReturn();
     }
 

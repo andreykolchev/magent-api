@@ -133,6 +133,8 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/data/onboards").hasAnyAuthority(ADMIN.toString())
                 .antMatchers(HttpMethod.DELETE, "/data/onboards/**").hasAnyAuthority(ADMIN.toString())
 
+                .antMatchers("/template-types/**").hasAnyAuthority(ADMIN.toString())
+
                 .antMatchers("/tracking/**").authenticated()
 
                 .antMatchers("/reports/**").hasAnyAuthority(ADMIN.toString(), BACK_OFFICE_EMPLOYEE.toString())
@@ -146,23 +148,6 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE,"/reasons/**").hasAnyAuthority(ADMIN.toString())
 
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-
-        /*http.csrf().disable()
-                .authorizeRequests()
-                // .antMatchers("/testOauth*").hasAnyAuthority(UserRoles.ADMIN.toString())
-         .antMatchers("/testOauth*").authenticated()
-         .antMatchers("/username*").permitAll()
-         .antMatchers("/refresh").permitAll()
-         .antMatchers("/user/create").permitAll()
-         .antMatchers("/users*").permitAll()
-         .antMatchers("/data*").permitAll()
-         .antMatchers("/devices*").permitAll()
-         .antMatchers("/assignment*").permitAll()
-         .antMatchers("/templates*").permitAll()
-         .antMatchers("/tracking*").permitAll()
-         .antMatchers("/reasons*").permitAll()
-         .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
 
     }
 }

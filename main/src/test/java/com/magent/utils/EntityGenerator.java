@@ -177,7 +177,7 @@ public final class EntityGenerator {
     }
 
     public static Template getNewTestTemplate() {
-        return new Template("test template", "template POST test");
+        return new Template("test template", "template POST test",1L);
     }
 
     public static TemplateAttribute getNewTestTemplateAttribute() {
@@ -277,5 +277,17 @@ public final class EntityGenerator {
 
     public static TemporaryUser generateUserForRegistration(){
         return new TemporaryUser("device","test@gmail.com","Tester","Testov","+380978090838",SecurityUtils.hashPassword("pass"));
+    }
+
+    public static TemplateType generateTestTemplateType(){
+        return new TemplateType("test",Arrays.asList(UserRoles.ADMIN));
+    }
+
+    public static TemplateType generateTestTemplateTypeNegative(){
+        return new TemplateType("test",Arrays.asList());
+    }
+
+    public static TemplateType generateChildTemplateType(Long parentId){
+        return new TemplateType("child",parentId,Arrays.asList(UserRoles.ADMIN));
     }
 }

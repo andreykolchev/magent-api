@@ -1,8 +1,10 @@
 package com.magent.domain;
 
 
-import com.magent.domain.interfaces.Identifiable;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.magent.domain.interfaces.Identifiable;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -35,7 +37,7 @@ public class Assignment implements Identifiable<Long> {
     @Column(name = "description")
     private String desc;
 
-    @Column(name = "status",nullable = false)
+    @Column(name = "status", nullable = false)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Enumerated(value = EnumType.STRING)
     private AssignmentStatus status;
@@ -70,7 +72,7 @@ public class Assignment implements Identifiable<Long> {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id",referencedColumnName = "usr_pk",insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_user_id"))
+    @JoinColumn(name = "user_id", referencedColumnName = "usr_pk", insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_user_id"))
     private User user;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -79,7 +81,7 @@ public class Assignment implements Identifiable<Long> {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "reason_id",referencedColumnName = "reason_pk",insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_reason_id"))
+    @JoinColumn(name = "reason_id", referencedColumnName = "reason_pk", insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_reason_id"))
     private Reason reason;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -91,10 +93,22 @@ public class Assignment implements Identifiable<Long> {
     private Set<AssignmentTask> tasks;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @OneToMany(mappedBy = "assignment",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "assignment", fetch = FetchType.LAZY)
     private List<Call> callList;
 
+    @Transient
+    @JsonSerialize
+    @JsonDeserialize
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String templateTypeDescription;
 
+    public String getTemplateTypeDescription() {
+        return templateTypeDescription;
+    }
+
+    public void setTemplateTypeDescription(String templateTypeDescription) {
+        this.templateTypeDescription = templateTypeDescription;
+    }
 
     public Assignment() {}
 
@@ -113,8 +127,8 @@ public class Assignment implements Identifiable<Long> {
     }
 
     @PreRemove
-    private void delete(){
-        for (Call call:callList){
+    private void delete() {
+        for (Call call : callList) {
             call.setAssignmentId(null);
         }
     }
@@ -272,6 +286,8 @@ public class Assignment implements Identifiable<Long> {
     public void setCallList(List<Call> callList) {
         this.callList = callList;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

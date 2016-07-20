@@ -57,6 +57,10 @@ public class DataServiceImpl implements DataService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TemplateTypeRpository typeRpository;
+
+
     @SuppressFBWarnings("EC_UNRELATED_TYPES")
     @Override
     public UpdateDataDto getData(Long userId, Long syncId) {
@@ -69,6 +73,8 @@ public class DataServiceImpl implements DataService {
         }
         for (Assignment assignment : assignmentList) {
             initializeControls(assignment);
+            assignment.setTemplateTypeDescription(typeRpository.getByTemplateId(assignment.getTemplateId()).getDescription()
+            );
         }
         UpdateDataDto result = new UpdateDataDto();
         result.setSyncId(new Date().getTime());
@@ -212,4 +218,5 @@ public class DataServiceImpl implements DataService {
             Hibernate.initialize(task.getControls());
         }
     }
+
 }

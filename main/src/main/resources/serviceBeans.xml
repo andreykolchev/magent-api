@@ -74,4 +74,9 @@
     <bean id="onBoardingGeneralService" class="com.magent.service.generalservice.GeneralServiceImpl">
         <constructor-arg name="repository" ref="onboardRepository"/>
     </bean>
+
+    <bean id="templateTypeGeneralService" class="com.magent.service.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="templateTypeRpository"/>
+    </bean>
+
 </beans>

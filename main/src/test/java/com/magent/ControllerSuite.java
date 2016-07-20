@@ -25,6 +25,7 @@ import org.junit.runners.Suite;
         AssignmentsSecControllerTest.class,
         TemplatesSecControllerTest.class,
         UsersSecControllerTest.class,
+        TemplateTypeControllerImplTest.class,
         OauthServiceTest.class
 
 })

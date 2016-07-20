@@ -18,6 +18,7 @@ import javax.transaction.RollbackException;
 import javax.xml.bind.ValidationException;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Arrays;
 
 /**
  * Created  on 23.05.2016.
@@ -30,6 +31,7 @@ public class LoggerController {
     @ExceptionHandler({NullPointerException.class,
             RollbackException.class, javax.persistence.RollbackException.class, IllegalArgumentException.class})
     public void nullPointerException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
+        LOGGER.warn("WARNING exception: " + request.getRequestURI() + " with exception " + e+" "+ Arrays.toString(e.getStackTrace()));
         notFoundDefault(request, response, e);
     }
 
@@ -43,22 +45,24 @@ public class LoggerController {
     @ExceptionHandler({IOException.class})
     public void IOException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
         notFoundDefault(request, response, e);
+        LOGGER.warn("WARNING IOException: " + request.getRequestURI() + " with exception " + e+" "+ Arrays.toString(e.getStackTrace()));
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({ParseException.class})
     public void parseException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
         notFoundDefault(request, response, e);
+        LOGGER.warn("WARNING ParseException: " + request.getRequestURI() + " with exception " + e+" "+ Arrays.toString(e.getStackTrace()));
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({Exception.class})
     public void exception(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
-        notFoundDefault(request, response, e);
+        LOGGER.warn("WARNING NOT KNOWABLE EXCEPTION: " + request.getRequestURI() + " with exception " + e+" "+ Arrays.toString(e.getStackTrace()));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({OnBoardingValidatorImpl.InvalidOnboardEntity.class, ImageValidatorImpl.NotCorrectImageExtension.class, ValidationException.class})
+    @ExceptionHandler({OnBoardingValidatorImpl.InvalidOnboardEntity.class, ImageValidatorImpl.NotCorrectImageExtension.class, ValidationException.class,javax.xml.bind.ValidationException.class,})
     public void badOnboardEntity(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
         response.getWriter().println("bad request : " + e.getMessage());
         LOGGER.info("bad request : " + request.getRequestURI() + " with exception " + e);

@@ -69,6 +69,7 @@ public class Application extends SpringBootServletInitializer {
                         "12. url - /data/onboards method get, allowed for any user"+"\r\n"+
                         "13. url - /data/onboards/** allowed only for ADMIN"+"\r\n"+
                         "14. url - /data/onboards methods put, post, delete, allowed only for ADMIN"+"\r\n"+
+                        "15. url - /template-types/** allowed only for ADMIN"+"\r\n"+
                         "\r\n"+
                         "0. ---- Logins and passwords for different roles: " + "\r\n" +
                         "1. ROLE_ADMIN user1 - edd8279b8ebe50c5652ff42e32c3561dd6f85e93 WEB_UI_PASS - user1 " + "\r\n" +

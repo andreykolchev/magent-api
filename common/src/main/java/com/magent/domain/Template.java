@@ -1,7 +1,7 @@
 package com.magent.domain;
 
-import com.magent.domain.interfaces.Identifiable;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.magent.domain.interfaces.Identifiable;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -30,12 +30,20 @@ public class Template implements Identifiable<Long> {
     @OneToMany(mappedBy = "template", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<TemplateTask> templateTasks;
 
+    @Column(name = "tmp_tmp_type_id",nullable = false,updatable = false)
+    private Long teplateTypeId;
+
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "tmp_tmp_type_id",referencedColumnName = "temp_type_pk",insertable = false,updatable = false)
+    private TemplateType templateType;
+
     public Template() {
     }
 
-    public Template(String name, String desc) {
+    public Template(String name, String desc,Long teplateTypeId) {
         this.name = name;
         this.desc = desc;
+        this.teplateTypeId=teplateTypeId;
     }
 
     public Long getId() {
@@ -76,6 +84,18 @@ public class Template implements Identifiable<Long> {
 
     public void setTemplateTasks(Set<TemplateTask> templateTasks) {
         this.templateTasks = templateTasks;
+    }
+
+    public Long getTeplateTypeId() {
+        return teplateTypeId;
+    }
+
+    public void setTeplateTypeId(Long teplateTypeId) {
+        this.teplateTypeId = teplateTypeId;
+    }
+
+    public TemplateType getTemplateType() {
+        return templateType;
     }
 
     @Override

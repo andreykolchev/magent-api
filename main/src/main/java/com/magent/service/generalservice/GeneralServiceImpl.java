@@ -54,6 +54,7 @@ public class GeneralServiceImpl<T> implements GeneralService<T> {
      * @param id
      * @return
      * @throws NotFoundException
+     * @implNote not use for TemplateType class
      */
     @Transactional(rollbackFor = Exception.class)
     public T update(T entity, Number id) throws NotFoundException {

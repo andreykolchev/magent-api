@@ -1,10 +1,7 @@
 package com.magent.controller;
 
 import com.magent.controller.interfaces.GeneralController;
-import com.magent.domain.AssignmentStatus;
-import com.magent.domain.OnBoarding;
-import com.magent.domain.User;
-import com.magent.domain.ValueType;
+import com.magent.domain.*;
 import com.magent.domain.dto.UpdateDataDto;
 import com.magent.service.interfaces.DataService;
 import com.magent.service.interfaces.GeneralService;
@@ -159,5 +156,11 @@ public class DataControllerImpl implements GeneralController {
     public ResponseEntity deleteOnboardEntity(@PathVariable("id") Long id) {
         onBoardGenService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET,value = "/template-types")
+    public List<TemplateType>getAll(){
+        return null;
     }
 }
