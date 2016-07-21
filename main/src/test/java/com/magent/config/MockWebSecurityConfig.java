@@ -33,6 +33,10 @@ public class MockWebSecurityConfig extends MockWebAppConfiguration {
     private final static String backOfficeEmployer = "+380506847580";
     private final static String backPass = "edd8279b8ebe50c5652ff42e32c3561dd6f85e93";
 
+    private final static String remoteStaffer = "user2";
+    private final static String remotePass = "edd8279b8ebe50c5652ff42e32c3561dd6f85e93";
+
+
     protected String getToken() throws Exception {
         return mvc.perform(post("/login")
                 .param("username", testLogin)
@@ -57,6 +61,18 @@ public class MockWebSecurityConfig extends MockWebAppConfiguration {
         String token = mvc.perform(post("/login")
                 .param("username", backOfficeEmployer)
                 .param("password", backPass))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        JsonParser parser = new JsonParser();
+        JsonObject object = (JsonObject) parser.parse(token);
+        return "bearer" + object.get("access_token").getAsString();
+    }
+
+    protected String getRemoteStafferAccessToken() throws Exception {
+        String token = mvc.perform(post("/login")
+                .param("username", remoteStaffer)
+                .param("password", remotePass))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();

@@ -19,4 +19,5 @@ public interface UserService {
     boolean isPasswordCorrect(String login,String pass);
     TemporaryUser isNewUserSaved(TemporaryUser temporaryUser) throws ValidationException;
     User confirmRegistration(String login,String otp) throws NotFoundException;
+    String getAccountBalanceByUserLogin(String login);
 }

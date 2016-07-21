@@ -51,6 +51,7 @@ public class DataControllerImpl implements GeneralController {
 
     @Autowired
     private TemplateTypeService templateTypeService;
+
     /**
      * @param syncId
      * @return
@@ -120,7 +121,6 @@ public class DataControllerImpl implements GeneralController {
     }
 
     /**
-     *
      * @param id - in ds_onboards
      * @return OnBoarding entity
      * @throws NotFoundException
@@ -131,14 +131,13 @@ public class DataControllerImpl implements GeneralController {
     }
 
     /**
-     *
      * @param onBoarding - see OnBoarding.class
      * @return - updated entity
      * @throws IOException
      * @throws ImageValidatorImpl.NotCorrectImageExtension
      * @throws OnBoardingValidatorImpl.InvalidOnboardEntity
      */
-    @ApiOperation(value = "create OnBoard entity",notes = "allowed only png and svg formats." +
+    @ApiOperation(value = "create OnBoard entity", notes = "allowed only png and svg formats." +
             " Image height and width must be 170x170 pixels if image will be with another size returned 400 Status." +
             " Image must have full file name with extension for validation and for creating on android side. " +
             " Max length of content is 50 characters, min length 0 characters. " +
@@ -150,7 +149,7 @@ public class DataControllerImpl implements GeneralController {
         else throw new OnBoardingValidatorImpl.InvalidOnboardEntity("Invalid image entity");
     }
 
-    @ApiOperation(value = "update Onboard entity.",notes = "Description see POST method")
+    @ApiOperation(value = "update Onboard entity.", notes = "Description see POST method")
     @RequestMapping(method = RequestMethod.PUT, value = "/onboards")
     public ResponseEntity<OnBoarding> updateOnBoardEntity(@RequestBody OnBoarding onBoarding) throws IOException, ImageValidatorImpl.NotCorrectImageExtension, OnBoardingValidatorImpl.InvalidOnboardEntity, ValidationException {
         if (onBoardingValidator.isOnBoardEntityValid(onBoarding))
@@ -165,9 +164,20 @@ public class DataControllerImpl implements GeneralController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET,value = "/template-types")
-    public List<TemplateType>getAll() throws NotFoundException {
-        List<GrantedAuthority>authorities= (List<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+    @RequestMapping(method = RequestMethod.GET, value = "/template-types")
+    public List<TemplateType> getAll() throws NotFoundException {
+        List<GrantedAuthority> authorities = (List<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         return templateTypeService.getTemplateTypesForMobApp(UserRoles.getByString(authorities.get(0).toString()).getRoleId());
+    }
+
+    /**
+     * End-point returned balance of current user as String representation
+     *
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/user-balance")
+    public ResponseEntity<String> getCurrentUserBalance() {
+        String login = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return getDefaultResponce(userService.getAccountBalanceByUserLogin(login), HttpStatus.OK, HttpStatus.NOT_FOUND);
     }
 }

@@ -1,7 +1,7 @@
 package com.magent.config;
 
-import com.magent.utils.SecurityUtils;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.magent.utils.EntityGenerator;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -17,9 +17,9 @@ public class Test {
 //        System.out.println(secondHash);
 //        System.out.println(firstHash);
 //        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/mAgent.png")))));
-        /*ObjectMapper mapper=new ObjectMapper();
-        byte[]bytes=mapper.writeValueAsBytes(EntityGenerator.getOnBoardPositiveSVG());
-        System.out.println(new String(bytes));*/
+        ObjectMapper mapper=new ObjectMapper();
+        byte[]bytes=mapper.writeValueAsBytes(EntityGenerator.getNewTestUser());
+        System.out.println(new String(bytes));
 //        new org.apache.crimson.parser.XMLReaderImpl();
         /*List<String> phonesList = new ArrayList<>(Arrays.asList("+380978090838", "+380632356941", "+480111234567"));
         for (String s : phonesList) {
@@ -41,10 +41,10 @@ public class Test {
       /*  System.out.println(isNameCorrect("Igor"));//positive
         System.out.println(isNameCorrect("Taras"));
         System.out.println(isNameCorrect("tar"));//negative*/
-        String test="merdoc";
+       /* String test="merdoc";
         System.out.println(SecurityUtils.hashPassword("merdoc"));
         System.out.println(SecurityUtils.hashPassword(test));
-        System.out.println(SecurityUtils.hashPassword(SecurityUtils.hashPassword(test)));
+        System.out.println(SecurityUtils.hashPassword(SecurityUtils.hashPassword(test)));*/
     }
 
     private static boolean isNameCorrect(String name) {

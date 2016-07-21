@@ -137,4 +137,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    public String getAccountBalanceByUserLogin(String login){
+        return accountRepository.getAccountByUserLogin(login).getAccountBalance().toString();
+    }
 }

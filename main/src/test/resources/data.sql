@@ -39,9 +39,15 @@ INSERT INTO ma_user (usr_pk, enabled, login,  u_role, first_name, last_name, e_m
 VALUES (2, TRUE, 'admin',  1, 'user2', 'Userov2', NULL);
 INSERT INTO ma_user (usr_pk, enabled, login,  u_role, first_name, last_name, e_mail)
 VALUES (3, TRUE, '+380506847580', 2, NULL, NULL, NULL);
+
+INSERT INTO ma_user (usr_pk, enabled, login,  u_role, first_name, last_name, e_mail)
+VALUES (4, TRUE, 'user2', 3, NULL, NULL, NULL);
+
 INSERT INTO ma_user_personal(user_pers_pk, usr_pers_pwd, ma_usr_id)  VALUES (1,'63874c0f0b6ba858cc832af759ca4954c2c84d4f',1);
 INSERT INTO ma_user_personal(user_pers_pk, usr_pers_pwd, ma_usr_id)  VALUES (2,'63874c0f0b6ba858cc832af759ca4954c2c84d4f',2);
 INSERT INTO ma_user_personal(user_pers_pk, usr_pers_pwd, ma_usr_id)  VALUES (3,'63874c0f0b6ba858cc832af759ca4954c2c84d4f',3);
+INSERT INTO ma_user_personal(user_pers_pk, usr_pers_pwd, ma_usr_id)  VALUES (4,'63874c0f0b6ba858cc832af759ca4954c2c84d4f',4);
+
 
 INSERT INTO ma_sms_pass(sms_pwd_pk, sms_password, sms_user_id,endperiod) VALUES (1,'ef9ff97e3bd1408eac6f802186af89da55eb184d',1,'2016-01-01');
 
@@ -49,6 +55,7 @@ INSERT INTO ma_sms_pass(sms_pwd_pk, sms_password, sms_user_id,endperiod) VALUES 
 INSERT INTO ma_accounts (acount_number, account_balance, user_id) VALUES (999999999999, 1400.09, 1);
 INSERT INTO ma_accounts (acount_number, account_balance, user_id) VALUES (999999999998, 1500.00, 2);
 INSERT INTO ma_accounts (acount_number, account_balance, user_id) VALUES (999999999997, 1500.00, 3);
+INSERT INTO ma_accounts (acount_number, account_balance, user_id) VALUES (999999999996, 1350.01, 4);
 
 INSERT INTO ma_transactions (trans_pk, account_number, is_increment_operation, transactioon_summ, transaction_date)
 VALUES (1, 999999999999, TRUE, 15.00, '2016-04-10 00:18:00');

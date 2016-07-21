@@ -171,16 +171,16 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
     public void getOnboardByIdTestPositive() throws Exception {
         OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
         onBoardGeneralService.save(onBoarding);
-        List<OnBoarding>onBoardingList=onBoardGeneralService.getAll();
-        Assert.assertEquals(1,onBoardingList.size());
+        List<OnBoarding> onBoardingList = onBoardGeneralService.getAll();
+        Assert.assertEquals(1, onBoardingList.size());
         //test
-        mvc.perform(get("/data/onboards/"+onBoardingList.get(0).getId())
+        mvc.perform(get("/data/onboards/" + onBoardingList.get(0).getId())
                 .header(authorizationHeader, getAccessAdminToken()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.fullFileName",Matchers.is(onBoarding.getFullFileName())))
-                .andExpect(jsonPath("$.id",Matchers.is(onBoardingList.get(0).getId().intValue())))
-                .andExpect(jsonPath("$.content",Matchers.is(onBoarding.getContent())))
+                .andExpect(jsonPath("$.fullFileName", Matchers.is(onBoarding.getFullFileName())))
+                .andExpect(jsonPath("$.id", Matchers.is(onBoardingList.get(0).getId().intValue())))
+                .andExpect(jsonPath("$.content", Matchers.is(onBoarding.getContent())))
                 .andReturn();
     }
 
@@ -199,8 +199,9 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
                 .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPossitivePng())))
                 .andExpect(status().isCreated());
         //additional assert for db
-        Assert.assertEquals(1,onBoardGeneralService.getAll().size());
+        Assert.assertEquals(1, onBoardGeneralService.getAll().size());
     }
+
     @Test
     @Sql("classpath:data.sql")
     public void createOnBoardEntityTestPositiveSVG() throws Exception {
@@ -211,7 +212,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
                 .andExpect(status().isCreated())
                 .andDo(print());
         //additional assert for db
-        Assert.assertEquals(1,onBoardGeneralService.getAll().size());
+        Assert.assertEquals(1, onBoardGeneralService.getAll().size());
     }
 
     @Test
@@ -223,7 +224,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
                 .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPositiveSVGWithNullFields())))
                 .andExpect(status().isCreated());
         //additional assert for db
-        Assert.assertEquals(1,onBoardGeneralService.getAll().size());
+        Assert.assertEquals(1, onBoardGeneralService.getAll().size());
     }
 
     @Test
@@ -260,7 +261,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
         //pre condition
         OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
         onBoardGeneralService.save(onBoarding);
-        OnBoarding fromDb= (OnBoarding) onBoardGeneralService.getAll().get(0);
+        OnBoarding fromDb = (OnBoarding) onBoardGeneralService.getAll().get(0);
         fromDb.setImage(EntityGenerator.getOnBoardPositiveSVG().getImage());
         fromDb.setFullFileName(EntityGenerator.getOnBoardPositiveSVG().getFullFileName());
         //test
@@ -269,7 +270,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(fromDb)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.fullFileName",Matchers.is(fromDb.getFullFileName())));
+                .andExpect(jsonPath("$.fullFileName", Matchers.is(fromDb.getFullFileName())));
     }
 
     @Test
@@ -278,7 +279,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
         //pre condition
         OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
         onBoardGeneralService.save(onBoarding);
-        OnBoarding fromDb= (OnBoarding) onBoardGeneralService.getAll().get(0);
+        OnBoarding fromDb = (OnBoarding) onBoardGeneralService.getAll().get(0);
         fromDb.setImage(EntityGenerator.getOnBoardWrongImage().getImage());
         fromDb.setFullFileName(EntityGenerator.getOnBoardWrongImage().getFullFileName());
         //test
@@ -296,7 +297,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
         //pre condition
         OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
         onBoardGeneralService.save(onBoarding);
-        OnBoarding fromDb= (OnBoarding) onBoardGeneralService.getAll().get(0);
+        OnBoarding fromDb = (OnBoarding) onBoardGeneralService.getAll().get(0);
         fromDb.setImage(EntityGenerator.getOnBoardNegativeSVG().getImage());
         fromDb.setFullFileName(EntityGenerator.getOnBoardNegativeSVG().getFullFileName());
         //test
@@ -314,7 +315,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
         //pre condition
         OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
         onBoardGeneralService.save(onBoarding);
-        OnBoarding fromDb= (OnBoarding) onBoardGeneralService.getAll().get(0);
+        OnBoarding fromDb = (OnBoarding) onBoardGeneralService.getAll().get(0);
         fromDb.setImage(EntityGenerator.getOnBoardNegativeSVG().getImage());
         fromDb.setFullFileName(EntityGenerator.getOnBoardNegativeSVG().getFullFileName());
         //test
@@ -330,13 +331,13 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
         //pre condition
         OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
         onBoardGeneralService.save(onBoarding);
-        OnBoarding fromDb= (OnBoarding) onBoardGeneralService.getAll().get(0);
+        OnBoarding fromDb = (OnBoarding) onBoardGeneralService.getAll().get(0);
         //test
-        mvc.perform(delete("/data/onboards/"+fromDb.getId().intValue())
+        mvc.perform(delete("/data/onboards/" + fromDb.getId().intValue())
                 .header(authorizationHeader, getAccessAdminToken()))
                 .andExpect(status().isOk());
         //additional assert
-        Assert.assertEquals(0,onBoardGeneralService.getAll().size());
+        Assert.assertEquals(0, onBoardGeneralService.getAll().size());
     }
 
     @Test
@@ -345,10 +346,27 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
         //pre condition
         OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
         onBoardGeneralService.save(onBoarding);
-        OnBoarding fromDb= (OnBoarding) onBoardGeneralService.getAll().get(0);
+        OnBoarding fromDb = (OnBoarding) onBoardGeneralService.getAll().get(0);
         //test
-        mvc.perform(delete("/data/onboards/"+fromDb.getId().intValue()))
+        mvc.perform(delete("/data/onboards/" + fromDb.getId().intValue()))
                 .andExpect(status().isUnauthorized());
+
+    }
+
+    @Test
+    @Sql("classpath:data.sql")
+    public void getCurrentUserBalanceTest() throws Exception {
+        String expectedBalance = "1350.01";//for user user2
+
+        String actualBalance = mvc.perform(get("/data/user-balance")
+                .header(authorizationHeader, getRemoteStafferAccessToken()))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        Assert.assertEquals(expectedBalance, actualBalance.replace("\"", ""));
 
     }
 

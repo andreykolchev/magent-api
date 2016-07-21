@@ -132,6 +132,7 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/data/onboards").hasAnyAuthority(ADMIN.toString())
                 .antMatchers(HttpMethod.PUT, "/data/onboards").hasAnyAuthority(ADMIN.toString())
                 .antMatchers(HttpMethod.DELETE, "/data/onboards/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.GET,"/data/user-balance*").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString())
 
                 .antMatchers("/template-types/**").hasAnyAuthority(ADMIN.toString())
 
