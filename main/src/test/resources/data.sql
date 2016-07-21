@@ -1,4 +1,5 @@
 TRUNCATE
+ma_temporary_user,
 ma_tmp_types_roles,
 ma_template_types,
 ma_user_roles,
