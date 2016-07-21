@@ -177,7 +177,7 @@ public final class EntityGenerator {
     }
 
     public static Template getNewTestTemplate() {
-        return new Template("test template", "template POST test",1L);
+        return new Template("test template", "template POST test",3L);
     }
 
     public static TemplateAttribute getNewTestTemplateAttribute() {

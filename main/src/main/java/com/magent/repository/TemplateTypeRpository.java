@@ -21,7 +21,7 @@ public interface TemplateTypeRpository extends JpaRepository<TemplateType,Long>{
     @Query("select tmpType from TemplateType  tmpType where tmpType.parentId=:id")
     List<TemplateType>getAllChilds(@Param("id") Long parentId);
 
-    @Query("select tmpType from TemplateType tmpType where exists (select tmp from Template tmp where tmp.id=:id)")
+    @Query(value = "select distinct tmpType.* from ma_template_types tmpType where exists (select tmp from ma_template tmp where tmp.templ_pk=:id AND tmp.tmp_tmp_type_id=tmpType.temp_type_pk)",nativeQuery = true)
     TemplateType getByTemplateId(@Param("id") Long templateId);
 
     @Query(value = "SELECT * FROM ma_template_types tmp WHERE exists(SELECT * FROM ma_tmp_types_roles roles WHERE roles.temp_type_pk=tmp.temp_type_pk AND roles.usr_rol_pk=:userRole)",nativeQuery = true)

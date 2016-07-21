@@ -94,6 +94,9 @@ INSERT INTO ma_reason (reason_pk, parent_id, description, name) VALUES (2, NULL,
 INSERT INTO ma_reason (reason_pk, parent_id, description, name) VALUES (3, 1, 'По вине клиента child', 'По вине клиента');
 
 INSERT INTO ma_template_types(temp_type_pk, temp_type_desc, parent_temp_tp_pk) VALUES (1,'test',NULL );
+INSERT INTO ma_template_types(temp_type_pk, temp_type_desc, parent_temp_tp_pk) VALUES (2,'Test type',NULL );
+INSERT INTO ma_template_types(temp_type_pk, temp_type_desc, parent_temp_tp_pk) VALUES (3,'Test type 3',NULL );
+
 
 INSERT INTO ma_tmp_types_roles(temp_type_pk, usr_rol_pk) VALUES (1,1);
 --
@@ -101,7 +104,7 @@ INSERT INTO ma_tmp_types_roles(temp_type_pk, usr_rol_pk) VALUES (1,1);
 --
 
 INSERT INTO ma_template (templ_pk, name, description,tmp_tmp_type_id) VALUES (1, 'Кредитная карта', 'Кредитная карта "Кредитка"',1);
-INSERT INTO ma_template (templ_pk, name, description,tmp_tmp_type_id) VALUES (2, 'Кредитная карта For Delete', 'Кредитная карта "Кредитка"',1);
+INSERT INTO ma_template (templ_pk, name, description,tmp_tmp_type_id) VALUES (2, 'Кредитная карта For Delete', 'Кредитная карта "Кредитка"',2);
 
 --
 -- Data for Name: ds_template_attribute; Type: TABLE DATA; Schema: public; Owner: magent

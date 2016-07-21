@@ -139,7 +139,6 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/tracking/**").authenticated()
 
                 .antMatchers("/reports/**").hasAnyAuthority(ADMIN.toString(), BACK_OFFICE_EMPLOYEE.toString())
-                .antMatchers("/testOauth/**").authenticated()
 
                 .antMatchers("/devices/**").authenticated()
 

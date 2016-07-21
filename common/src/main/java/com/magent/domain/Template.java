@@ -30,7 +30,7 @@ public class Template implements Identifiable<Long> {
     @OneToMany(mappedBy = "template", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<TemplateTask> templateTasks;
 
-    @Column(name = "tmp_tmp_type_id",nullable = false,updatable = false)
+    @Column(name = "tmp_tmp_type_id",nullable = false,updatable = false,unique = true)
     private Long teplateTypeId;
 
     @OneToOne(cascade = CascadeType.DETACH)
