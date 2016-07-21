@@ -53,10 +53,10 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
     public void testGetData() throws Exception {
 
         mvc.perform(get("/data/")
-                .header(authorizationHeader, getAccessAdminToken()))
+                .header(authorizationHeader, getRemoteStafferAccessToken()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
-                .andExpect(jsonPath("$.assignments", Matchers.hasSize(1)))
+                .andExpect(jsonPath("$.assignments", Matchers.hasSize(0)))
                 .andExpect(jsonPath("$.assignments[0].attributes", Matchers.notNullValue()))
                 .andExpect(jsonPath("$.assignments[0].tasks", Matchers.notNullValue()))
                 .andExpect(jsonPath("$.assignments[0].tasks.controls", Matchers.notNullValue()))
@@ -68,14 +68,14 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void testUpdateData() throws Exception {
         mvc.perform(put("/data/")
-                .header(authorizationHeader, getAccessAdminToken())
+                .header(authorizationHeader, getRemoteStafferAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getUpdateDataDto())))
                 .andExpect(status().isOk())
                 .andDo(print());
 
         mvc.perform(get("/data/")
-                .header(authorizationHeader, getAccessAdminToken()))
+                .header(authorizationHeader, getRemoteStafferAccessToken()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
                 .andDo(print())
@@ -85,7 +85,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
     @Test
     public void getValueType() throws Exception {
         mvc.perform(get("/data/valueType")
-                .header(authorizationHeader, getAccessAdminToken()))
+                .header(authorizationHeader, getRemoteStafferAccessToken()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
                 .andDo(print())
@@ -96,7 +96,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
     public void getAssignmentStatus() throws Exception {
 
         mvc.perform(get("/data/assignmentStatus")
-                .header(authorizationHeader, getAccessAdminToken()))
+                .header(authorizationHeader, getRemoteStafferAccessToken()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
                 .andDo(print())
@@ -113,7 +113,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
         UpdateDataDto dataDto = EntityGenerator.getUpdateDataDto();
 
         mvc.perform(put("/data/")
-                .header(authorizationHeader, getAccessAdminToken())
+                .header(authorizationHeader, getRemoteStafferAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(dataDto)))
                 .andExpect(status().isOk())
@@ -135,7 +135,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
                 .file("file", fileBody)
                 .param("name", fileName)
                 .param("controlId", "1")
-                .header(authorizationHeader, getAccessAdminToken()))
+                .header(authorizationHeader, getRemoteStafferAccessToken()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON + ";charset=UTF-8"))
                 .andDo(print())
@@ -175,7 +175,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
         Assert.assertEquals(1, onBoardingList.size());
         //test
         mvc.perform(get("/data/onboards/" + onBoardingList.get(0).getId())
-                .header(authorizationHeader, getAccessAdminToken()))
+                .header(authorizationHeader, getRemoteStafferAccessToken()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
                 .andExpect(jsonPath("$.fullFileName", Matchers.is(onBoarding.getFullFileName())))
@@ -194,7 +194,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void createOnBoardEntityTestPositivePNG() throws Exception {
         mvc.perform(post("/data/onboards")
-                .header(authorizationHeader, getAccessAdminToken())
+                .header(authorizationHeader, getRemoteStafferAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPossitivePng())))
                 .andExpect(status().isCreated());
@@ -206,7 +206,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void createOnBoardEntityTestPositiveSVG() throws Exception {
         mvc.perform(post("/data/onboards")
-                .header(authorizationHeader, getAccessAdminToken())
+                .header(authorizationHeader, getRemoteStafferAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPositiveSVG())))
                 .andExpect(status().isCreated())
@@ -219,7 +219,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void createOnBoardEntityTestPositiveSVGNullFields() throws Exception {
         mvc.perform(post("/data/onboards")
-                .header(authorizationHeader, getAccessAdminToken())
+                .header(authorizationHeader, getRemoteStafferAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPositiveSVGWithNullFields())))
                 .andExpect(status().isCreated());
@@ -231,7 +231,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void createOnBoardEntityTestNegativeSVG() throws Exception {
         mvc.perform(post("/data/onboards")
-                .header(authorizationHeader, getAccessAdminToken())
+                .header(authorizationHeader, getRemoteStafferAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardNegativeSVG())))
 //                .andExpect(status().isBadRequest())
@@ -249,7 +249,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
     @Test
     public void createOnBoardEntityTestNegativeWrongImage() throws Exception {
         mvc.perform(post("/data/onboards")
-                .header(authorizationHeader, getAccessAdminToken())
+                .header(authorizationHeader, getRemoteStafferAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardWrongImage())))
                 .andExpect(status().isBadRequest());
@@ -266,7 +266,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
         fromDb.setFullFileName(EntityGenerator.getOnBoardPositiveSVG().getFullFileName());
         //test
         mvc.perform(put("/data/onboards")
-                .header(authorizationHeader, getAccessAdminToken())
+                .header(authorizationHeader, getRemoteStafferAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(fromDb)))
                 .andExpect(status().isOk())
@@ -284,7 +284,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
         fromDb.setFullFileName(EntityGenerator.getOnBoardWrongImage().getFullFileName());
         //test
         mvc.perform(put("/data/onboards")
-                .header(authorizationHeader, getAccessAdminToken())
+                .header(authorizationHeader, getRemoteStafferAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(fromDb)))
                 .andExpect(status().isBadRequest())
@@ -302,7 +302,7 @@ public class DataControllerImplTest extends MockWebSecurityConfig {
         fromDb.setFullFileName(EntityGenerator.getOnBoardNegativeSVG().getFullFileName());
         //test
         mvc.perform(put("/data/onboards")
-                .header(authorizationHeader, getAccessAdminToken())
+                .header(authorizationHeader, getRemoteStafferAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(fromDb)))
 //                .andExpect(status().isBadRequest())
