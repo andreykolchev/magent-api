@@ -62,4 +62,8 @@ public class UserController implements GeneralController {
         return getDefaultResponce(newUser,HttpStatus.CREATED , HttpStatus.NOT_FOUND);
     }
 
+    @RequestMapping(method = RequestMethod.GET,value = "/balance")
+    public ResponseEntity<List<User>>getUsersForBalanceReport(){
+        return getDefaultResponce(userService.getUsersForBalanceReport(),HttpStatus.OK,HttpStatus.NOT_FOUND);
+    }
 }
