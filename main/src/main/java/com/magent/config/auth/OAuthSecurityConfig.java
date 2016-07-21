@@ -123,9 +123,9 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/users/**").hasAnyAuthority(ADMIN.toString())
                 .antMatchers(HttpMethod.PUT, "/users/**").hasAnyAuthority(ADMIN.toString())
 
-                .antMatchers(HttpMethod.GET,"/data/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString())
-                .antMatchers(HttpMethod.PUT,"/data/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString())
-                .antMatchers(HttpMethod.POST,"/data/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString())
+                .antMatchers(HttpMethod.GET,"/data/**").hasAnyAuthority(ADMIN.toString(),REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString())
+                .antMatchers(HttpMethod.PUT,"/data/**").hasAnyAuthority(ADMIN.toString(),REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString())
+                .antMatchers(HttpMethod.POST,"/data/**").hasAnyAuthority(ADMIN.toString(),REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString())
                 .antMatchers(HttpMethod.DELETE,"/data/**").hasAnyAuthority(ADMIN.toString())
                 //on board get by id , and modifying this info allowed only for admin According to SAP_45
                 .antMatchers(HttpMethod.GET,"/data/onboards/**").hasAnyAuthority(ADMIN.toString())
