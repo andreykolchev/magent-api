@@ -44,7 +44,7 @@ public class TemplateType implements Identifiable<Long> {
 
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "parent_temp_tp_pk", referencedColumnName = "temp_type_pk", insertable = false, updatable = false)
     @JsonBackReference(value = "parentTmpType")
     private Set<TemplateType> childTemplatesTypes;
@@ -62,8 +62,6 @@ public class TemplateType implements Identifiable<Long> {
     @JsonSerialize
     @JsonDeserialize
     private List<UserRoles> userRolesList;
-
-
 
     public TemplateType() {
 
