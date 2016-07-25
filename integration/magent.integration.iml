@@ -92,5 +92,6 @@
     <orderEntry type="library" name="Maven: org.postgresql:postgresql:9.4.1208.jre7" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.h2database:h2:1.4.185" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:annotations:3.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.wordnik:swagger-annotations:1.5.3-M1" level="project" />
   </component>
 </module>
