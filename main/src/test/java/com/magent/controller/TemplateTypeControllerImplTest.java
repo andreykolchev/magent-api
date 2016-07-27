@@ -122,7 +122,7 @@ public class TemplateTypeControllerImplTest extends MockWebSecurityConfig {
                 .header(authorizationHeader, getAccessAdminToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.generateTestTemplateTypeNegative())))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isConflict());
 
     }
 
