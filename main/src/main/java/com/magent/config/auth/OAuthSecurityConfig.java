@@ -106,7 +106,7 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/login/otp*").permitAll()
                 .antMatchers("/signup").permitAll()
 
-                .antMatchers(HttpMethod.GET, "/data/onboards").permitAll()
+                .antMatchers(HttpMethod.GET, "/onboards/").permitAll()
 
                 //*SPRING 20 TASK SAP-13*//*
                 .antMatchers(HttpMethod.GET,"/templates/**").hasAnyAuthority(ADMIN.toString())
@@ -123,15 +123,18 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/users/**").hasAnyAuthority(ADMIN.toString())
                 .antMatchers(HttpMethod.PUT, "/users/**").hasAnyAuthority(ADMIN.toString())
 
+                .antMatchers(HttpMethod.GET,"/mobile/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString(),ADMIN.toString())
+                .antMatchers(HttpMethod.PUT,"/mobile/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString(),ADMIN.toString())
+                .antMatchers(HttpMethod.POST,"/mobile/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString(),ADMIN.toString())
+                .antMatchers(HttpMethod.DELETE,"/mobile/**").hasAnyAuthority(ADMIN.toString())
+                //common controller
                 .antMatchers(HttpMethod.GET,"/data/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString(),ADMIN.toString())
-                .antMatchers(HttpMethod.PUT,"/data/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString())
-                .antMatchers(HttpMethod.POST,"/data/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString())
-                .antMatchers(HttpMethod.DELETE,"/data/**").hasAnyAuthority(ADMIN.toString())
+
                 //on board get by id , and modifying this info allowed only for admin According to SAP_45
-                .antMatchers(HttpMethod.GET,"/data/onboards/**").hasAnyAuthority(ADMIN.toString())
-                .antMatchers(HttpMethod.POST, "/data/onboards").hasAnyAuthority(ADMIN.toString())
-                .antMatchers(HttpMethod.PUT, "/data/onboards").hasAnyAuthority(ADMIN.toString())
-                .antMatchers(HttpMethod.DELETE, "/data/onboards/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.GET,"/onboards/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/onboards/").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.PUT, "/onboards/").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.DELETE, "/onboards/**").hasAnyAuthority(ADMIN.toString())
                 .antMatchers(HttpMethod.GET,"/data/user-balance*").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString())
 
                 .antMatchers(HttpMethod.GET,"/template-types/**").hasAnyAuthority(ADMIN.toString())

@@ -14,11 +14,11 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         AssignmentControllerImplTest.class,
-        DataControllerImplTest.class,
+        MobileControllerImplTest.class,
+        OnboardsControllerImplTest.class,
         DeviceControllerImplTest.class,
         LoginControllerTest.class,
         TemplateControllerImplTest.class,
-        TrackingControllerImplTest.class,
         ReasonControllerImplTest.class,
         UserControllerTest.class,
         ReportsControllerImplTest.class,
