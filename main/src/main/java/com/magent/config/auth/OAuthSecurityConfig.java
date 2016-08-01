@@ -128,7 +128,7 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,"/mobile/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString(),ADMIN.toString())
                 .antMatchers(HttpMethod.DELETE,"/mobile/**").hasAnyAuthority(ADMIN.toString())
                 //common controller
-                .antMatchers(HttpMethod.GET,"/data/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString(),ADMIN.toString())
+                .antMatchers(HttpMethod.GET,"/data/**").authenticated()
 
                 //on board get by id , and modifying this info allowed only for admin According to SAP_45
                 .antMatchers(HttpMethod.GET,"/onboards/**").authenticated()
