@@ -23,10 +23,12 @@ public class TemplateTypeServiceImpl implements TemplateTypeService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public TemplateType update(TemplateType templateType, Long id) throws NotFoundException {
-        if (templateType.getUserRolesList().size()==0|| Objects.isNull(templateType.getUserRolesList()))throw new NotFoundException("template type must contain role");
-        if (Objects.isNull(templateTypeRpository.findOne(id)))throw new NotFoundException("entity not present in db");
+        templateType.setId(id);
+        if (templateType.getUserRolesList().size() == 0 || Objects.isNull(templateType.getUserRolesList()))
+            throw new NotFoundException("template type must contain role");
+        if (Objects.isNull(templateTypeRpository.findOne(id))) throw new NotFoundException("entity not present in db");
         templateType.setRoles(UserRoles.getRoles(templateType.getUserRolesList()));
-        TemplateType type=templateTypeRpository.saveAndFlush(templateType);
+        TemplateType type = templateTypeRpository.saveAndFlush(templateType);
         type.setUserRolesList(UserRoles.getUserRoles(type.getRoles()));
         return type;
     }
