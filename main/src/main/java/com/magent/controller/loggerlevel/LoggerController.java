@@ -2,6 +2,7 @@ package com.magent.controller.loggerlevel;
 
 import com.magent.utils.validators.ImageValidatorImpl;
 import com.magent.utils.validators.OnBoardingValidatorImpl;
+import com.magent.utils.validators.UserValidatorImpl;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javassist.NotFoundException;
 import org.apache.log4j.Logger;
@@ -54,6 +55,12 @@ public class LoggerController {
     @ExceptionHandler({Exception.class})
     public void exception(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
         LOGGER.warn("WARNING NOT KNOWABLE EXCEPTION: " + request.getRequestURI() + " with exception " + e + " " + Arrays.toString(e.getStackTrace()));
+    }
+
+    @ResponseStatus(HttpStatus.LOCKED)
+    @ExceptionHandler({UserValidatorImpl.UserIsBlockedException.class})
+    public void userIsBlocked(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
+        exceptionWriter(request, response, e);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

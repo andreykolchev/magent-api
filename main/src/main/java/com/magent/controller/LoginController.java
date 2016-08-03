@@ -6,6 +6,7 @@ import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.UserService;
 import com.magent.service.interfaces.secureservice.OauthService;
 import com.magent.utils.SecurityUtils;
+import com.magent.utils.validators.UserValidatorImpl;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -54,7 +55,7 @@ public class LoginController implements GeneralController {
                                                    @RequestParam(required = true) String username,
                                                    @ApiParam(value = "Hashed password", required = true)
                                                    @RequestParam(required = true) String password,
-                                                   @RequestParam(required = false) boolean withSms) throws IOException, NotFoundException {
+                                                   @RequestParam(required = false) boolean withSms) throws IOException, NotFoundException, UserValidatorImpl.UserIsBlockedException {
         LOGGER.info("Loggin in " + username);
         if (!withSms) {
             OAuth2AccessToken token = oauthService.getToken(username, password);
@@ -77,16 +78,14 @@ public class LoginController implements GeneralController {
     @RequestMapping(value = {"/refresh"}, method = {RequestMethod.POST})
     public ResponseEntity<OAuth2AccessToken> refresh(@ApiParam(value = "Refresh token", required = true)
                                                      @RequestParam(required = true) String refreshToken) {
-        //  LOGGER.debug("Refreshing access token by refresh token = {}", refreshToken);
         OAuth2AccessToken accessToken = oauthService.refreshToken(refreshToken);
-//        LOGGER.debug("Sent new access token = {} for refresh token = {}", accessToken.getValue(), refreshToken);
         return new ResponseEntity(accessToken, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/login/confirmotp", method = RequestMethod.POST)
     public ResponseEntity<OAuth2AccessToken> confirmOtp(@RequestParam(required = true) String username,
                                                         @RequestParam(required = true) String password,
-                                                        @RequestParam(required = true) String otpPass) {
+                                                        @RequestParam(required = true) String otpPass) throws UserValidatorImpl.UserIsBlockedException {
         OAuth2AccessToken accessToken = otpOauthService.getToken(username, hashPass(password, otpPass));
         return new ResponseEntity(accessToken, HttpStatus.OK);
     }
@@ -100,7 +99,7 @@ public class LoginController implements GeneralController {
      */
     @RequestMapping(value = "/login/recentotp", method = RequestMethod.POST)
     public ResponseEntity<String> recentOtpForTegisteredUser(@RequestParam String username,
-                                                             @RequestParam String password) throws NotFoundException, IOException {
+                                                             @RequestParam String password) throws NotFoundException, IOException, UserValidatorImpl.UserIsBlockedException {
         if (userService.isPasswordCorrect(username, password)) {
             return getDefaultResponce(smsService.sendOtpForRegisteredUser(username).getEndPeriod().getTime(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
         } else throw new NotFoundException("password not correct");

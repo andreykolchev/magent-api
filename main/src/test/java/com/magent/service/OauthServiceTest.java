@@ -10,6 +10,7 @@ import com.magent.repository.UserRepository;
 import com.magent.service.interfaces.secureservice.OauthService;
 import com.magent.utils.SecurityUtils;
 import com.magent.utils.otpgenerator.OtpGenerator;
+import com.magent.utils.validators.UserValidatorImpl;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Ignore;
@@ -17,6 +18,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedException;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -54,7 +56,7 @@ public class OauthServiceTest extends MockWebSecurityConfig {
 
     @Test
     @Sql("classpath:data.sql")
-    public void getTokenTest() {
+    public void getTokenTest() throws UserValidatorImpl.UserIsBlockedException {
         String user = "user1";
         String pass = "user1";
         String hashpass = SecurityUtils.hashPassword(pass);
@@ -62,11 +64,26 @@ public class OauthServiceTest extends MockWebSecurityConfig {
         Assert.assertNotNull(token);
         LOGGER.info("token is " + token);
     }
+    @Test(expected = UserValidatorImpl.UserIsBlockedException.class)
+    @Sql("classpath:data.sql")
+    public void checkBlockingUsers() throws UserValidatorImpl.UserIsBlockedException {
+        String user = "user1";
+        String pass = "badPassword";
+        String hashpass = SecurityUtils.hashPassword(pass);
+        //first time
+        tryGetToken(user,pass);
+        //second time
+        tryGetToken(user,pass);
+        //third time
+        tryGetToken(user,pass);
+        //fourth time must throw exception UserIsBlockedException.class
+        tryGetToken(user,pass);
+    }
 
     @Test
     @Sql("classpath:data.sql")
     @Ignore
-    public void testWithSms() {
+    public void testWithSms() throws UserValidatorImpl.UserIsBlockedException {
         String login = "user1";
         String pass = "user1";
         String sms = "12345678";
@@ -123,6 +140,14 @@ public class OauthServiceTest extends MockWebSecurityConfig {
         for (int i = 0; i < 10; i++) smsList.add(generator.generate());
         for (String s : smsList) Assert.assertEquals(s.length(), 8);
         Assert.assertEquals(10, smsList.size());
+    }
+    //for block testing
+    private void tryGetToken(String user,String hashpass) throws UserValidatorImpl.UserIsBlockedException {
+        try {
+            simpleOauth.getToken(user, hashpass);
+        }catch (OAuth2AccessDeniedException e){
+
+        }
     }
 }
 

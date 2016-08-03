@@ -1,25 +1,26 @@
 package com.magent.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.magent.utils.EntityGenerator;
-
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 /**
  * Created on 08.06.2016.
  */
 public class Test {
-    public static void main(String... args) throws IOException {
+    public static void main(String... args) throws IOException, ParseException {
 //        String pass="user1";
 //        String firstHash= SecurityUtils.hashPassword(pass);
 //        String secondHash=SecurityUtils.hashPassword(firstHash);
 //        System.out.println(secondHash);
 //        System.out.println(firstHash);
 //        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/mAgent.png")))));
-        ObjectMapper mapper=new ObjectMapper();
-        byte[]bytes=mapper.writeValueAsBytes(EntityGenerator.getNewTestUser());
-        System.out.println(new String(bytes));
+//        ObjectMapper mapper=new ObjectMapper();
+//        byte[]bytes=mapper.writeValueAsBytes(EntityGenerator.getNewTestUser());
+//        System.out.println(new String(bytes));
 //        new org.apache.crimson.parser.XMLReaderImpl();
         /*List<String> phonesList = new ArrayList<>(Arrays.asList("+380978090838", "+380632356941", "+480111234567"));
         for (String s : phonesList) {
@@ -45,6 +46,19 @@ public class Test {
         System.out.println(SecurityUtils.hashPassword("merdoc"));
         System.out.println(SecurityUtils.hashPassword(test));
         System.out.println(SecurityUtils.hashPassword(SecurityUtils.hashPassword(test)));*/
+
+        DateFormat dbFormat = new SimpleDateFormat("HH:mm");
+        Date first=dbFormat.parse("01:00");
+        Date second=dbFormat.parse("00:01");
+
+
+        long more=first.getTime()+second.getTime();
+        System.out.println(more);
+        System.out.println(first.getTime());
+        System.out.println(first.getTime()>more);
+//        System.out.println(dbFormat.format(dbFormat.parse("00:11")));
+
+//        System.out.println(TimeIntervalConstants.BLOCK_INTERVAL.toString());
     }
 
     private static boolean isNameCorrect(String name) {

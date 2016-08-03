@@ -1,9 +1,12 @@
 package com.magent.controller.oauth;
 
 import com.magent.service.interfaces.secureservice.OauthService;
+import com.magent.utils.validators.UserValidatorImpl;
+import com.magent.utils.validators.interfaces.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedException;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +18,20 @@ public class OauthServiceOtpImpl implements OauthService {
     @Autowired
     @Qualifier("otpOauthRestTemplate")
     private OAuth2RestTemplate otpOauthRestTemplate;
+
+    @Autowired
+    private UserValidator userValidator;
+
     @Override
-    public OAuth2AccessToken getToken(String login, String pass) {
-        return getTokenForTemplate(login,pass,otpOauthRestTemplate);
+    public OAuth2AccessToken getToken(String login, String pass) throws UserValidatorImpl.UserIsBlockedException {
+        userValidator.checkForBlock(login);
+        try {
+            return getTokenForTemplate(login, pass, otpOauthRestTemplate);
+        } catch (OAuth2AccessDeniedException e) {
+            //add one wrong enter
+            userValidator.addOneWrongEnter(login);
+            throw new OAuth2AccessDeniedException("wrong enter for login " + login);
+        }
     }
 
     @Override

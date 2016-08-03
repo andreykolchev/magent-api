@@ -2,7 +2,9 @@ package com.magent.service.interfaces;
 
 import com.magent.domain.TemporaryUser;
 import com.magent.domain.User;
+import com.magent.domain.UserPersonal;
 import com.magent.domain.dto.ChangePasswordDto;
+import com.magent.utils.validators.UserValidatorImpl;
 import javassist.NotFoundException;
 
 import javax.xml.bind.ValidationException;
@@ -16,8 +18,10 @@ public interface UserService {
     boolean changePassword(Long id, ChangePasswordDto chPassDto);
     User findUserByLogin(String login);
     List<User> getUsersForBalanceReport();
-    boolean isPasswordCorrect(String login,String pass);
+    boolean isPasswordCorrect(String login,String pass) throws UserValidatorImpl.UserIsBlockedException;
     TemporaryUser isNewUserSaved(TemporaryUser temporaryUser) throws ValidationException;
     User confirmRegistration(String login,String otp) throws NotFoundException;
     String getAccountBalanceByUserLogin(String login);
+    List<UserPersonal>getBlockedUsers(String sqlDate,String timeFromConfig);
+    List<TemporaryUser> getUsersWithExpiredTerm(String sqlDate, String timeFromConfig);
 }

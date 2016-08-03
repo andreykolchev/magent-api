@@ -6,9 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
-import java.util.List;
-
 /**
  * Created by artomov.ihor on 08.07.2016.
  */
@@ -17,9 +14,6 @@ public interface TemporaryUserRepository extends JpaRepository<TemporaryUser, Lo
 
     @Query("select tmp from TemporaryUser tmp where tmp.username=:login")
     TemporaryUser getByLogin(@Param("login") String login);
-
-    @Query("select tmp from TemporaryUser tmp where tmp.endPeriod<:currentDate")
-    List<TemporaryUser> usersWithExpiredTerm(@Param("currentDate")Date date);
 
     @Query("select tmp from TemporaryUser tmp where tmp.username=:login and tmp.hashedOtp=:otp")
     TemporaryUser getByLoginAndOtp(@Param("login")String login,@Param("otp")String otp);

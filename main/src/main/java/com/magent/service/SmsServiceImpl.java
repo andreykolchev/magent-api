@@ -11,15 +11,20 @@ import com.magent.utils.SecurityUtils;
 import com.magent.utils.dateutils.DateUtils;
 import com.magent.utils.otpgenerator.OtpGenerator;
 import javassist.NotFoundException;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.xml.bind.ValidationException;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -44,6 +49,9 @@ public class SmsServiceImpl implements SmsService {
 
     private static final RestTemplate template = new RestTemplate();
 
+    @PersistenceContext
+    EntityManager entityManager;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public SmsPassword sendOtpForRegisteredUser(String toPhone) throws IOException {
@@ -55,7 +63,7 @@ public class SmsServiceImpl implements SmsService {
         //Sending sms via sms gate
         template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, toPhone, OtpConstants.SEND_LOGIN_CONFIRMATION + sendSms);
         //storing
-        return otpRepository.save(new SmsPassword(user.getId(), user.getId(), storeSms, dateUtils.add15Minutes(new Date())));
+        return otpRepository.save(new SmsPassword(user.getId(), user.getId(), storeSms, new Date()));
     }
 
     @Override
@@ -69,8 +77,8 @@ public class SmsServiceImpl implements SmsService {
         String sendSms = generator.generate();
         String storeSms = SecurityUtils.hashPassword(sendSms);
         String hashedPwd = SecurityUtils.hashPassword(temporaryUser.getHashedPwd());
-
-        TemporaryUser tmpUser = new TemporaryUser(temporaryUser, dateUtils.add5Minutes(new Date()), storeSms, hashedPwd);
+        //saved current date. For more information how it's works see SheduleService.class and
+        TemporaryUser tmpUser = new TemporaryUser(temporaryUser, new Date(), storeSms, hashedPwd);
         tmpUser = temporaryUserRepository.save(tmpUser);
         template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, temporaryUser.getUsername(), OtpConstants.REGISTER_CONFIRMATION + sendSms);
 
@@ -86,7 +94,7 @@ public class SmsServiceImpl implements SmsService {
         String storeSms = SecurityUtils.hashPassword(sendSms);
 
         temporaryUser.setHashedOtp(storeSms);
-        temporaryUser.setEndPeriod(dateUtils.add5Minutes(new Date()));
+        temporaryUser.setEndPeriod(new Date());
         template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, temporaryUser.getUsername(), OtpConstants.REGISTER_CONFIRMATION + sendSms);
         temporaryUserRepository.save(temporaryUser);
         return temporaryUser;
@@ -95,6 +103,15 @@ public class SmsServiceImpl implements SmsService {
     @Override
     public void sendSuccessfullRegistration(String login) {
         template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, login, OtpConstants.SUCCESS_REGISTRATION + login);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SmsPassword> getOldSmsPass(String sqlDate, String timeFromConfig) {
+        Session session=entityManager.unwrap(Session.class);
+        String queryStr="SELECT oldsms.* FROM ma_sms_pass oldsms WHERE oldsms.endperiod+"+"'"+timeFromConfig+"'"+"<"+"'"+sqlDate+"'";
+        Query query=session.createSQLQuery(queryStr).addEntity(SmsPassword.class);
+        return query.list();
     }
 
     private static final class OtpConstants {

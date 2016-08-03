@@ -1,8 +1,10 @@
 package com.magent.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created  on 14.07.2016.
@@ -21,6 +23,16 @@ public class UserPersonal {
 
     @Column(name = "usr_pers_pwd",nullable = false)
     private String password;
+
+    @Column(name = "usr_pers_wrong_enters",nullable = false,columnDefinition = "INTEGER DEFAULT 0")
+    private int wrongEntersEntering;
+
+    @Column(name = "usr_pers_is_blocked",nullable = false,columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean isBlocked;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Column(name = "usr_pers_block_expires")
+    private Date blockExpired;
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.REMOVE)
@@ -61,6 +73,30 @@ public class UserPersonal {
 
     public User getUser() {
         return user;
+    }
+
+    public int getWrongEntersEntering() {
+        return wrongEntersEntering;
+    }
+
+    public void setWrongEntersEntering(int wrongEntersEntering) {
+        this.wrongEntersEntering = wrongEntersEntering;
+    }
+
+    public Date getBlockExpired() {
+        return blockExpired;
+    }
+
+    public void setBlockExpired(Date blockExpired) {
+        this.blockExpired = blockExpired;
+    }
+
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
     }
 
     @Override

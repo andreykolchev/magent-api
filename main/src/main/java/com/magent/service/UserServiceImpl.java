@@ -10,12 +10,18 @@ import com.magent.repository.*;
 import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.UserService;
 import com.magent.utils.SecurityUtils;
+import com.magent.utils.validators.UserValidatorImpl;
 import com.magent.utils.validators.interfaces.GeneralValidator;
+import com.magent.utils.validators.interfaces.UserValidator;
 import javassist.NotFoundException;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.xml.bind.ValidationException;
 import java.util.List;
 import java.util.Objects;
@@ -44,8 +50,15 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private DeviceRepository deviceRepository;
+
     @Autowired
     private UserPersonalRepository userPersonalRepository;
+
+    @Autowired
+    private UserValidator userValidator;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Override
     public List<User> getUsersByFilter(String filter) throws NotFoundException {
@@ -98,7 +111,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isPasswordCorrect(String login, String pass) {
+    public boolean isPasswordCorrect(String login, String pass) throws UserValidatorImpl.UserIsBlockedException {
+        //checks for block
+        userValidator.checkForBlock(login);
         String passFromLoginForm = SecurityUtils.hashPassword(pass);
         return userRepository.findByLogin(login).getUserPersonal().getPassword().equals(passFromLoginForm);
     }
@@ -139,5 +154,21 @@ public class UserServiceImpl implements UserService {
 
     public String getAccountBalanceByUserLogin(String login){
         return accountRepository.getAccountByUserLogin(login).getAccountBalance().toString();
+    }
+
+    @Override
+    public List<UserPersonal> getBlockedUsers(String sqlDate, String timeFromConfig) {
+        Session session=entityManager.unwrap(Session.class);
+        String queryStr="SELECT usr_pers.* FROM ma_user_personal usr_pers WHERE usr_pers.usr_pers_block_expires+"+"'"+timeFromConfig+"'"+"<"+"'"+sqlDate+"'";
+        Query query=session.createSQLQuery(queryStr).addEntity(UserPersonal.class);
+        return query.list();
+    }
+
+    @Override
+    public List<TemporaryUser> getUsersWithExpiredTerm(String sqlDate, String timeFromConfig) {
+        Session session=entityManager.unwrap(Session.class);
+        String queryStr="SELECT tmp.* FROM ma_temporary_user  tmp WHERE tmp.tmp_confirm_expiry+"+"'"+timeFromConfig+"'"+"<"+"'"+sqlDate+"'";
+        Query query=session.createSQLQuery(queryStr).addEntity(TemporaryUser.class);
+        return query.list();
     }
 }

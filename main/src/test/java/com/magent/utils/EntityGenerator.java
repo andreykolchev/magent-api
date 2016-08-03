@@ -290,4 +290,5 @@ public final class EntityGenerator {
     public static TemplateType generateChildTemplateType(Long parentId){
         return new TemplateType("child",parentId,Arrays.asList(UserRoles.ADMIN));
     }
+
 }

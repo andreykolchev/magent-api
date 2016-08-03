@@ -24,6 +24,9 @@ ma_user,
 ma_transactions,
 ma_accounts,
 ma_onboards;
+INSERT INTO ma_temporary_user(temp_usr_pk, tmp_usr_device_id, tmp_e_mail, tmp_confirm_expiry, tmp_first_name, tmp_otp, tmp_pwd, tmp_last_name, login)
+VALUES (1,'device_id','test@gmail.com','2015-01-01 00:00:00','Test','1231231','badpwd','Testov','+380971111111');
+
 
 INSERT INTO ma_user_roles (usr_rol_pk, role) VALUES (1,'ADMIN');
 INSERT INTO ma_user_roles (usr_rol_pk, role) VALUES (2,'BACK_OFFICE_EMPLOYEE');
@@ -33,6 +36,7 @@ INSERT INTO ma_user_roles (usr_rol_pk, role) VALUES (5,'SALES_AGENT_FREELANCER_L
 --
 -- Data for Name: ds_user; Type: TABLE DATA; Schema: public; Owner: magent
 --
+
 /*user1 pass testUser*/
 INSERT INTO ma_user (usr_pk, enabled, login,  u_role, first_name, last_name, e_mail)
 VALUES (1, TRUE, 'user1',  1, 'user1', 'Userov1', NULL);
@@ -45,12 +49,13 @@ INSERT INTO ma_user (usr_pk, enabled, login,  u_role, first_name, last_name, e_m
 VALUES (4, TRUE, 'user2', 3, NULL, NULL, NULL);
 
 INSERT INTO ma_user_personal(user_pers_pk, usr_pers_pwd, ma_usr_id)  VALUES (1,'63874c0f0b6ba858cc832af759ca4954c2c84d4f',1);
-INSERT INTO ma_user_personal(user_pers_pk, usr_pers_pwd, ma_usr_id)  VALUES (2,'63874c0f0b6ba858cc832af759ca4954c2c84d4f',2);
+-- INSERT INTO ma_user_personal(user_pers_pk, usr_pers_pwd, ma_usr_id)  VALUES (2,'63874c0f0b6ba858cc832af759ca4954c2c84d4f',2);
+INSERT INTO ma_user_personal(user_pers_pk, usr_pers_pwd, ma_usr_id,usr_pers_block_expires,usr_pers_wrong_enters,usr_pers_is_blocked)  VALUES (2,'63874c0f0b6ba858cc832af759ca4954c2c84d4f',2,'2015-01-01 00:00:00',3,TRUE);
 INSERT INTO ma_user_personal(user_pers_pk, usr_pers_pwd, ma_usr_id)  VALUES (3,'63874c0f0b6ba858cc832af759ca4954c2c84d4f',3);
 INSERT INTO ma_user_personal(user_pers_pk, usr_pers_pwd, ma_usr_id)  VALUES (4,'63874c0f0b6ba858cc832af759ca4954c2c84d4f',4);
 
 
-INSERT INTO ma_sms_pass(sms_pwd_pk, sms_password, sms_user_id,endperiod) VALUES (1,'ef9ff97e3bd1408eac6f802186af89da55eb184d',1,'2016-01-01');
+INSERT INTO ma_sms_pass(sms_pwd_pk, sms_password, sms_user_id,endperiod) VALUES (1,'ef9ff97e3bd1408eac6f802186af89da55eb184d',1,'2015-01-01 00:00:00');
 
 /*account*/
 INSERT INTO ma_accounts (acount_number, account_balance, user_id) VALUES (999999999999, 1400.09, 1);

@@ -1,5 +1,7 @@
 package com.magent.utils.dateutils;
 
+import com.magent.domain.enums.TimeIntervalConstants;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
@@ -19,9 +21,15 @@ public interface DateUtils {
 
     Date add5Minutes(Date currentDate);
 
+    Date add2Minutes(Date currentDate);
+
     String formatToSqlDate(Date date);
+
+    String formatToSqlDateTimeInterval(Date date);
 
     DateFormat getformatOnlyDays();
 
     DateFormat getDbFormat();
+
+    String converToTimeStamp(String timeHHmm, TimeIntervalConstants constants);
 }

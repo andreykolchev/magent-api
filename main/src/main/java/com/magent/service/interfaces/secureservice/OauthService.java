@@ -1,5 +1,6 @@
 package com.magent.service.interfaces.secureservice;
 
+import com.magent.utils.validators.UserValidatorImpl;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordAccessTokenProvider;
@@ -13,7 +14,8 @@ public interface OauthService {
      * @return
      * @see - module ds_authServer
      */
-    OAuth2AccessToken getToken(String login, String pass);
+
+    OAuth2AccessToken getToken(String login, String pass) throws UserValidatorImpl.UserIsBlockedException;
 
     OAuth2AccessToken refreshToken(String refreshToken);
 

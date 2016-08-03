@@ -1,8 +1,8 @@
 package com.magent.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.magent.config.MockWebSecurityConfig;
 import com.magent.utils.EntityGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
@@ -13,9 +13,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Created by user on 12.05.16.
+ * Created on 12.05.16.
  */
-public class AssignmentControllerImplTest extends MockWebSecurityConfig  {
+public class AssignmentControllerImplTest extends MockWebSecurityConfig {
 
 
     @Test

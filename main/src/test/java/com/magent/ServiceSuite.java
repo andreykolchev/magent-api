@@ -18,7 +18,8 @@ import org.junit.runners.Suite;
         UserServiceImplTest.class,
         DataServiceImplTest.class,
         TransactionServiceImplTest.class,
-        TmpTypeServiceImplTest.class
+        TmpTypeServiceImplTest.class,
+        SheduleServiceTest.class
 
 })
 public class ServiceSuite {
