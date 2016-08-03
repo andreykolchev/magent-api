@@ -97,8 +97,9 @@ public class SheduleService {
                 personal.setBlockExpired(null);
                 userPersonalRepository.save(personal);
             }
+            LOGGER.info("blocked users are unlock " + list.toString());
         }
-        LOGGER.info("blocked users are unlock " + list.toString());
+
     }
 
 }
