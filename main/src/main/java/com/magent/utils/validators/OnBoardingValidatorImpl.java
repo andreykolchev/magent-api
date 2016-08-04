@@ -31,14 +31,14 @@ public class OnBoardingValidatorImpl implements OnBoardingValidator {
 
     private boolean isLenghtCorrect(OnBoarding onBoarding) {
         if (Objects.nonNull(onBoarding.getContent()) && Objects.nonNull(onBoarding.getDescription()))
-            return (onBoarding.getContent().length() < 51 &&
-                    onBoarding.getDescription().length() < 251);
+            return (onBoarding.getContent().length() < 251 &&
+                    onBoarding.getDescription().length() < 51);
 
         if (Objects.nonNull(onBoarding.getDescription()) && Objects.isNull(onBoarding.getContent()))
-            return onBoarding.getDescription().length() < 251;
+            return onBoarding.getDescription().length() < 51;
 
         if (Objects.isNull(onBoarding.getDescription()) && Objects.nonNull(onBoarding.getContent()))
-            return onBoarding.getContent().length() < 51;
+            return onBoarding.getContent().length() < 251;
 
         else if (Objects.isNull(onBoarding.getContent()) && Objects.isNull(onBoarding.getDescription()))
             return true;
