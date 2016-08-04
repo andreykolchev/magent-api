@@ -39,7 +39,7 @@ public class LoggerController {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({NotFoundException.class})
+    @ExceptionHandler({NotFoundException.class,NullPointerException.class})
     public void notFoundException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
         exceptionWriter(request, response, e);
     }
