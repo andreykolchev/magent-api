@@ -31,7 +31,7 @@ public class LoggerController {
     private final static Logger LOGGER = org.apache.log4j.Logger.getLogger(LoggerController.class);
 
     @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler({NullPointerException.class,
+    @ExceptionHandler({
             RollbackException.class, javax.persistence.RollbackException.class, IllegalArgumentException.class, DataIntegrityViolationException.class, ConstraintViolationException.class})
     public void nullPointerException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
         LOGGER.warn("WARNING exception: " + request.getRequestURI() + " with exception " + e + " " + Arrays.toString(e.getStackTrace()));
