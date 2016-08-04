@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.bind.ValidationException;
 import java.util.List;
 
 /**
@@ -52,7 +53,7 @@ public class UserController implements GeneralController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}/changepassword")
-    public ResponseEntity<Boolean> changePassword(@PathVariable("id") Long id, @RequestBody ChangePasswordDto chPassDto) {
+    public ResponseEntity<Boolean> changePassword(@PathVariable("id") Long id, @RequestBody ChangePasswordDto chPassDto) throws ValidationException {
         return new ResponseEntity<>(userService.changePassword(id, chPassDto), HttpStatus.OK);
     }
 

@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface UserService {
     List<User> getUsersByFilter(String filter) throws NotFoundException;
-    boolean changePassword(Long id, ChangePasswordDto chPassDto);
+    boolean changePassword(Long id, ChangePasswordDto chPassDto) throws ValidationException;
     User findUserByLogin(String login);
     List<User> getUsersForBalanceReport();
     boolean isPasswordCorrect(String login,String pass) throws UserValidatorImpl.UserIsBlockedException;

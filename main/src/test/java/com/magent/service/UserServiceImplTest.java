@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.jdbc.Sql;
 
+import javax.xml.bind.ValidationException;
 import java.util.Date;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class UserServiceImplTest extends ServiceConfig {
      */
     @Test
     @Sql("classpath:data.sql")
-    public void testChangePassword() throws NotFoundException {
+    public void testChangePassword() throws NotFoundException, ValidationException {
         //pre condition
         String pass = "user1";
         User testUser = (User) userGenService.getById(1L);
@@ -73,7 +74,7 @@ public class UserServiceImplTest extends ServiceConfig {
         String hashedPass = SecurityUtils.hashPassword(newUserPassword);
         User updated = (User) userGenService.getById(testUser.getId());
         String newPassFromBd = updated.getUserPersonal().getPassword();
-        Assert.assertEquals("check is changed", hashedPass, newPassFromBd);
+        Assert.assertEquals("check is changed", SecurityUtils.hashPassword(hashedPass), newPassFromBd);
 
     }
 

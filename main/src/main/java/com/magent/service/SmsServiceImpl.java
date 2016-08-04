@@ -77,8 +77,9 @@ public class SmsServiceImpl implements SmsService {
         String sendSms = generator.generate();
         String storeSms = SecurityUtils.hashPassword(sendSms);
         String hashedPwd = SecurityUtils.hashPassword(temporaryUser.getHashedPwd());
-        //saved current date. For more information how it's works see SheduleService.class and
-        TemporaryUser tmpUser = new TemporaryUser(temporaryUser, new Date(), storeSms, hashedPwd);
+        //password hashed 2 times
+        //saved current date. For more information how it's works see SheduleService.class
+        TemporaryUser tmpUser = new TemporaryUser(temporaryUser, new Date(), storeSms, SecurityUtils.hashPassword(hashedPwd));
         tmpUser = temporaryUserRepository.save(tmpUser);
         template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, temporaryUser.getUsername(), OtpConstants.REGISTER_CONFIRMATION + sendSms);
 
@@ -108,9 +109,9 @@ public class SmsServiceImpl implements SmsService {
     @Override
     @Transactional(readOnly = true)
     public List<SmsPassword> getOldSmsPass(String sqlDate, String timeFromConfig) {
-        Session session=entityManager.unwrap(Session.class);
-        String queryStr="SELECT oldsms.* FROM ma_sms_pass oldsms WHERE oldsms.endperiod+"+"'"+timeFromConfig+"'"+"<"+"'"+sqlDate+"'";
-        Query query=session.createSQLQuery(queryStr).addEntity(SmsPassword.class);
+        Session session = entityManager.unwrap(Session.class);
+        String queryStr = "SELECT oldsms.* FROM ma_sms_pass oldsms WHERE oldsms.endperiod+" + "'" + timeFromConfig + "'" + "<" + "'" + sqlDate + "'";
+        Query query = session.createSQLQuery(queryStr).addEntity(SmsPassword.class);
         return query.list();
     }
 

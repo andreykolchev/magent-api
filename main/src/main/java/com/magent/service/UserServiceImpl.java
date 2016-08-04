@@ -88,11 +88,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean changePassword(Long id, ChangePasswordDto chPassDto) {
+    public boolean changePassword(Long id, ChangePasswordDto chPassDto) throws ValidationException {
         UserPersonal userPersonal = userPersonalRepository.findByIdAndPassword(id, SecurityUtils.hashPassword(chPassDto.getOldPassword()));
         if (userPersonal != null) {
             if (Objects.nonNull(chPassDto.getNewPassword())) {
-                userPersonal.setPassword(SecurityUtils.hashPassword(chPassDto.getNewPassword()));
+                if (!generalValidator.isPasswordValid(chPassDto.getNewPassword()))
+                    throw new ValidationException("password not correct, min 6 characters and one of them with big letter or number or spec symbol");
+                String newPwd=SecurityUtils.hashPassword(chPassDto.getNewPassword());
+                userPersonal.setPassword(SecurityUtils.hashPassword(newPwd));
                 userPersonalRepository.saveAndFlush(userPersonal);
                 return true;
             }
@@ -129,6 +132,8 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("Last name not valid.Last name must start with big letter and mustn't contains numbers and min length 2 characters");
         if (!generalValidator.isPhoneValid(temporaryUser.getUsername()))
             throw new ValidationException("login not valid. Login must be phone number");
+        if (!generalValidator.isPasswordValid(temporaryUser.getHashedPwd()))
+            throw new ValidationException("password not correct, min 6 characters and one of them with big letter or number or spec symbol");
 
         return smsService.sendConfirmationAndSaveUser(temporaryUser);
     }
@@ -136,39 +141,39 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public User confirmRegistration(String login, String otp) throws NotFoundException {
-        TemporaryUser tmpUser=temporaryUserRepository.getByLoginAndOtp(login, otp);
-        if (Objects.isNull(tmpUser))throw new NotFoundException("current user not found");
+        TemporaryUser tmpUser = temporaryUserRepository.getByLoginAndOtp(login, otp);
+        if (Objects.isNull(tmpUser)) throw new NotFoundException("current user not found");
 
-        User user=new User(tmpUser);
-        user=userRepository.save(user);
+        User user = new User(tmpUser);
+        user = userRepository.save(user);
         deviceRepository.save(user.getDevices());
         accountRepository.save(new Account(user));
-        userPersonalRepository.save(new UserPersonal(user.getId(),tmpUser.getHashedPwd()));
+        userPersonalRepository.save(new UserPersonal(user.getId(), tmpUser.getHashedPwd()));
 
         //delete from temp users
-        TemporaryUser temporaryUser=temporaryUserRepository.getByLogin(login);
-        if (Objects.nonNull(temporaryUser))temporaryUserRepository.delete(temporaryUser);
+        TemporaryUser temporaryUser = temporaryUserRepository.getByLogin(login);
+        if (Objects.nonNull(temporaryUser)) temporaryUserRepository.delete(temporaryUser);
 
         return user;
     }
 
-    public String getAccountBalanceByUserLogin(String login){
+    public String getAccountBalanceByUserLogin(String login) {
         return accountRepository.getAccountByUserLogin(login).getAccountBalance().toString();
     }
 
     @Override
     public List<UserPersonal> getBlockedUsers(String sqlDate, String timeFromConfig) {
-        Session session=entityManager.unwrap(Session.class);
-        String queryStr="SELECT usr_pers.* FROM ma_user_personal usr_pers WHERE usr_pers.usr_pers_block_expires+"+"'"+timeFromConfig+"'"+"<"+"'"+sqlDate+"'";
-        Query query=session.createSQLQuery(queryStr).addEntity(UserPersonal.class);
+        Session session = entityManager.unwrap(Session.class);
+        String queryStr = "SELECT usr_pers.* FROM ma_user_personal usr_pers WHERE usr_pers.usr_pers_block_expires+" + "'" + timeFromConfig + "'" + "<" + "'" + sqlDate + "'";
+        Query query = session.createSQLQuery(queryStr).addEntity(UserPersonal.class);
         return query.list();
     }
 
     @Override
     public List<TemporaryUser> getUsersWithExpiredTerm(String sqlDate, String timeFromConfig) {
-        Session session=entityManager.unwrap(Session.class);
-        String queryStr="SELECT tmp.* FROM ma_temporary_user  tmp WHERE tmp.tmp_confirm_expiry+"+"'"+timeFromConfig+"'"+"<"+"'"+sqlDate+"'";
-        Query query=session.createSQLQuery(queryStr).addEntity(TemporaryUser.class);
+        Session session = entityManager.unwrap(Session.class);
+        String queryStr = "SELECT tmp.* FROM ma_temporary_user  tmp WHERE tmp.tmp_confirm_expiry+" + "'" + timeFromConfig + "'" + "<" + "'" + sqlDate + "'";
+        Query query = session.createSQLQuery(queryStr).addEntity(TemporaryUser.class);
         return query.list();
     }
 }

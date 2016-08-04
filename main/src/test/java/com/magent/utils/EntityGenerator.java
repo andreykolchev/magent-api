@@ -224,7 +224,7 @@ public final class EntityGenerator {
     }
 
     public static ChangePasswordDto getChangePasswordDto() {
-        return new ChangePasswordDto("user1", "edd8279b8ebe50c5652ff42e32c3561dd6f85e93", "edd8279b8ebe50c5652ff42e32c3561dd6f85e93");
+        return new ChangePasswordDto("user1", "edd8279b8ebe50c5652ff42e32c3561dd6f85e93", "ValidPwd");
     }
 
     public static User getNewTestUser(){
