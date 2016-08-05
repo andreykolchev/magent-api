@@ -31,8 +31,18 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.wordnik:swagger-annotations:1.3.11" level="project" />
+    <orderEntry type="library" name="Maven: io.springfox:springfox-swagger2:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: io.swagger:swagger-annotations:1.5.6" level="project" />
+    <orderEntry type="library" name="Maven: io.swagger:swagger-models:1.5.6" level="project" />
+    <orderEntry type="library" name="Maven: io.springfox:springfox-spi:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: io.springfox:springfox-core:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: io.springfox:springfox-schema:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: io.springfox:springfox-swagger-common:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: io.springfox:springfox-spring-web:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: io.springfox:springfox-swagger-ui:2.2.2" level="project" />
     <orderEntry type="module" module-name="magent.common" />
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:2.4.5" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.12" level="project" />
