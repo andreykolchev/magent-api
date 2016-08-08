@@ -93,7 +93,7 @@ public class GeneralServiceParametrizedTest {
         identifiable.setId(0L);
         if (beanName.equals("templateGeneralService")) {
             Template template = (Template) identifiable;
-            template.setTemplateTypeId(3L);
+            template.setTemplateTypeId(4L);
         }
         if (beanName.equals("userGeneralService")) {
             User user = (User) identifiable;

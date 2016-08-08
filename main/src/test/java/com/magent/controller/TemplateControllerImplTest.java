@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @since <pre>????. 19, 2016</pre>
  */
 public class TemplateControllerImplTest extends MockWebSecurityConfig {
-    private static final int LIST_SIZE_BEFORE_ADD = 2;
+    private static final int LIST_SIZE_BEFORE_ADD = 3;
     @Autowired
     @Qualifier("templateGeneralService")
     private GeneralService templateGenService;

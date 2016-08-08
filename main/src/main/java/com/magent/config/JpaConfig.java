@@ -85,7 +85,6 @@ public class JpaConfig {
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("com.magent.domain");
         factory.setDataSource(dataSource());
-
         Properties props = new Properties();
         props.put("connection.pool_size", poolSize);
         props.put("hibernate.show_sql", showSql);

@@ -43,7 +43,7 @@ public class TemplateTypeControllerImplTest extends MockWebSecurityConfig {
         mvc.perform(get("/template-types/")
                 .header(authorizationHeader, getAccessAdminToken()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.", Matchers.hasSize(5)))
+                .andExpect(jsonPath("$.", Matchers.hasSize(6)))
                 .andReturn();
 
     }

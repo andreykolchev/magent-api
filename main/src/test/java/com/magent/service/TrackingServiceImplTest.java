@@ -66,6 +66,7 @@ public class TrackingServiceImplTest extends ServiceConfig {
      * Method: createActivities(List<Activity> activityList)
      */
     @Test
+    @Sql("classpath:data.sql")
     public void testCreateActivities() throws Exception {
         int sizeBefore = activityGenService.getAll().size();
         trackingService.createActivities(Arrays.asList(EntityGenerator.getNewTestActivity()),1L);

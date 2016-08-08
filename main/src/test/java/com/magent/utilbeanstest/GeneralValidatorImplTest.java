@@ -80,12 +80,13 @@ public class GeneralValidatorImplTest extends ServiceConfig {
         Assert.assertTrue(generalValidator.isPasswordValid("test97"));
         Assert.assertTrue(generalValidator.isPasswordValid("testoV"));
         Assert.assertTrue(generalValidator.isPasswordValid("Testov"));
-        Assert.assertTrue(generalValidator.isPasswordValid("sesto@"));
+        Assert.assertFalse(generalValidator.isPasswordValid("sesto@"));
         Assert.assertTrue(generalValidator.isPasswordValid("sesto@12"));
         Assert.assertTrue(generalValidator.isPasswordValid("@Wsesto12"));
         Assert.assertFalse(generalValidator.isPasswordValid("testov"));
         Assert.assertFalse(generalValidator.isPasswordValid("Testo"));
-        Assert.assertFalse(generalValidator.isPasswordValid("!esto"));
+        Assert.assertFalse(generalValidator.isPasswordValid("!estos"));
+
     }
 
 } 

@@ -23,7 +23,6 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-//@Import(DistanceSalesJpaConfig.class)
 @ComponentScan({"com.magent.repository", "com.magent.service, com.magent.domain"})
 @EnableJpaRepositories(value = "com.magent.repository.", repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)
 @PropertySources({

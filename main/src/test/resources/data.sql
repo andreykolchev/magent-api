@@ -1,4 +1,6 @@
+
 TRUNCATE
+ma_time_config,
 ma_temporary_user,
 ma_tmp_types_roles,
 ma_template_types,
@@ -99,18 +101,25 @@ INSERT INTO ma_reason (reason_pk, parent_id, description, name) VALUES (1, NULL,
 INSERT INTO ma_reason (reason_pk, parent_id, description, name) VALUES (2, NULL, 'По вине агента', 'По вине агента');
 INSERT INTO ma_reason (reason_pk, parent_id, description, name) VALUES (3, 1, 'По вине клиента child', 'По вине клиента');
 
-INSERT INTO ma_template_types(temp_type_pk, temp_type_desc, parent_temp_tp_pk) VALUES (1,'test',NULL );
-INSERT INTO ma_template_types(temp_type_pk, temp_type_desc, parent_temp_tp_pk) VALUES (2,'Test type',NULL );
+INSERT INTO ma_template_types(temp_type_pk, temp_type_desc, parent_temp_tp_pk) VALUES (1,'Full registration',NULL );
+INSERT INTO ma_tmp_types_roles(temp_type_pk, usr_rol_pk) VALUES (1,5);
+INSERT INTO ma_template_types(temp_type_pk, temp_type_desc, parent_temp_tp_pk) VALUES (2,'agent registration',1);
+INSERT INTO ma_tmp_types_roles(temp_type_pk, usr_rol_pk) VALUES (2,5);
 INSERT INTO ma_template_types(temp_type_pk, temp_type_desc, parent_temp_tp_pk) VALUES (3,'Test type 3',NULL );
+INSERT INTO ma_tmp_types_roles(temp_type_pk, usr_rol_pk) VALUES (3,1);
+INSERT INTO ma_template_types(temp_type_pk, temp_type_desc, parent_temp_tp_pk) VALUES (4,'Test type 4',NULL );
+INSERT INTO ma_tmp_types_roles(temp_type_pk, usr_rol_pk) VALUES (4,1);
 
+INSERT INTO ma_template (templ_pk, description, name, tmp_tmp_type_id) VALUES (1, 'Full registration', 'Full registration', 2);
+INSERT INTO ma_template (templ_pk, name, description,tmp_tmp_type_id) VALUES (2, 'Кредитная карта', 'Кредитная карта "Кредитка"',3);
 
-INSERT INTO ma_tmp_types_roles(temp_type_pk, usr_rol_pk) VALUES (1,1);
---
+INSERT INTO ma_template_tasks (temp_tk_pk, description, priority, required, template_id) VALUES (1, 'Social ID', 1, true, 1);
+INSERT INTO ma_template_tasks (temp_tk_pk, description, priority, required, template_id) VALUES (2, 'Passport', 2, true, 1);
+
 -- Data for Name: ds_template; Type: TABLE DATA; Schema: public; Owner: magent
 --
 
-INSERT INTO ma_template (templ_pk, name, description,tmp_tmp_type_id) VALUES (1, 'Кредитная карта', 'Кредитная карта "Кредитка"',1);
-INSERT INTO ma_template (templ_pk, name, description,tmp_tmp_type_id) VALUES (2, 'Кредитная карта For Delete', 'Кредитная карта "Кредитка"',2);
+INSERT INTO ma_template (templ_pk, name, description,tmp_tmp_type_id) VALUES (3, 'Кредитная карта For Delete', 'Кредитная карта "Кредитка"',1);
 
 --
 -- Data for Name: ds_template_attribute; Type: TABLE DATA; Schema: public; Owner: magent
@@ -129,8 +138,6 @@ VALUES (5, 1, 'Основные тарифы продуктов', 'TEXT', NULL, 
 -- Data for Name: ds_template_tasks; Type: TABLE DATA; Schema: public; Owner: magent
 --
 
-INSERT INTO ma_template_tasks (temp_tk_pk, template_id, description, priority, required) VALUES (1, 1, 'Паспорт', 1, TRUE);
-INSERT INTO ma_template_tasks (temp_tk_pk, template_id, description, priority, required) VALUES (2, 1, 'ИНН', 2, TRUE);
 INSERT INTO ma_template_tasks (temp_tk_pk, template_id, description, priority, required) VALUES (3, 1, 'Опросник ФЛ', 3, TRUE);
 
 --

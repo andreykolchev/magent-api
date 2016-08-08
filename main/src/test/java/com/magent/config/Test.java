@@ -47,7 +47,7 @@ public class Test {
         System.out.println(SecurityUtils.hashPassword(test));
         System.out.println(SecurityUtils.hashPassword(SecurityUtils.hashPassword(test)));*/
 
-        DateFormat dbFormat = new SimpleDateFormat("HH:mm");
+      /*  DateFormat dbFormat = new SimpleDateFormat("HH:mm");
         Date first=dbFormat.parse("01:00");
         Date second=dbFormat.parse("00:01");
 
@@ -55,10 +55,11 @@ public class Test {
         long more=first.getTime()+second.getTime();
         System.out.println(more);
         System.out.println(first.getTime());
-        System.out.println(first.getTime()>more);
+        System.out.println(first.getTime()>more);*/
 //        System.out.println(dbFormat.format(dbFormat.parse("00:11")));
 
 //        System.out.println(TimeIntervalConstants.BLOCK_INTERVAL.toString());
+
     }
 
     private static boolean isNameCorrect(String name) {

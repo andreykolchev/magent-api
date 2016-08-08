@@ -131,10 +131,45 @@ public final class EntityGenerator {
         Set<AssignmentTaskControl> assignmentTaskControls = new HashSet<>();
         assignment.setId(1L);
         assignment.setVersion(1);
-        assignment.setTemplateId(1L);
+        assignment.setTemplateId(3L);
         assignment.setUserId(1L);
         assignment.setDesc("TEST");
         assignment.setLastChange(LocalDate.now().toEpochDay());
+
+        AssignmentAttribute assignmentAttribute = getNewAssignmentAttribute();
+        assignmentAttributes.add(assignmentAttribute);
+        assignment.setAttributes(assignmentAttributes);
+
+        AssignmentTask newAssignmentTask = getNewAssignmentTask();
+        AssignmentTaskControl newAssignmentTaskControl = getNewAssignmentTaskControl();
+
+        assignmentTaskControls.add(newAssignmentTaskControl);
+        newAssignmentTask.setControls(assignmentTaskControls);
+
+        assignmentTasks.add(newAssignmentTask);
+        assignment.setTasks(assignmentTasks);
+
+        assignmentList.add(assignment);
+        dataDto.setAssignments(assignmentList);
+
+        return dataDto;
+    }
+
+    public static UpdateDataDto getUpdateDataDtoForFullRegistration() {
+        UpdateDataDto dataDto = new UpdateDataDto();
+        Assignment assignment = new Assignment();
+        assignment.setStatus(AssignmentStatus.COMPLETE);
+        List<Assignment> assignmentList = new ArrayList<>();
+        Set<AssignmentAttribute> assignmentAttributes = new HashSet<>();
+        Set<AssignmentTask> assignmentTasks = new HashSet<>();
+        Set<AssignmentTaskControl> assignmentTaskControls = new HashSet<>();
+        assignment.setId(1L);
+        assignment.setVersion(1);
+        assignment.setTemplateId(1L);
+        assignment.setUserId(1L);
+        assignment.setDesc("full registration description");
+        assignment.setLastChange(LocalDate.now().toEpochDay());
+        assignment.setStatus(AssignmentStatus.NEW);
 
         AssignmentAttribute assignmentAttribute = getNewAssignmentAttribute();
         assignmentAttributes.add(assignmentAttribute);
@@ -177,7 +212,7 @@ public final class EntityGenerator {
     }
 
     public static Template getNewTestTemplate() {
-        return new Template("test template", "template POST test",3L);
+        return new Template("test template", "template POST test",4L);
     }
 
     public static TemplateAttribute getNewTestTemplateAttribute() {

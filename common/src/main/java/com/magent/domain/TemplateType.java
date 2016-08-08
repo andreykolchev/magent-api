@@ -78,6 +78,7 @@ public class TemplateType implements Identifiable<Long> {
         this.userRolesList = userRolesList;
     }
 
+
     public Long getId() {
         return id;
     }
