@@ -13,3 +13,5 @@
 /integration/magent.integration.iml
 # Created by .ignore support plugin (hsz.mobi)
 /main/catalina.home_IS_UNDEFINED/
+/catalina.home_IS_UNDEFINED/
+/main/META-INF/
