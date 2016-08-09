@@ -6,6 +6,7 @@ import javassist.NotFoundException;
 
 import javax.xml.bind.ValidationException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -17,4 +18,5 @@ public interface SmsService {
     TemporaryUser recentConfirmation(String login) throws NotFoundException;
     void sendSuccessfullRegistration(String login);
     List<SmsPassword> getOldSmsPass(String sqlDate,String timeFromConfig);
+    String getEndSmsPeriod() throws ParseException;
 }

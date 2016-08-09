@@ -6,7 +6,11 @@ import com.magent.utils.validators.interfaces.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.security.oauth2.client.resource.BaseOAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedException;
+import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
+import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordAccessTokenProvider;
+import org.springframework.security.oauth2.common.DefaultOAuth2RefreshToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +40,11 @@ public class OauthServiceOtpImpl implements OauthService {
 
     @Override
     public OAuth2AccessToken refreshToken(String refreshToken) {
-        return null;
+        OAuth2AccessToken accessToken;
+        ResourceOwnerPasswordAccessTokenProvider e = new ResourceOwnerPasswordAccessTokenProvider();
+        BaseOAuth2ProtectedResourceDetails resourceDetails = (BaseOAuth2ProtectedResourceDetails) this.otpOauthRestTemplate.getResource();
+        DefaultOAuth2RefreshToken token = new DefaultOAuth2RefreshToken(refreshToken);
+        accessToken = e.refreshAccessToken(resourceDetails, token, new DefaultAccessTokenRequest());
+        return accessToken;
     }
 }

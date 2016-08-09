@@ -77,6 +77,11 @@ public class DateUtilsImpl implements DateUtils {
     }
 
     @Override
+    public DateFormat getTimeStampFormat() {
+        return timeStampFormat;
+    }
+
+    @Override
     public String converToTimeStamp(String timeHHmm, TimeIntervalConstants constants) {
         try {
             Date date = timeStampFormat.parse(timeHHmm);
@@ -87,6 +92,7 @@ public class DateUtilsImpl implements DateUtils {
             return constants.getDefaultTimeInterval();
         }
     }
+
 
     private Calendar getCalendarOnlyForDays(String date) throws ParseException {
         Date dateFromUser = formatOnlyDays.parse(date);

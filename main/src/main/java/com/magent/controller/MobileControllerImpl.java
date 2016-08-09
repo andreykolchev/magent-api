@@ -4,13 +4,11 @@ import com.magent.controller.interfaces.GeneralController;
 import com.magent.domain.*;
 import com.magent.domain.dto.UpdateDataDto;
 import com.magent.domain.enums.UserRoles;
-import com.magent.service.interfaces.DataService;
-import com.magent.service.interfaces.TemplateTypeService;
-import com.magent.service.interfaces.TrackingService;
-import com.magent.service.interfaces.UserService;
+import com.magent.service.interfaces.*;
 import com.magent.utils.ariphmeticbeans.ComissionCalculatorImpl;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,6 +36,9 @@ public class MobileControllerImpl implements GeneralController {
     @Autowired
     private TrackingService trackingService;
 
+    @Autowired
+    @Qualifier("assignmentServiceImpl")
+    AssignmentService assignmentService;
 
     /**
      * @param syncId
@@ -147,5 +148,20 @@ public class MobileControllerImpl implements GeneralController {
             trackingService.createActivities(activityList, activeUser.getId());
         }
         return getDefaultResponceStatusOnly(activeUser, HttpStatus.CREATED, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * endpoint create assignment for current user which sent this information
+     * @param assignment
+     * @return
+     */
+    @RequestMapping(value = "/assignments/createByTemplateId", method = RequestMethod.POST)
+    public ResponseEntity<Assignment> createByTemplateId(@RequestBody Assignment assignment) throws NotFoundException {
+        User activeUser = getActiveUser(userService);
+        if (activeUser != null) {
+            assignment.setUserId(activeUser.getId());
+            return getDefaultResponce(assignmentService.createByTemplateId(assignment),HttpStatus.CREATED , HttpStatus.NOT_FOUND);
+        }
+        throw new NotFoundException("user not found in System");
     }
 }

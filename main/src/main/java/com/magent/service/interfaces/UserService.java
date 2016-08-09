@@ -8,6 +8,7 @@ import com.magent.utils.validators.UserValidatorImpl;
 import javassist.NotFoundException;
 
 import javax.xml.bind.ValidationException;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -24,4 +25,5 @@ public interface UserService {
     String getAccountBalanceByUserLogin(String login);
     List<UserPersonal>getBlockedUsers(String sqlDate,String timeFromConfig);
     List<TemporaryUser> getUsersWithExpiredTerm(String sqlDate, String timeFromConfig);
+    String getEndSmsPeriod() throws ParseException;
 }

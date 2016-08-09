@@ -3,9 +3,12 @@ package com.magent.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.magent.config.MockWebSecurityConfig;
 import com.magent.domain.AssignmentAttribute;
+import com.magent.domain.Template;
 import com.magent.domain.dto.UpdateDataDto;
+import com.magent.repository.UserRepository;
 import com.magent.service.interfaces.AssignmentAttributeService;
 import com.magent.service.interfaces.GeneralService;
+import com.magent.service.interfaces.UserService;
 import com.magent.utils.AssignmentAttributesGenerator;
 import com.magent.utils.CommissionUtils;
 import com.magent.utils.EntityGenerator;
@@ -47,6 +50,9 @@ public class MobileControllerImplTest extends MockWebSecurityConfig {
     @Autowired
     @Qualifier("onBoardingGeneralService")
     private GeneralService onBoardGeneralService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     public void testGetData() throws Exception {
@@ -208,5 +214,30 @@ public class MobileControllerImplTest extends MockWebSecurityConfig {
                 .andExpect(status().isCreated())
                 .andDo(print());
     }
+    @Test
+    @Sql("classpath:data.sql")
+    public void createByTemplateIdTestPositive() throws Exception {
+        Long userIdWhoCreate=userRepository.findByLogin(remoteStaffer).getId();
+        Long templateId=EntityGenerator.getTemplateAssignment().getTemplateId();
+        mvc.perform(post("/mobile/assignments/createByTemplateId")
+                .header(authorizationHeader, getRemoteStafferAccessToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getTemplateAssignment())))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.userId",Matchers.is(userIdWhoCreate.intValue())))
+                .andExpect(jsonPath("$.templateId",Matchers.is(templateId.intValue())))
+                .andReturn();
+    }
+    @Test
+    @Sql("classpath:data.sql")
+    public void createByTemplateIdTestNegative() throws Exception {
 
+        mvc.perform(post("/mobile/assignments/createByTemplateId")
+                .header(authorizationHeader, getBackOfficeAccessToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getTemplateAssignment())))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
 }

@@ -8,8 +8,10 @@ import com.magent.domain.dto.ChangePasswordDto;
 import com.magent.domain.enums.UserRoles;
 import com.magent.repository.*;
 import com.magent.service.interfaces.SmsService;
+import com.magent.service.interfaces.TimeIntervalService;
 import com.magent.service.interfaces.UserService;
 import com.magent.utils.SecurityUtils;
+import com.magent.utils.dateutils.DateUtils;
 import com.magent.utils.validators.UserValidatorImpl;
 import com.magent.utils.validators.interfaces.GeneralValidator;
 import com.magent.utils.validators.interfaces.UserValidator;
@@ -23,9 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.bind.ValidationException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
+
+import static com.magent.domain.enums.TimeIntervalConstants.OTP_INTERVAL_NAME;
+import static com.magent.domain.enums.TimeIntervalConstants.TMP_UNREGISTERED_USER_INTERVAL;
 
 /**
  * Created by artomov.ihor on 11.05.2016.
@@ -56,6 +62,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserValidator userValidator;
+
+    @Autowired
+    private TimeIntervalService timeIntervalService;
+
+    @Autowired
+    private DateUtils dateUtils;
 
     @PersistenceContext
     EntityManager entityManager;
@@ -175,5 +187,10 @@ public class UserServiceImpl implements UserService {
         String queryStr = "SELECT tmp.* FROM ma_temporary_user  tmp WHERE tmp.tmp_confirm_expiry+" + "'" + timeFromConfig + "'" + "<" + "'" + sqlDate + "'";
         Query query = session.createSQLQuery(queryStr).addEntity(TemporaryUser.class);
         return query.list();
+    }
+
+    @Override
+    public String getEndSmsPeriod() throws ParseException {
+        return dateUtils.converToTimeStamp(timeIntervalService.getByName(TMP_UNREGISTERED_USER_INTERVAL.toString()).getTimeInterval(),TMP_UNREGISTERED_USER_INTERVAL);
     }
 }

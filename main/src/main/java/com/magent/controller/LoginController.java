@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.xml.bind.ValidationException;
 import java.io.IOException;
+import java.text.ParseException;
 
 @Api("Authorization controller")
 @RestController
@@ -55,14 +56,15 @@ public class LoginController implements GeneralController {
                                                    @RequestParam(required = true) String username,
                                                    @ApiParam(value = "Hashed password", required = true)
                                                    @RequestParam(required = true) String password,
-                                                   @RequestParam(required = false) boolean withSms) throws IOException, NotFoundException, UserValidatorImpl.UserIsBlockedException {
+                                                   @RequestParam(required = false) boolean withSms) throws IOException, NotFoundException, UserValidatorImpl.UserIsBlockedException, ParseException {
         LOGGER.info("Loggin in " + username);
         if (!withSms) {
             OAuth2AccessToken token = oauthService.getToken(username, password);
             return new ResponseEntity(token, HttpStatus.OK);
         } else {
             if (userService.isPasswordCorrect(username, password)) {
-                return getDefaultResponce(smsService.sendOtpForRegisteredUser(username).getEndPeriod().getTime(),HttpStatus.OK,HttpStatus.BAD_REQUEST);
+                smsService.sendOtpForRegisteredUser(username).getStartPeriod();
+                return getDefaultResponce(smsService.getEndSmsPeriod(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
             } else {
                 throw new NotFoundException("password incorrect");
             }
@@ -77,9 +79,11 @@ public class LoginController implements GeneralController {
 
     @RequestMapping(value = {"/refresh"}, method = {RequestMethod.POST})
     public ResponseEntity<OAuth2AccessToken> refresh(@ApiParam(value = "Refresh token", required = true)
-                                                     @RequestParam(required = true) String refreshToken) {
-        OAuth2AccessToken accessToken = oauthService.refreshToken(refreshToken);
-        return new ResponseEntity(accessToken, HttpStatus.OK);
+                                                     @RequestParam(required = true) String refreshToken,
+                                                     @RequestParam(required = false) boolean otp) {
+        if (!otp) {
+            return new ResponseEntity(oauthService.refreshToken(refreshToken), HttpStatus.OK);
+        } else return new ResponseEntity(otpOauthService.refreshToken(refreshToken), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/login/confirmotp", method = RequestMethod.POST)
@@ -99,15 +103,17 @@ public class LoginController implements GeneralController {
      */
     @RequestMapping(value = "/login/recentotp", method = RequestMethod.POST)
     public ResponseEntity<String> recentOtpForTegisteredUser(@RequestParam String username,
-                                                             @RequestParam String password) throws NotFoundException, IOException, UserValidatorImpl.UserIsBlockedException {
+                                                             @RequestParam String password) throws NotFoundException, IOException, UserValidatorImpl.UserIsBlockedException, ParseException {
         if (userService.isPasswordCorrect(username, password)) {
-            return getDefaultResponce(smsService.sendOtpForRegisteredUser(username).getEndPeriod().getTime(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
+            smsService.sendOtpForRegisteredUser(username).getStartPeriod();
+            return getDefaultResponce(smsService.getEndSmsPeriod(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
         } else throw new NotFoundException("password not correct");
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseEntity<String> registerNewUser(@RequestBody TemporaryUser temporaryUser) throws ValidationException {
-        return getDefaultResponce(userService.isNewUserSaved(temporaryUser).getEndPeriod().getTime(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> registerNewUser(@RequestBody TemporaryUser temporaryUser) throws ValidationException, ParseException {
+        userService.isNewUserSaved(temporaryUser).getEndPeriod();
+        return getDefaultResponce(userService.getEndSmsPeriod(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -116,8 +122,9 @@ public class LoginController implements GeneralController {
      * @throws NotFoundException - if user not present in db
      */
     @RequestMapping(value = "/signup/recentotp", method = RequestMethod.POST)
-    public ResponseEntity<String> recentOtpForUnregisteredUser(@RequestParam("username") String username) throws NotFoundException {
-        return getDefaultResponce(smsService.recentConfirmation(username).getEndPeriod().getTime(), HttpStatus.OK, HttpStatus.NOT_FOUND);
+    public ResponseEntity<String> recentOtpForUnregisteredUser(@RequestParam("username") String username) throws NotFoundException, ParseException {
+        smsService.recentConfirmation(username).getEndPeriod();
+        return getDefaultResponce(smsService.getEndSmsPeriod(), HttpStatus.OK, HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/signup/registerconfirm", method = RequestMethod.POST)

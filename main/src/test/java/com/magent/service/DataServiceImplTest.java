@@ -21,12 +21,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.test.context.jdbc.Sql;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.io.IOException;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.List;
 
@@ -88,7 +82,7 @@ public class DataServiceImplTest extends ServiceConfig {
     @Test
     @Sql("classpath:data.sql")
     public void testFullRegistartionUpdateData() throws ComissionCalculatorImpl.FormulaNotFound, ParseException, NotFoundException {
-        UpdateDataDto dataDto=EntityGenerator.getUpdateDataDtoForFullRegistration();
+        UpdateDataDto dataDto=EntityGenerator.getUpdateDataDtoForFullRegistrationFull();
         dataDto=dataService.updateData(dataDto);
         Assert.assertEquals("check for status should be NEED_CONFIRMATION", AssignmentStatus.NEED_CONFIRMATION,dataDto.getAssignments().get(0).getStatus());
     }

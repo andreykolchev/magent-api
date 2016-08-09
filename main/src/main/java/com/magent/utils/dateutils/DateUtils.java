@@ -31,5 +31,6 @@ public interface DateUtils {
 
     DateFormat getDbFormat();
 
+    DateFormat getTimeStampFormat();
     String converToTimeStamp(String timeHHmm, TimeIntervalConstants constants);
 }

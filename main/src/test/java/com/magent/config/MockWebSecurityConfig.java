@@ -30,10 +30,10 @@ public class MockWebSecurityConfig extends MockWebAppConfiguration {
     protected final static String header = "refreshToken";
     protected final static String authorizationHeader = "Authorization";
 
-    private final static String backOfficeEmployer = "+380506847580";
+    protected final static String backOfficeEmployer = "+380506847580";
     private final static String backPass = "edd8279b8ebe50c5652ff42e32c3561dd6f85e93";
 
-    private final static String remoteStaffer = "user2";
+    protected final static String remoteStaffer = "user2";
     private final static String remotePass = "edd8279b8ebe50c5652ff42e32c3561dd6f85e93";
 
 

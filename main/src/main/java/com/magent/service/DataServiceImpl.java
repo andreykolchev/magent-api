@@ -23,7 +23,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.*;
+
 import static com.magent.domain.AssignmentStatus.*;
+
 @Service
 @Transactional(readOnly = true)
 public class DataServiceImpl implements DataService {
@@ -57,6 +59,8 @@ public class DataServiceImpl implements DataService {
     @Autowired
     private TemplateTypeRpository typeRpository;
 
+    @Autowired
+    private TemplateRepository templateRepository;
 
     @SuppressFBWarnings("EC_UNRELATED_TYPES")
     @Override
@@ -67,6 +71,7 @@ public class DataServiceImpl implements DataService {
             assignmentList = assignmentRepository.findAllByUserId(userId);
         } else {
             assignmentList = assignmentRepository.findAllByUserIdAndLastChange(userId, syncId);
+            initializeAttributesAndTasks(assignmentList);
         }
         for (Assignment assignment : assignmentList) {
             initializeControls(assignment);
@@ -78,7 +83,6 @@ public class DataServiceImpl implements DataService {
         result.setAssignments(assignmentList);
         return result;
     }
-
 
 
     @Override
@@ -217,12 +221,23 @@ public class DataServiceImpl implements DataService {
             }
         }
     }
+
     @Transactional(rollbackFor = Exception.class)
-    private void changeAssignmentForFullRegistration(List<Assignment>assignmentList){
+    private void changeAssignmentForFullRegistration(List<Assignment> assignmentList) {
         //template type 2 is always for full registration only.
-        Long fullRegTemplateId=typeRpository.findOne(2L).getTemplate().getId();
-        for (Assignment assignment:assignmentList){
-            if (assignment.getTemplateId()==fullRegTemplateId)assignment.setStatus(NEED_CONFIRMATION);
+        Long fullRegTemplateId = typeRpository.findOne(2L).getTemplate().getId();
+
+        for (Assignment assignment : assignmentList) {
+            if (assignment.getStatus().equals(COMPLETE)&&assignment.getTemplateId().equals(fullRegTemplateId)) {
+               assignment.setStatus(NEED_CONFIRMATION);
+            }
+        }
+    }
+    @Transactional(readOnly = true)
+    private void initializeAttributesAndTasks (List<Assignment>assignmentList){
+        for (Assignment assignment:assignmentList) {
+            Hibernate.initialize(assignment.getAttributes());
+            Hibernate.initialize(assignment.getTasks());
         }
     }
 

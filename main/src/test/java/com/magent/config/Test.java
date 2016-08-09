@@ -1,5 +1,8 @@
 package com.magent.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.magent.utils.EntityGenerator;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -19,8 +22,17 @@ public class Test {
 //        System.out.println(firstHash);
 //        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/mAgent.png")))));
 //        ObjectMapper mapper=new ObjectMapper();
-//        byte[]bytes=mapper.writeValueAsBytes(EntityGenerator.getNewTestUser());
+//        byte[]bytes=mapper.writeValueAsBytes(EntityGenerator.getUpdateDataDtoForFullRegistrationFull());
+//
 //        System.out.println(new String(bytes));
+
+        Date date=new Date();
+        System.out.println(date);
+        DateFormat timeStampFormat = new SimpleDateFormat("HH:mm");
+        Date date2=timeStampFormat.parse("00:05");
+        long res=date2.getTime()+date.getTime();
+        System.out.println(date2);
+        System.out.println(date2.getTime());
 //        new org.apache.crimson.parser.XMLReaderImpl();
         /*List<String> phonesList = new ArrayList<>(Arrays.asList("+380978090838", "+380632356941", "+480111234567"));
         for (String s : phonesList) {

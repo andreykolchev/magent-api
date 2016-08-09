@@ -83,6 +83,7 @@ public final class EntityGenerator {
         assignmentTaskControl.setId(1L);
         assignmentTaskControl.setDesc("ComissionCalculatorImplTest control 1");
         assignmentTaskControl.setValueType(ValueType.TEXT);
+        assignmentTaskControl.setValue("Test value");
         return assignmentTaskControl;
     }
 
@@ -155,7 +156,7 @@ public final class EntityGenerator {
         return dataDto;
     }
 
-    public static UpdateDataDto getUpdateDataDtoForFullRegistration() {
+    public static UpdateDataDto getUpdateDataDtoForFullRegistrationFull() {
         UpdateDataDto dataDto = new UpdateDataDto();
         Assignment assignment = new Assignment();
         assignment.setStatus(AssignmentStatus.COMPLETE);
@@ -169,7 +170,7 @@ public final class EntityGenerator {
         assignment.setUserId(1L);
         assignment.setDesc("full registration description");
         assignment.setLastChange(LocalDate.now().toEpochDay());
-        assignment.setStatus(AssignmentStatus.NEW);
+        assignment.setStatus(AssignmentStatus.COMPLETE);
 
         AssignmentAttribute assignmentAttribute = getNewAssignmentAttribute();
         assignmentAttributes.add(assignmentAttribute);

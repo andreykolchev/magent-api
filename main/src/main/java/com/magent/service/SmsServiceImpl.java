@@ -3,10 +3,12 @@ package com.magent.service;
 import com.magent.domain.SmsPassword;
 import com.magent.domain.TemporaryUser;
 import com.magent.domain.User;
+import com.magent.domain.enums.TimeIntervalConstants;
 import com.magent.repository.SmsPasswordRepository;
 import com.magent.repository.TemporaryUserRepository;
 import com.magent.repository.UserRepository;
 import com.magent.service.interfaces.SmsService;
+import com.magent.service.interfaces.TimeIntervalService;
 import com.magent.utils.SecurityUtils;
 import com.magent.utils.dateutils.DateUtils;
 import com.magent.utils.otpgenerator.OtpGenerator;
@@ -23,10 +25,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.bind.ValidationException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
+import static com.magent.domain.enums.TimeIntervalConstants.*;
 /**
  * Created by artomov.ihor on 13.06.2016.
  */
@@ -41,11 +44,14 @@ public class SmsServiceImpl implements SmsService {
     private OtpGenerator generator;
     @Autowired
     private SmsPasswordRepository otpRepository;
+
     @Autowired
-    private DateUtils dateUtils;
+    private TimeIntervalService timeIntervalService;
 
     @Autowired
     private TemporaryUserRepository temporaryUserRepository;
+    @Autowired
+    private DateUtils dateUtils;
 
     private static final RestTemplate template = new RestTemplate();
 
@@ -113,6 +119,13 @@ public class SmsServiceImpl implements SmsService {
         String queryStr = "SELECT oldsms.* FROM ma_sms_pass oldsms WHERE oldsms.endperiod+" + "'" + timeFromConfig + "'" + "<" + "'" + sqlDate + "'";
         Query query = session.createSQLQuery(queryStr).addEntity(SmsPassword.class);
         return query.list();
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public String getEndSmsPeriod() throws ParseException {
+        return dateUtils.converToTimeStamp(timeIntervalService.getByName(OTP_INTERVAL_NAME.toString()).getTimeInterval(),OTP_INTERVAL_NAME);
     }
 
     private static final class OtpConstants {
