@@ -37,7 +37,7 @@ public class ImageValidatorImpl implements ImageValidator {
         //get height and width
         int height = image.getHeight();
         int width = image.getWidth();
-        return (height == 170 && width == 170);
+        return (height == 230 && width == 230);
     }
 
     @Override
