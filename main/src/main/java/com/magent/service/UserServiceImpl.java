@@ -131,6 +131,7 @@ public class UserServiceImpl implements UserService {
         UserPersonal personal = userRepository.findByLogin(login).getUserPersonal();
         String pass = SecurityUtils.hashPassword(password);
         personal.setPassword(SecurityUtils.hashPassword(pass));
+        smsPasswordRepository.delete(smsPassword);
         return userPersonalRepository.save(personal);
 
     }
