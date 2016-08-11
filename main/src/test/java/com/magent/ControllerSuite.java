@@ -26,7 +26,8 @@ import org.junit.runners.Suite;
         TemplatesSecControllerTest.class,
         UsersSecControllerTest.class,
         TemplateTypeControllerImplTest.class,
-        OauthServiceTest.class
+        OauthServiceTest.class,
+        UserServiceForgotPwdFullContextTest.class
 
 })
 public class ControllerSuite {

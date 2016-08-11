@@ -136,6 +136,22 @@ public class LoginController implements GeneralController {
         return responseEntity;
     }
 
+    @RequestMapping(value = "/login/changePassword", method = RequestMethod.POST)
+    public ResponseEntity<String> sendOtpForForgotPassword(@RequestParam("username") String username) throws ValidationException, ParseException {
+        //send sms
+        smsService.sendForgotPassword(username);
+        return getDefaultResponce(smsService.getEndSmsPeriod(), HttpStatus.OK, HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value = "login/changePasswordConfirm", method = RequestMethod.POST)
+    public ResponseEntity confirmChangePassword(@RequestParam("username") String userName,
+                                                @RequestParam("password") String password,
+                                                @RequestParam("otp") String otp) throws ValidationException, UserValidatorImpl.UserIsBlockedException {
+
+        return getDefaultResponceStatusOnly(userService.changePassword(userName, password, otp),HttpStatus.OK,HttpStatus.BAD_REQUEST);
+
+    }
+
     private String hashPass(String pass, String otpPass) {
         String hashPass = SecurityUtils.hashPassword(pass);
         String otpHashPass = SecurityUtils.hashPassword(otpPass);

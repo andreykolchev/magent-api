@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.bind.ValidationException;
 import java.util.Date;
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 /**
  * Created by artomov.ihor on 13.05.2016.
  */
@@ -107,8 +109,8 @@ public class LoginControllerTest extends MockWebSecurityConfig {
     @Sql("classpath:deleteTmpUsers.sql")
     @Transactional
     public void registerServiceNewUserTest() throws Exception {
-        SmsService smsService=mock(SmsService.class);
-        TemporaryUser temporaryUser= EntityGenerator.generateUserForRegistration();
+        SmsService smsService = mock(SmsService.class);
+        TemporaryUser temporaryUser = EntityGenerator.generateUserForRegistration();
         MockitoAnnotations.initMocks(SmsService.class);
         when(smsService.sendConfirmationAndSaveUser(temporaryUser)).thenReturn(createAndSave(temporaryUser));
 
@@ -117,12 +119,12 @@ public class LoginControllerTest extends MockWebSecurityConfig {
         Assert.assertNotNull(temporaryUserRepository.getByLogin(temporaryUser.getUsername()));
         //and than confirm registration.
 
-        Assert.assertNotNull(userService.confirmRegistration(temporaryUser.getUsername(),SecurityUtils.hashPassword(sendSms)));
+        Assert.assertNotNull(userService.confirmRegistration(temporaryUser.getUsername(), SecurityUtils.hashPassword(sendSms)));
 
     }
 
 
-    private TemporaryUser createAndSave(TemporaryUser temporaryUser){
+    private TemporaryUser createAndSave(TemporaryUser temporaryUser) {
         sendSms = generator.generate();
         String storeSms = SecurityUtils.hashPassword(sendSms);
         String hashedPwd = SecurityUtils.hashPassword(temporaryUser.getHashedPwd());
@@ -134,18 +136,62 @@ public class LoginControllerTest extends MockWebSecurityConfig {
 
 
     public User confirmRegistration(String login, String otp) throws NotFoundException {
-        TemporaryUser tmpUser=temporaryUserRepository.getByLoginAndOtp(login, otp);
-        if (Objects.isNull(tmpUser))throw new NotFoundException("current user not found");
+        TemporaryUser tmpUser = temporaryUserRepository.getByLoginAndOtp(login, otp);
+        if (Objects.isNull(tmpUser)) throw new NotFoundException("current user not found");
 
-        User user=new User(tmpUser);
+        User user = new User(tmpUser);
         userRepository.save(user);
         deviceRepository.save(user.getDevices());
 
         //delete from temp users
-        TemporaryUser temporaryUser=temporaryUserRepository.getByLogin(login);
-        if (Objects.nonNull(temporaryUser))temporaryUserRepository.delete(temporaryUser);
+        TemporaryUser temporaryUser = temporaryUserRepository.getByLogin(login);
+        if (Objects.nonNull(temporaryUser)) temporaryUserRepository.delete(temporaryUser);
 
         return user;
+    }
+
+    @Test
+    @Sql("classpath:data.sql")
+    public void sendOtpForForgotPasswordPossitiveTest() throws Exception {
+
+        User whoChangePwd = userRepository.findOne(3L);
+        String otp = getSendSemeEmulator(whoChangePwd.getLogin(), new Date());
+
+        mvc.perform(post("/login/changePasswordConfirm")
+                .param("username", whoChangePwd.getLogin())
+                .param("password", "testChange")
+                .param("otp", SecurityUtils.hashPassword(otp)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @Sql("classpath:data.sql")
+    public void sendOtpForForgotPasswordNegativeTest() throws Exception {
+
+        User whoChangePwd = userRepository.findOne(3L);
+        String otp = getSendSemeEmulator(whoChangePwd.getLogin(), new Date());
+
+        mvc.perform(post("/login/changePasswordConfirm")
+                .param("username", whoChangePwd.getLogin())
+                .param("password", "testChange")
+                .param("otp", "badOtp"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Sql("classpath:data.sql")
+    public void sendOtpForForgotPasswordNegativePassNotValidTest() throws Exception {
+
+        User whoChangePwd = userRepository.findOne(3L);
+        String otp = getSendSemeEmulator(whoChangePwd.getLogin(), new Date());
+
+        mvc.perform(post("/login/changePasswordConfirm")
+                .param("username", whoChangePwd.getLogin())
+                .param("password", "badpassword")
+                .param("otp", SecurityUtils.hashPassword(otp)))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 }
 

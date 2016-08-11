@@ -2,6 +2,7 @@ package com.magent.service.interfaces;
 
 import com.magent.domain.SmsPassword;
 import com.magent.domain.TemporaryUser;
+import com.magent.domain.UserPersonal;
 import javassist.NotFoundException;
 
 import javax.xml.bind.ValidationException;
@@ -19,4 +20,5 @@ public interface SmsService {
     void sendSuccessfullRegistration(String login);
     List<SmsPassword> getOldSmsPass(String sqlDate,String timeFromConfig);
     String getEndSmsPeriod() throws ParseException;
+    UserPersonal sendForgotPassword(String toPhone) throws ValidationException;
 }

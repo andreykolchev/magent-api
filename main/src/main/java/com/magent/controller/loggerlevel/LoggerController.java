@@ -33,7 +33,7 @@ public class LoggerController {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler({
             RollbackException.class, javax.persistence.RollbackException.class, IllegalArgumentException.class, DataIntegrityViolationException.class, ConstraintViolationException.class})
-    public void nullPointerException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
+    public void conflict(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
         LOGGER.warn("WARNING exception: " + request.getRequestURI() + " with exception " + e + " " + Arrays.toString(e.getStackTrace()));
         exceptionWriter(request, response, e);
     }

@@ -68,6 +68,8 @@ public class WebAppOnStartUp implements ServletContextListener {
         TimeInterval otp = intervalRepository.getByName(OTP_INTERVAL_NAME.toString());
         TimeInterval unregisteredUsers = intervalRepository.getByName(TMP_UNREGISTERED_USER_INTERVAL.toString());
         TimeInterval block = intervalRepository.getByName(BLOCK_INTERVAL.toString());
+        TimeInterval forgotPwd = intervalRepository.getByName(FORGOT_PASS_INTERVAL.toString());
+        //check and validate if exist
         if (Objects.nonNull(otp)) {
             otp.setTimeInterval(dateUtils.converToTimeStamp(otp.getTimeInterval(), OTP_INTERVAL_NAME));
             intervalRepository.save(otp);
@@ -80,10 +82,16 @@ public class WebAppOnStartUp implements ServletContextListener {
             block.setTimeInterval(dateUtils.converToTimeStamp(block.getTimeInterval(), BLOCK_INTERVAL));
             intervalRepository.save(block);
         }
+        if (Objects.nonNull(forgotPwd)) {
+            forgotPwd.setTimeInterval(dateUtils.converToTimeStamp(forgotPwd.getTimeInterval(), FORGOT_PASS_INTERVAL));
+            intervalRepository.save(forgotPwd);
+        }
+        //create new if not exist
         if (Objects.isNull(otp)) intervalRepository.save(new TimeInterval(OTP_INTERVAL_NAME));
         if (Objects.isNull(unregisteredUsers))
             intervalRepository.save(new TimeInterval(TMP_UNREGISTERED_USER_INTERVAL));
         if (Objects.isNull(block)) intervalRepository.save(new TimeInterval(BLOCK_INTERVAL));
+        if (Objects.isNull(forgotPwd)) intervalRepository.save(new TimeInterval(FORGOT_PASS_INTERVAL));
     }
 
     private List<Roles> insertOrUpdateRoles() {

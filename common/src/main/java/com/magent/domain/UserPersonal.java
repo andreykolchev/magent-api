@@ -30,9 +30,16 @@ public class UserPersonal {
     @Column(name = "usr_pers_is_blocked",nullable = false,columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isBlocked;
 
+    @Column(name = "usr_pers_att_counter",nullable = false,columnDefinition = "INTEGER DEFAULT 0")
+    private int attemptCounter;
+
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Column(name = "usr_pers_block_expires")
     private Date blockExpired;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Column(name = "usr_pers_for_pwd_expire")
+    private Date forgotPwdExpireAttempt;
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.REMOVE)
@@ -97,6 +104,22 @@ public class UserPersonal {
 
     public void setBlocked(boolean blocked) {
         isBlocked = blocked;
+    }
+
+    public int getAttemptCounter() {
+        return attemptCounter;
+    }
+
+    public void setAttemptCounter(int attemptCounter) {
+        this.attemptCounter = attemptCounter;
+    }
+
+    public Date getForgotPwdExpireAttempt() {
+        return forgotPwdExpireAttempt;
+    }
+
+    public void setForgotPwdExpireAttempt(Date forgotPwdExpireAttempt) {
+        this.forgotPwdExpireAttempt = forgotPwdExpireAttempt;
     }
 
     @Override

@@ -3,9 +3,10 @@ package com.magent.service;
 import com.magent.domain.SmsPassword;
 import com.magent.domain.TemporaryUser;
 import com.magent.domain.User;
-import com.magent.domain.enums.TimeIntervalConstants;
+import com.magent.domain.UserPersonal;
 import com.magent.repository.SmsPasswordRepository;
 import com.magent.repository.TemporaryUserRepository;
+import com.magent.repository.UserPersonalRepository;
 import com.magent.repository.UserRepository;
 import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.TimeIntervalService;
@@ -16,6 +17,7 @@ import javassist.NotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,14 +31,20 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
 import static com.magent.domain.enums.TimeIntervalConstants.*;
+
 /**
- * Created by artomov.ihor on 13.06.2016.
+ * Created  on 13.06.2016.
  */
 @Service
 public class SmsServiceImpl implements SmsService {
     @Value(("${sms.host}"))
     private String smsHost;
+
+    @Value("${attempt.quantity}")
+    private int maxAttemptQuantity;
+
     @Autowired
     private UserRepository userRepository;
     //send and store sms in db
@@ -50,10 +58,16 @@ public class SmsServiceImpl implements SmsService {
 
     @Autowired
     private TemporaryUserRepository temporaryUserRepository;
+
     @Autowired
     private DateUtils dateUtils;
 
-    private static final RestTemplate template = new RestTemplate();
+    @Autowired
+    private UserPersonalRepository userPersonalRepository;
+
+
+
+    private final RestTemplate template=new RestTemplate();
 
     @PersistenceContext
     EntityManager entityManager;
@@ -125,7 +139,27 @@ public class SmsServiceImpl implements SmsService {
     @Override
     @Transactional(readOnly = true)
     public String getEndSmsPeriod() throws ParseException {
-        return dateUtils.converToTimeStamp(timeIntervalService.getByName(OTP_INTERVAL_NAME.toString()).getTimeInterval(),OTP_INTERVAL_NAME);
+        return dateUtils.converToTimeStamp(timeIntervalService.getByName(OTP_INTERVAL_NAME.toString()).getTimeInterval(), OTP_INTERVAL_NAME);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public UserPersonal sendForgotPassword(String toPhone) throws ValidationException {
+        UserPersonal personal = userRepository.findByLogin(toPhone).getUserPersonal();
+        if (personal.getAttemptCounter() < maxAttemptQuantity) {
+            String sendSms = generator.generate();
+            String storeSms = SecurityUtils.hashPassword(sendSms);
+            storeSms = SecurityUtils.hashPassword(storeSms);
+            //Sending sms via sms gate
+            template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, toPhone, OtpConstants.SEND_LOGIN_CONFIRMATION + sendSms);
+            otpRepository.save(new SmsPassword(personal.getUserId(), personal.getUserId(), storeSms, new Date()));
+            Date startDateForSheduler = personal.getAttemptCounter() == 0 ? new Date() : personal.getForgotPwdExpireAttempt();
+            int counter=personal.getAttemptCounter();
+            personal.setAttemptCounter(++counter);
+            personal.setForgotPwdExpireAttempt(startDateForSheduler);
+           return userPersonalRepository.save(personal);
+        }
+        else throw new ValidationException("user can change only "+maxAttemptQuantity+" times in a day");
     }
 
     private static final class OtpConstants {

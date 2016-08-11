@@ -1,9 +1,6 @@
 package com.magent.service;
 
-import com.magent.domain.Account;
-import com.magent.domain.TemporaryUser;
-import com.magent.domain.User;
-import com.magent.domain.UserPersonal;
+import com.magent.domain.*;
 import com.magent.domain.dto.ChangePasswordDto;
 import com.magent.domain.enums.UserRoles;
 import com.magent.repository.*;
@@ -67,6 +64,9 @@ public class UserServiceImpl implements UserService {
     private TimeIntervalService timeIntervalService;
 
     @Autowired
+    private SmsPasswordRepository smsPasswordRepository;
+
+    @Autowired
     private DateUtils dateUtils;
 
     @PersistenceContext
@@ -106,13 +106,33 @@ public class UserServiceImpl implements UserService {
             if (Objects.nonNull(chPassDto.getNewPassword())) {
                 if (!generalValidator.isPasswordValid(chPassDto.getNewPassword()))
                     throw new ValidationException("password not correct, min 6 characters and one of them with big letter or number or spec symbol");
-                String newPwd=SecurityUtils.hashPassword(chPassDto.getNewPassword());
+                String newPwd = SecurityUtils.hashPassword(chPassDto.getNewPassword());
                 userPersonal.setPassword(SecurityUtils.hashPassword(newPwd));
                 userPersonalRepository.saveAndFlush(userPersonal);
                 return true;
             }
         }
         return false;
+    }
+
+    //from client otp number flew already 1 time hashed
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public UserPersonal changePassword(String login, String password, String otp) throws ValidationException, UserValidatorImpl.UserIsBlockedException {
+        Long userId = userRepository.findByLogin(login).getId();
+        SmsPassword smsPassword = smsPasswordRepository.findOne(userId);
+        //validation steps
+        if (!smsPassword.getSmsPass().equals(SecurityUtils.hashPassword(otp)))
+            throw new ValidationException("wrong otp number");
+        userValidator.checkForBlock(login);
+        if (!generalValidator.isPasswordValid(password))
+            throw new ValidationException("password not correct, min 6 characters and one of them with big letter or number or spec symbol");
+
+        UserPersonal personal = userRepository.findByLogin(login).getUserPersonal();
+        String pass = SecurityUtils.hashPassword(password);
+        personal.setPassword(SecurityUtils.hashPassword(pass));
+        return userPersonalRepository.save(personal);
+
     }
 
     @Override
@@ -182,6 +202,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserPersonal> setToZeroForgotPassword(String sqlDate, String timeFromConfig) {
+        Session session = entityManager.unwrap(Session.class);
+        String queryString = "SELECT user_pers.* FROM ma_user_personal user_pers WHERE user_pers.usr_pers_for_pwd_expire+" + "'" + timeFromConfig + "'" + "<" + "'" + sqlDate + "'";
+        Query query = session.createSQLQuery(queryString).addEntity(UserPersonal.class);
+        return query.list();
+    }
+
+    @Override
     public List<TemporaryUser> getUsersWithExpiredTerm(String sqlDate, String timeFromConfig) {
         Session session = entityManager.unwrap(Session.class);
         String queryStr = "SELECT tmp.* FROM ma_temporary_user  tmp WHERE tmp.tmp_confirm_expiry+" + "'" + timeFromConfig + "'" + "<" + "'" + sqlDate + "'";
@@ -191,6 +219,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String getEndSmsPeriod() throws ParseException {
-        return dateUtils.converToTimeStamp(timeIntervalService.getByName(TMP_UNREGISTERED_USER_INTERVAL.toString()).getTimeInterval(),TMP_UNREGISTERED_USER_INTERVAL);
+        return dateUtils.converToTimeStamp(timeIntervalService.getByName(TMP_UNREGISTERED_USER_INTERVAL.toString()).getTimeInterval(), TMP_UNREGISTERED_USER_INTERVAL);
     }
 }
