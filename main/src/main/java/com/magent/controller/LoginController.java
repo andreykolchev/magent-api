@@ -101,7 +101,7 @@ public class LoginController implements GeneralController {
      * @throws NotFoundException - if password not correct
      * @throws IOException       - if can't recent otp
      */
-    @RequestMapping(value = "/login/recentotp", method = RequestMethod.POST)
+    @RequestMapping(value = "/login/resendotp", method = RequestMethod.POST)
     public ResponseEntity<String> recentOtpForTegisteredUser(@RequestParam String username,
                                                              @RequestParam String password) throws NotFoundException, IOException, UserValidatorImpl.UserIsBlockedException, ParseException {
         if (userService.isPasswordCorrect(username, password)) {
@@ -121,7 +121,7 @@ public class LoginController implements GeneralController {
      * @return - HttpStatus
      * @throws NotFoundException - if user not present in db
      */
-    @RequestMapping(value = "/signup/recentotp", method = RequestMethod.POST)
+    @RequestMapping(value = "/signup/resendotp", method = RequestMethod.POST)
     public ResponseEntity<String> recentOtpForUnregisteredUser(@RequestParam("username") String username) throws NotFoundException, ParseException {
         smsService.recentConfirmation(username).getEndPeriod();
         return getDefaultResponce(smsService.getEndSmsPeriod(), HttpStatus.OK, HttpStatus.NOT_FOUND);
