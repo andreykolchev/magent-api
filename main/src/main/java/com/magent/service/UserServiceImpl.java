@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("wrong otp number");
         userValidator.checkForBlock(login);
         if (!generalValidator.isPasswordValid(password))
-            throw new ValidationException("password not correct, min 6 characters and one of them with big letter or number or spec symbol");
+            throw new ValidationException("password not correct, min 6 characters and one of them with big letter or number");
 
         UserPersonal personal = userRepository.findByLogin(login).getUserPersonal();
         String pass = SecurityUtils.hashPassword(password);
