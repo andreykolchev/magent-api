@@ -28,7 +28,7 @@ public class GeneralValidatorImpl implements GeneralValidator {
 
     @Override
     public boolean isPasswordValid(String pwd) {
-        return Pattern.matches("((?=.*[a-z])(?=.*[A-Z]|.*\\d|.*[.]).{6,20})", pwd);
+        return Pattern.matches("((?=.*[a-z])(?=.*[A-Z]|.*\\d)(?!.*[\\W]).{6,20})", pwd);
     }
 
 }

@@ -26,13 +26,13 @@ public class Test {
 //
 //        System.out.println(new String(bytes));
 
-        Date date=new Date();
-        System.out.println(date);
-        DateFormat timeStampFormat = new SimpleDateFormat("HH:mm");
-        Date date2=timeStampFormat.parse("00:05");
-        long res=date2.getTime()+date.getTime();
-        System.out.println(date2);
-        System.out.println(date2.getTime());
+//        Date date=new Date();
+//        System.out.println(date);
+//        DateFormat timeStampFormat = new SimpleDateFormat("HH:mm");
+//        Date date2=timeStampFormat.parse("00:05");
+//        long res=date2.getTime()+date.getTime();
+//        System.out.println(date2);
+//        System.out.println(date2.getTime());
 //        new org.apache.crimson.parser.XMLReaderImpl();
         /*List<String> phonesList = new ArrayList<>(Arrays.asList("+380978090838", "+380632356941", "+480111234567"));
         for (String s : phonesList) {
@@ -44,13 +44,13 @@ public class Test {
         System.out.println(isNameCorrect("Igor "));
         System.out.println(isNameCorrect("Igor Muhamed"));
         System.out.println(isNameCorrect("Игорь"));*/
-       /* System.out.println(isPasswordValid("Merdoc"));//possitive
-        System.out.println(isPasswordValid("neroku1"));//possitive
-        System.out.println(isPasswordValid("nerok1"));//possitive
-        System.out.println(isPasswordValid("openshiFt"));//possitive
-        System.out.println(isPasswordValid("openshi%"));//possitive
-        System.out.println(isPasswordValid("lambda"));//negative
-        System.out.println(isPasswordValid("Lambd"));//negative*/
+        //** System.out.println(isPasswordValid("Merdoc"));//possitive
+//        System.out.println(isPasswordValid("neroku1"));//possitive
+//        System.out.println(isPasswordValid("nerok1"));//possitive
+//        System.out.println(isPasswordValid("openshiFt"));//possitive
+//        System.out.println(isPasswordValid("openshi%"));//possitive
+//        System.out.println(isPasswordValid("lambda"));//negative
+//        System.out.println(isPasswordValid("Lambd"));//negative*/
       /*  System.out.println(isNameCorrect("Igor"));//positive
         System.out.println(isNameCorrect("Taras"));
         System.out.println(isNameCorrect("tar"));//negative*/
@@ -71,15 +71,31 @@ public class Test {
 //        System.out.println(dbFormat.format(dbFormat.parse("00:11")));
 
 //        System.out.println(TimeIntervalConstants.BLOCK_INTERVAL.toString());
-
+        System.out.println(isPasswordValid("Tester"));//possitive
+        System.out.println(isPasswordValid("heroku1"));//possitive
+        System.out.println(isPasswordValid("herok1"));//possitive
+        System.out.println(isPasswordValid("1penshit"));//possitive
+        System.out.println(isPasswordValid("vasyAa"));//possitive
+        System.out.println("-----------------------------NEGATIVE-----------------------------");
+        System.out.println(isPasswordValid("vasya"));//negative
+        System.out.println(isPasswordValid("openshi%"));//negative
+        System.out.println(isPasswordValid("lambda"));//negative
+        System.out.println(isPasswordValid("Lambd"));//negative
+        System.out.println(isPasswordValid("Vasy@"));//negative
+        System.out.println(isPasswordValid("Vasya."));//negative
+        System.out.println(isPasswordValid("test12#"));//negative
+        System.out.println(isPasswordValid("test12."));//negative
+        System.out.println(isPasswordValid("test12&"));//negative
+        System.out.println(isPasswordValid("test12?"));//negative
+        System.out.println(isPasswordValid("test12-"));//negative
     }
 
     private static boolean isNameCorrect(String name) {
         return Pattern.matches("^[A-Z]{1}[a-z]{1,255}$", name);
     }
 
-    private static boolean isPasswordValid(String pwd){
-         return Pattern.matches("((?=.*[a-z])(?=.*[A-Z]|.*\\d|.*[@#$%]).{6,20})",pwd);
+    private static boolean isPasswordValid(String pwd) {
+        return Pattern.matches("((?=.*[a-z])(?=.*[A-Z]|.*\\d)(?!.*[\\W]).{6,20})", pwd);
     }
 
 }

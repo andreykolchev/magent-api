@@ -77,15 +77,30 @@ public class GeneralValidatorImplTest extends ServiceConfig {
      */
     @Test
     public void testIsPasswordValid() throws Exception {
-        Assert.assertTrue(generalValidator.isPasswordValid("test97"));
-        Assert.assertTrue(generalValidator.isPasswordValid("testoV"));
-        Assert.assertTrue(generalValidator.isPasswordValid("Testov"));
+        Assert.assertTrue(generalValidator.isPasswordValid("vasyAa"));
+        Assert.assertTrue(generalValidator.isPasswordValid("Tester"));
+        Assert.assertTrue(generalValidator.isPasswordValid("heroku1"));
+        Assert.assertTrue(generalValidator.isPasswordValid("herok1"));
+        Assert.assertTrue(generalValidator.isPasswordValid("1penshit"));
+
+        Assert.assertFalse(generalValidator.isPasswordValid("sesto@12"));
+        Assert.assertFalse(generalValidator.isPasswordValid("@Wsesto12"));
         Assert.assertFalse(generalValidator.isPasswordValid("sesto@"));
-        Assert.assertTrue(generalValidator.isPasswordValid("sesto@12"));
-        Assert.assertTrue(generalValidator.isPasswordValid("@Wsesto12"));
         Assert.assertFalse(generalValidator.isPasswordValid("testov"));
         Assert.assertFalse(generalValidator.isPasswordValid("Testo"));
         Assert.assertFalse(generalValidator.isPasswordValid("!estos"));
+        Assert.assertFalse(generalValidator.isPasswordValid("vasya"));
+        Assert.assertFalse(generalValidator.isPasswordValid("openshi%"));
+        Assert.assertFalse(generalValidator.isPasswordValid("lambda"));
+        Assert.assertFalse(generalValidator.isPasswordValid("Lambd"));
+        Assert.assertFalse(generalValidator.isPasswordValid("Vasy@"));
+        Assert.assertFalse(generalValidator.isPasswordValid("Vasya."));
+        Assert.assertFalse(generalValidator.isPasswordValid("test12#"));
+        Assert.assertFalse(generalValidator.isPasswordValid("test12."));
+        Assert.assertFalse(generalValidator.isPasswordValid("test12&"));
+        Assert.assertFalse(generalValidator.isPasswordValid("test12?"));
+        Assert.assertFalse(generalValidator.isPasswordValid("test12-"));
+
 
     }
 
