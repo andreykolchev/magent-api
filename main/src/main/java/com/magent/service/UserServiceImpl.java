@@ -168,7 +168,7 @@ public class UserServiceImpl implements UserService {
         if (!generalValidator.isPhoneValid(temporaryUser.getUsername()))
             throw new ValidationException("login not valid. Login must be phone number");
         if (!generalValidator.isPasswordValid(temporaryUser.getHashedPwd()))
-            throw new ValidationException("password not correct, min 6 characters and one of them with big letter or number or spec symbol");
+            throw new ValidationException("password not correct, min 6 characters and one of them with big letter or number");
 
         return smsService.sendConfirmationAndSaveUser(temporaryUser);
     }
