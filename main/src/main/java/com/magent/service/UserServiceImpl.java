@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
         if (userPersonal != null) {
             if (Objects.nonNull(chPassDto.getNewPassword())) {
                 if (!generalValidator.isPasswordValid(chPassDto.getNewPassword()))
-                    throw new ValidationException("password not correct, min 6 characters and one of them with big letter or number or spec symbol");
+                    throw new ValidationException("password not correct, min 6 characters and one of them with big letter or number");
                 String newPwd = SecurityUtils.hashPassword(chPassDto.getNewPassword());
                 userPersonal.setPassword(SecurityUtils.hashPassword(newPwd));
                 userPersonalRepository.saveAndFlush(userPersonal);
