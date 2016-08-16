@@ -151,7 +151,9 @@ public class UserServiceImpl implements UserService {
         //checks for block
         userValidator.checkForBlock(login);
         String passFromLoginForm = SecurityUtils.hashPassword(pass);
-        return userRepository.findByLogin(login).getUserPersonal().getPassword().equals(passFromLoginForm);
+        boolean res= userRepository.findByLogin(login).getUserPersonal().getPassword().equals(passFromLoginForm);
+        if (!res)userValidator.addOneWrongEnter(login);
+        return res;
     }
 
     //password comes already hashed from frontend
