@@ -5,6 +5,7 @@ import com.magent.repository.UserPersonalRepository;
 import com.magent.utils.dateutils.DateUtils;
 import com.magent.utils.validators.interfaces.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,8 @@ public class UserValidatorImpl implements UserValidator {
     private UserPersonalRepository userPersonalRepository;
     @Autowired
     private DateUtils dateUtils;
+    @Value("${wrong.enters}")
+    private int wrongEnters;
 
     @Override
     @Transactional(readOnly = true)
@@ -33,10 +36,10 @@ public class UserValidatorImpl implements UserValidator {
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public void addOneWrongEnter(String login) {
         UserPersonal userPersonal=userPersonalRepository.getByLogin(login);
-        if (userPersonal.getWrongEntersEntering()<3){
+        if (userPersonal.getWrongEntersEntering()< wrongEnters){
             int wrongEntries=userPersonal.getWrongEntersEntering();
             userPersonal.setWrongEntersEntering(++wrongEntries);
-            if (userPersonal.getWrongEntersEntering()>=3){
+            if (userPersonal.getWrongEntersEntering()>= wrongEnters){
                 userPersonal.setBlocked(true);
                 userPersonal.setBlockExpired(new Date());
                 userPersonalRepository.save(userPersonal);
