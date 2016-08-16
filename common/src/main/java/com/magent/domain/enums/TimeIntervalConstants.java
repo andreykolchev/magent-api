@@ -16,7 +16,7 @@ public enum TimeIntervalConstants {
     OTP_INTERVAL_NAME(1, "00:05"),
     TMP_UNREGISTERED_USER_INTERVAL(2, "00:05"),
     BLOCK_INTERVAL(3, "00:02"),
-    FORGOT_PASS_INTERVAL(4, "2:00");
+    FORGOT_PASS_INTERVAL(4, "00:02");
 
     private int id;
     //interval in format HH:mm
