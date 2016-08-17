@@ -113,7 +113,6 @@ public class LoginControllerTest extends MockWebSecurityConfig {
         TemporaryUser temporaryUser = EntityGenerator.generateUserForRegistration();
         MockitoAnnotations.initMocks(SmsService.class);
         when(smsService.sendConfirmationAndSaveUser(temporaryUser)).thenReturn(createAndSave(temporaryUser));
-
         //check it saves
         Assert.assertNotNull(smsService.sendConfirmationAndSaveUser(temporaryUser));
         Assert.assertNotNull(temporaryUserRepository.getByLogin(temporaryUser.getUsername()));

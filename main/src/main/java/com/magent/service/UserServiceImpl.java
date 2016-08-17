@@ -16,6 +16,8 @@ import javassist.NotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,8 +44,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private GeneralValidator generalValidator;
 
+    @Value("${sms.send.real}")
+    private boolean isSmsGateActive;
+
     @Autowired
+    @Qualifier("smsServiceImpl")
     private SmsService smsService;
+
+    @Autowired
+    @Qualifier("smsDemoServiceImpl")
+    private SmsService demoSmsService;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -151,15 +161,15 @@ public class UserServiceImpl implements UserService {
         //checks for block
         userValidator.checkForBlock(login);
         String passFromLoginForm = SecurityUtils.hashPassword(pass);
-        boolean res= userRepository.findByLogin(login).getUserPersonal().getPassword().equals(passFromLoginForm);
-        if (!res)userValidator.addOneWrongEnter(login);
+        boolean res = userRepository.findByLogin(login).getUserPersonal().getPassword().equals(passFromLoginForm);
+        if (!res) userValidator.addOneWrongEnter(login);
         return res;
     }
 
     //password comes already hashed from frontend
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public TemporaryUser isNewUserSaved(TemporaryUser temporaryUser) throws ValidationException {
+    public String isNewUserSaved(TemporaryUser temporaryUser) throws ValidationException, ParseException {
         if (!generalValidator.isEmailValid(temporaryUser.getEmail())) throw new ValidationException("email not valid");
         if (!generalValidator.isNameCorrect(temporaryUser.getFirstName()))
             throw new ValidationException("Name not valid. Name must start with big letter and mustn't contains numbers min length 2 characters");
@@ -169,8 +179,9 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("login not valid. Login must be phone number");
         if (!generalValidator.isPasswordValid(temporaryUser.getHashedPwd()))
             throw new ValidationException("password not correct, min 6 characters and one of them with big letter or number");
-
-        return smsService.sendConfirmationAndSaveUser(temporaryUser);
+        //demo verification
+        SmsService sender = isSmsGateActive ? smsService : demoSmsService;
+        return (String) sender.sendConfirmationAndSaveUser(temporaryUser);
     }
 
     @Override

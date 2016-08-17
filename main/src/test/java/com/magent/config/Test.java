@@ -76,6 +76,7 @@ public class Test {
         System.out.println(isPasswordValid("herok1"));//possitive
         System.out.println(isPasswordValid("1penshit"));//possitive
         System.out.println(isPasswordValid("vasyAa"));//possitive
+        System.out.println(isPasswordValid("test12"));//possitive
         System.out.println("-----------------------------NEGATIVE-----------------------------");
         System.out.println(isPasswordValid("vasya"));//negative
         System.out.println(isPasswordValid("openshi%"));//negative

@@ -15,6 +15,7 @@ import com.magent.utils.dateutils.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.jdbc.Sql;
 
 import javax.xml.bind.ValidationException;
@@ -38,6 +39,7 @@ public class SheduleServiceTest extends ServiceConfig {
     @Autowired
     private SheduleService sheduleService;
     @Autowired
+    @Qualifier("smsServiceImpl")
     private SmsService smsService;
 
     @Autowired

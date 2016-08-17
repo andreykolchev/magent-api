@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -41,7 +42,15 @@ public class LoginController implements GeneralController {
     @Qualifier("oauthOtp")
     private OauthService otpOauthService;
     @Autowired
+    @Qualifier("smsServiceImpl")
     private SmsService smsService;
+    @Autowired
+    @Qualifier("smsDemoServiceImpl")
+    private SmsService demoSmsService;
+
+    @Value("${sms.send.real}")
+    private boolean isSmsGateActive;
+
     @Autowired
     private UserService userService;
 
@@ -58,13 +67,13 @@ public class LoginController implements GeneralController {
                                                    @RequestParam(required = true) String password,
                                                    @RequestParam(required = false) boolean withSms) throws IOException, NotFoundException, UserValidatorImpl.UserIsBlockedException, ParseException {
         LOGGER.info("Loggin in " + username);
+        SmsService sender = isSmsGateActive ? smsService : demoSmsService;
         if (!withSms) {
             OAuth2AccessToken token = oauthService.getToken(username, password);
             return new ResponseEntity(token, HttpStatus.OK);
         } else {
             if (userService.isPasswordCorrect(username, password)) {
-                smsService.sendOtpForRegisteredUser(username).getStartPeriod();
-                return getDefaultResponce(smsService.getEndSmsPeriod(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
+                return getDefaultResponce(sender.sendOtpForRegisteredUser(username), HttpStatus.OK, HttpStatus.BAD_REQUEST);
             } else {
                 throw new NotFoundException("password incorrect");
             }
@@ -104,16 +113,15 @@ public class LoginController implements GeneralController {
     @RequestMapping(value = "/login/resendotp", method = RequestMethod.POST)
     public ResponseEntity<String> recentOtpForTegisteredUser(@RequestParam String username,
                                                              @RequestParam String password) throws NotFoundException, IOException, UserValidatorImpl.UserIsBlockedException, ParseException {
+        SmsService sender = isSmsGateActive ? smsService : demoSmsService;
         if (userService.isPasswordCorrect(username, password)) {
-            smsService.sendOtpForRegisteredUser(username).getStartPeriod();
-            return getDefaultResponce(smsService.getEndSmsPeriod(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
+            return getDefaultResponce(sender.sendOtpForRegisteredUser(username), HttpStatus.OK, HttpStatus.BAD_REQUEST);
         } else throw new NotFoundException("password not correct");
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public ResponseEntity<String> registerNewUser(@RequestBody TemporaryUser temporaryUser) throws ValidationException, ParseException {
-        userService.isNewUserSaved(temporaryUser).getEndPeriod();
-        return getDefaultResponce(userService.getEndSmsPeriod(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
+        return getDefaultResponce(userService.isNewUserSaved(temporaryUser), HttpStatus.OK, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -123,8 +131,8 @@ public class LoginController implements GeneralController {
      */
     @RequestMapping(value = "/signup/resendotp", method = RequestMethod.POST)
     public ResponseEntity<String> recentOtpForUnregisteredUser(@RequestParam("username") String username) throws NotFoundException, ParseException {
-        smsService.recentConfirmation(username).getEndPeriod();
-        return getDefaultResponce(smsService.getEndSmsPeriod(), HttpStatus.OK, HttpStatus.NOT_FOUND);
+        SmsService sender = isSmsGateActive ? smsService : demoSmsService;
+        return getDefaultResponce(sender.recentConfirmation(username), HttpStatus.OK, HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/signup/registerconfirm", method = RequestMethod.POST)
@@ -132,15 +140,16 @@ public class LoginController implements GeneralController {
                                               @RequestParam("otp") String otp) throws NotFoundException {
 
         ResponseEntity responseEntity = getDefaultResponceStatusOnly(userService.confirmRegistration(username, otp), HttpStatus.OK, HttpStatus.NOT_FOUND);
-        smsService.sendSuccessfullRegistration(username);
+        SmsService sender = isSmsGateActive ? smsService : demoSmsService;
+        sender.sendSuccessfullRegistration(username);
         return responseEntity;
     }
 
     @RequestMapping(value = "/login/changePassword", method = RequestMethod.POST)
     public ResponseEntity<String> sendOtpForForgotPassword(@RequestParam("username") String username) throws ValidationException, ParseException {
+        SmsService sender = isSmsGateActive ? smsService : demoSmsService;
         //send sms
-        smsService.sendForgotPassword(username);
-        return getDefaultResponce(smsService.getEndSmsPeriod(), HttpStatus.OK, HttpStatus.NOT_FOUND);
+        return getDefaultResponce(sender.sendForgotPassword(username), HttpStatus.OK, HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "login/changePasswordConfirm", method = RequestMethod.POST)
@@ -148,7 +157,7 @@ public class LoginController implements GeneralController {
                                                 @RequestParam("password") String password,
                                                 @RequestParam("otp") String otp) throws ValidationException, UserValidatorImpl.UserIsBlockedException {
 
-        return getDefaultResponceStatusOnly(userService.changePassword(userName, password, otp),HttpStatus.OK,HttpStatus.BAD_REQUEST);
+        return getDefaultResponceStatusOnly(userService.changePassword(userName, password, otp), HttpStatus.OK, HttpStatus.BAD_REQUEST);
 
     }
 

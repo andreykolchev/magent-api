@@ -312,7 +312,7 @@ public final class EntityGenerator {
     }
 
     public static TemporaryUser generateUserForRegistration(){
-        return new TemporaryUser("device","test@gmail.com","Tester","Testov","+380978090838",SecurityUtils.hashPassword("pass"));
+        return new TemporaryUser("deviceunique","test@gmail.com","Tester","Testov","+380971112222",SecurityUtils.hashPassword("pass"));
     }
 
     public static TemplateType generateTestTemplateType(){

@@ -14,6 +14,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ import static com.magent.domain.enums.TimeIntervalConstants.OTP_INTERVAL_NAME;
  */
 public class SmsServiceImplTest extends MockWebSecurityConfig {
     @Autowired
+    @Qualifier("smsServiceImpl")
     private SmsService smsService;
     @Autowired
     private SmsPasswordRepository smsPasswordRepository;
@@ -48,7 +50,7 @@ public class SmsServiceImplTest extends MockWebSecurityConfig {
     @Test
     @Ignore
     @Sql("classpath:data.sql")
-    public void sensSimpleSmsTest() throws IOException {
+    public void sensSimpleSmsTest() throws IOException, ParseException {
         smsService.sendOtpForRegisteredUser("+380978090838");
     }
     @Test

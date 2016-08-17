@@ -21,7 +21,7 @@ public interface UserService {
     User findUserByLogin(String login);
     List<User> getUsersForBalanceReport();
     boolean isPasswordCorrect(String login,String pass) throws UserValidatorImpl.UserIsBlockedException;
-    TemporaryUser isNewUserSaved(TemporaryUser temporaryUser) throws ValidationException;
+    String isNewUserSaved(TemporaryUser temporaryUser) throws ValidationException, ParseException;
     User confirmRegistration(String login,String otp) throws NotFoundException;
     String getAccountBalanceByUserLogin(String login);
     List<UserPersonal>getBlockedUsers(String sqlDate,String timeFromConfig);

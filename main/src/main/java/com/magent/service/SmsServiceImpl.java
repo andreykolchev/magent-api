@@ -45,6 +45,9 @@ public class SmsServiceImpl implements SmsService {
     @Value("${attempt.quantity}")
     private int maxAttemptQuantity;
 
+    @Value("${sms.send.real}")
+    private boolean isSmsGateActive;
+
     @Autowired
     private UserRepository userRepository;
     //send and store sms in db
@@ -74,7 +77,7 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public SmsPassword sendOtpForRegisteredUser(String toPhone) throws IOException {
+    public String sendOtpForRegisteredUser(String toPhone) throws IOException, ParseException {
 
         User user = userRepository.findByLogin(toPhone);
         String sendSms = generator.generate();
@@ -83,12 +86,13 @@ public class SmsServiceImpl implements SmsService {
         //Sending sms via sms gate
         template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, toPhone, OtpConstants.SEND_LOGIN_CONFIRMATION + sendSms);
         //storing
-        return otpRepository.save(new SmsPassword(user.getId(), user.getId(), storeSms, new Date()));
+        otpRepository.save(new SmsPassword(user.getId(), user.getId(), storeSms, new Date()));
+        return getEndSmsPeriod();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public TemporaryUser sendConfirmationAndSaveUser(TemporaryUser temporaryUser) throws ValidationException {
+    public String sendConfirmationAndSaveUser(TemporaryUser temporaryUser) throws ValidationException, ParseException {
         if (Objects.nonNull(temporaryUserRepository.getByLogin(temporaryUser.getUsername())))
             throw new ValidationException("current user already waited for registration");
         if (Objects.nonNull(userRepository.findByLogin(temporaryUser.getUsername())))
@@ -103,12 +107,12 @@ public class SmsServiceImpl implements SmsService {
         tmpUser = temporaryUserRepository.save(tmpUser);
         template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, temporaryUser.getUsername(), OtpConstants.REGISTER_CONFIRMATION + sendSms);
 
-        return tmpUser;
+        return getEndSmsPeriod();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public TemporaryUser recentConfirmation(String login) throws NotFoundException {
+    public String recentConfirmation(String login) throws NotFoundException, ParseException {
         TemporaryUser temporaryUser = temporaryUserRepository.getByLogin(login);
         if (Objects.isNull(temporaryUser)) throw new NotFoundException("user not present in db. Please register again");
         String sendSms = generator.generate();
@@ -118,7 +122,7 @@ public class SmsServiceImpl implements SmsService {
         temporaryUser.setEndPeriod(new Date());
         template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, temporaryUser.getUsername(), OtpConstants.REGISTER_CONFIRMATION + sendSms);
         temporaryUserRepository.save(temporaryUser);
-        return temporaryUser;
+        return getEndSmsPeriod();
     }
 
     @Override
@@ -144,7 +148,7 @@ public class SmsServiceImpl implements SmsService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public UserPersonal sendForgotPassword(String toPhone) throws ValidationException {
+    public String sendForgotPassword(String toPhone) throws ValidationException, ParseException {
         UserPersonal personal = userRepository.findByLogin(toPhone).getUserPersonal();
         if (personal.getAttemptCounter() < maxAttemptQuantity) {
             String sendSms = generator.generate();
@@ -157,7 +161,8 @@ public class SmsServiceImpl implements SmsService {
             int counter=personal.getAttemptCounter();
             personal.setAttemptCounter(++counter);
             personal.setForgotPwdExpireAttempt(startDateForSheduler);
-           return userPersonalRepository.save(personal);
+            userPersonalRepository.save(personal);
+            return getEndSmsPeriod();
         }
         else throw new ValidationException("user can change only "+maxAttemptQuantity+" times in a day");
     }

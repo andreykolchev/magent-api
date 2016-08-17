@@ -12,6 +12,7 @@ import com.magent.service.interfaces.UserService;
 import com.magent.utils.dateutils.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -36,7 +37,9 @@ public class SheduleService {
 
     private static final Logger LOGGER = Logger.getLogger(SheduleService.class);
     @Autowired
+    @Qualifier("smsServiceImpl")
     private SmsService smsService;
+
     @Autowired
     private SmsPasswordRepository passwordRepository;
 
@@ -109,12 +112,12 @@ public class SheduleService {
         List<UserPersonal> list = userService.setToZeroForgotPassword(dateUtils.formatToSqlDateTimeInterval(new Date()),
                 dateUtils.converToTimeStamp(timeIntervalService.getByName(FORGOT_PASS_INTERVAL.toString()).getTimeInterval(), FORGOT_PASS_INTERVAL));
         if (list.size() > 0) {
-            for (UserPersonal personal:list){
+            for (UserPersonal personal : list) {
                 personal.setForgotPwdExpireAttempt(null);
                 personal.setAttemptCounter(0);
                 userPersonalRepository.save(personal);
             }
-            LOGGER.info("set to zero forgot password attempt for  " + list.toString()+" users");
+            LOGGER.info("set to zero forgot password attempt for  " + list.toString() + " users");
         }
     }
 
