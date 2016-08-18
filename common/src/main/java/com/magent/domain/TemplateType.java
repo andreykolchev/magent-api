@@ -34,7 +34,7 @@ public class TemplateType implements Identifiable<Long> {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinTable(
             name = "ma_tmp_types_roles",
-            joinColumns = {@JoinColumn(name = "temp_type_pk",nullable = false)},
+            joinColumns = {@JoinColumn(name = "temp_type_pk",nullable = false,unique = true)},
             inverseJoinColumns = {@JoinColumn(name = "usr_rol_pk",nullable = false)})
     private List<Roles> roles;
 
