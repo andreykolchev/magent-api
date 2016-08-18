@@ -11,9 +11,7 @@ import javassist.NotFoundException;
 
 import javax.persistence.*;
 import javax.xml.bind.ValidationException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created on 19.07.2016.
@@ -34,9 +32,9 @@ public class TemplateType implements Identifiable<Long> {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
     @JoinTable(
             name = "ma_tmp_types_roles",
-            joinColumns = {@JoinColumn(name = "temp_type_pk",nullable = false,unique = true)},
+            joinColumns = {@JoinColumn(name = "temp_type_pk",nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "usr_rol_pk",nullable = false)})
-    private List<Roles> roles;
+    private Set<Roles> roles;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Column(name = "parent_temp_tp_pk", nullable = true)
@@ -61,7 +59,7 @@ public class TemplateType implements Identifiable<Long> {
     @Transient
     @JsonSerialize
     @JsonDeserialize
-    private List<UserRoles> userRolesList;
+    private Set<UserRoles> userRolesList;
 
     public TemplateType() {
 
@@ -69,13 +67,13 @@ public class TemplateType implements Identifiable<Long> {
 
     public TemplateType(String description, List<UserRoles> userRolesList) {
         this.description = description;
-        this.userRolesList = userRolesList;
+        this.userRolesList = new HashSet<>(userRolesList);
     }
 
     public TemplateType(String description, Long parentId, List<UserRoles> userRolesList) {
         this.description = description;
         this.parentId = parentId;
-        this.userRolesList = userRolesList;
+        this.userRolesList = new HashSet<>(userRolesList);
     }
 
 
@@ -95,16 +93,16 @@ public class TemplateType implements Identifiable<Long> {
         this.description = description;
     }
 
-    public List<Roles> getRoles() {
+    public Set<Roles> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Roles> roles) {
+    public void setRoles(Set<Roles> roles) {
         this.roles = roles;
     }
 
-    public List<UserRoles> getUserRolesList() throws NotFoundException {
-        if (Objects.isNull(userRolesList))return UserRoles.getUserRoles(roles);
+    public Set<UserRoles> getUserRolesList() throws NotFoundException {
+        if (Objects.isNull(userRolesList))return UserRoles.getUserRolesSet(roles);
         return userRolesList;
     }
 
@@ -121,7 +119,7 @@ public class TemplateType implements Identifiable<Long> {
     }
 
     public void setUserRolesList(List<UserRoles> userRolesList) {
-        this.userRolesList = userRolesList;
+        this.userRolesList = new HashSet<>(userRolesList);
     }
 
     public Template getTemplate() {
@@ -140,7 +138,7 @@ public class TemplateType implements Identifiable<Long> {
     @PrePersist
     private void preSave() throws ValidationException {
         if (Objects.isNull(userRolesList)||userRolesList.size()==0)throw new ValidationException("type must contain role");
-        setRoles(UserRoles.getRoles(userRolesList));
+        setRoles(UserRoles.getRolesSet(userRolesList));
     }
 
     @PostPersist

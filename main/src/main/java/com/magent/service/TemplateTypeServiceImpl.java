@@ -27,7 +27,7 @@ public class TemplateTypeServiceImpl implements TemplateTypeService {
         if (templateType.getUserRolesList().size() == 0 || Objects.isNull(templateType.getUserRolesList()))
             throw new NotFoundException("template type must contain role");
         if (Objects.isNull(templateTypeRpository.findOne(id))) throw new NotFoundException("entity not present in db");
-        templateType.setRoles(UserRoles.getRoles(templateType.getUserRolesList()));
+        templateType.setRoles(UserRoles.getRolesSet(templateType.getUserRolesList()));
         TemplateType type = templateTypeRpository.saveAndFlush(templateType);
         type.setUserRolesList(UserRoles.getUserRoles(type.getRoles()));
         return type;
