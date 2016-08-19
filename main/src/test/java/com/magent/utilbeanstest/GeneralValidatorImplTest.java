@@ -29,6 +29,9 @@ public class GeneralValidatorImplTest extends ServiceConfig {
         Assert.assertTrue(generalValidator.isEmailValid("test123@rambler.ru"));
         Assert.assertTrue(generalValidator.isEmailValid("test@yahoo.com"));
         Assert.assertTrue(generalValidator.isEmailValid("Test123@meta.ua"));
+        Assert.assertTrue(generalValidator.isEmailValid("tester@roots.com.ua"));
+        Assert.assertTrue(generalValidator.isEmailValid("tester.t.t@rootsasdasd.com.ua"));
+
     }
 
     @Test
