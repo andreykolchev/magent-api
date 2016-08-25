@@ -13,7 +13,6 @@ import com.magent.utils.SecurityUtils;
 import com.magent.utils.otpgenerator.OtpGenerator;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

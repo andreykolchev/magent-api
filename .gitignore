@@ -15,3 +15,10 @@
 /main/catalina.home_IS_UNDEFINED/
 /catalina.home_IS_UNDEFINED/
 /main/META-INF/
+/common/
+/dao/magent.dao.iml
+/dao/target/
+/model/target/
+/model/magent.model.iml
+/repository/target/
+/repository/magent.repository.iml

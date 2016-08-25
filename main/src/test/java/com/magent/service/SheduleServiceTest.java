@@ -3,10 +3,7 @@ package com.magent.service;
 import com.magent.config.ServiceConfig;
 import com.magent.domain.SmsPassword;
 import com.magent.domain.TemporaryUser;
-import com.magent.domain.User;
 import com.magent.domain.UserPersonal;
-import com.magent.repository.UserPersonalRepository;
-import com.magent.repository.UserRepository;
 import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.TimeIntervalService;
 import com.magent.service.interfaces.UserService;
@@ -18,15 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.jdbc.Sql;
 
-import javax.xml.bind.ValidationException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import static com.magent.domain.enums.TimeIntervalConstants.*;
-import static com.magent.domain.enums.TimeIntervalConstants.FORGOT_PASS_INTERVAL;
 
 /**
  * SheduleService Tester.

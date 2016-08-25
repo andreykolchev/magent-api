@@ -24,7 +24,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan({"com.magent.repository", "com.magent.service, com.magent.domain"})
-@EnableJpaRepositories(value = "com.magent.repository.", repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)
+@EnableJpaRepositories(value = "com.magent.repository", repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)
 @PropertySources({
         @PropertySource("classpath:magentTest.properties"),
 })
@@ -76,7 +76,7 @@ public class JpaTestConfig {
         vendorAdapter.setShowSql(showSql);
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.magent.domain");
+        factory.setPackagesToScan("com.magent.repository","com.magent.domain");
         factory.setDataSource(dataSource());
 
         Properties props = new Properties();

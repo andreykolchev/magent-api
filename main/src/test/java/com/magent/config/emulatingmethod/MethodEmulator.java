@@ -9,8 +9,6 @@ import com.magent.utils.SecurityUtils;
 import com.magent.utils.otpgenerator.OtpGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.ValidationException;
 import java.util.Date;

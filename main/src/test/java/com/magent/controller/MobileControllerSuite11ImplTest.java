@@ -3,12 +3,10 @@ package com.magent.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.magent.config.MockWebSecurityConfig;
 import com.magent.domain.AssignmentAttribute;
-import com.magent.domain.Template;
 import com.magent.domain.dto.UpdateDataDto;
 import com.magent.repository.UserRepository;
 import com.magent.service.interfaces.AssignmentAttributeService;
 import com.magent.service.interfaces.GeneralService;
-import com.magent.service.interfaces.UserService;
 import com.magent.utils.AssignmentAttributesGenerator;
 import com.magent.utils.CommissionUtils;
 import com.magent.utils.EntityGenerator;
@@ -35,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by user on 16.05.16.
  */
-public class MobileControllerImplTest extends MockWebSecurityConfig {
+public class MobileControllerSuite11ImplTest extends MockWebSecurityConfig {
     @Value("${tmp.excel.file}")
     private String uploadPath;
 

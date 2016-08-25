@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by artomov.ihor on 10.06.2016.
  */
-public class AssignmentsSecControllerTest extends MockWebSecurityConfig {
+public class AssignmentsSecControllerSuite11Test extends MockWebSecurityConfig {
 
     @Test
     public void testGetBackOfficePossitive() throws Exception {

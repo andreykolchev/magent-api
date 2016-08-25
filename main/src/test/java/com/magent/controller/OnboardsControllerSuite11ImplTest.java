@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @version 1.0
  * @since <pre>????. 1, 2016</pre>
  */
-public class OnboardsControllerImplTest extends MockWebSecurityConfig {
+public class OnboardsControllerSuite11ImplTest extends MockWebSecurityConfig {
 
 
     @Autowired

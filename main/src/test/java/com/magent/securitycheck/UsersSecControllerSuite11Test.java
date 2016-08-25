@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by artomov.ihor on 10.06.2016.
  */
-public class UsersSecControllerTest extends MockWebSecurityConfig {
+public class UsersSecControllerSuite11Test extends MockWebSecurityConfig {
     @Test
     public void testCreateNegative() throws Exception {
         mvc.perform(post("/users/")

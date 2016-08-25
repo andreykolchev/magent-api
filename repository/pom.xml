@@ -3,15 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
+    <artifactId>magent.repository</artifactId>
+    <version>1.1.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    
     <parent>
         <artifactId>magent-api</artifactId>
         <groupId>com.magent</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
-    <artifactId>magent.common</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
-
+    
+    <dependencies>
+        <dependency>
+            <groupId>com.magent</groupId>
+            <artifactId>magent.model</artifactId>
+            <version>1.1.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

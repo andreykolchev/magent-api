@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by artomov.ihor on 03.06.2016.
  */
-public class ReportsControllerImplTest extends MockWebSecurityConfig {
+public class ReportsControllerSuite11ImplTest extends MockWebSecurityConfig {
     @Value("${tmp.excel.file}")
     private String uploadPath;
     @Autowired

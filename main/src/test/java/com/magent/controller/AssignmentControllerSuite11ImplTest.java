@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created on 12.05.16.
  */
-public class AssignmentControllerImplTest extends MockWebSecurityConfig {
+public class AssignmentControllerSuite11ImplTest extends MockWebSecurityConfig {
 
 
     @Test

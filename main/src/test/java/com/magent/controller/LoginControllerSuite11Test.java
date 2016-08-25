@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.bind.ValidationException;
 import java.util.Date;
 import java.util.Objects;
 
@@ -35,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by artomov.ihor on 13.05.2016.
  */
-public class LoginControllerTest extends MockWebSecurityConfig {
+public class LoginControllerSuite11Test extends MockWebSecurityConfig {
 
     @Autowired
     private OtpGenerator generator;

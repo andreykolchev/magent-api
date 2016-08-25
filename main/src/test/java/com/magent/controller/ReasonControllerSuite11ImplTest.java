@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @version 1.0
  * @since <pre>????. 20, 2016</pre>
  */
-public class ReasonControllerImplTest extends MockWebSecurityConfig {
+public class ReasonControllerSuite11ImplTest extends MockWebSecurityConfig {
     @Autowired
     @Qualifier("reasonGeneralService")
     private GeneralService reasonGenService;

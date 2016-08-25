@@ -19,8 +19,13 @@
     <dependencies>
         <dependency>
             <groupId>com.magent</groupId>
-            <artifactId>magent.common</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <artifactId>magent.model</artifactId>
+            <version>1.1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.magent</groupId>
+            <artifactId>magent.repository</artifactId>
+            <version>1.1.1-SNAPSHOT</version>
         </dependency>
         <!--DATASOURCE-->
         <dependency>
@@ -111,5 +116,6 @@
         <!--Exctension for ImageIO for read svg end-->
         <!--java mail for sending and validation e-mails -->
     </dependencies>
+
 
 </project>

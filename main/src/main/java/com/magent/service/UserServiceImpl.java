@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import static com.magent.domain.enums.TimeIntervalConstants.OTP_INTERVAL_NAME;
 import static com.magent.domain.enums.TimeIntervalConstants.TMP_UNREGISTERED_USER_INTERVAL;
 
 /**

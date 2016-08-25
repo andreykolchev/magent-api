@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by user on 18.05.16.
  */
-public class DeviceControllerImplTest extends MockWebSecurityConfig {
+public class DeviceControllerSuite11ImplTest extends MockWebSecurityConfig {
 
     @Test
     public void testAddOrUpdateDevice() throws Exception {

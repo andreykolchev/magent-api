@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by user on 19.05.16.
  */
-public class UserControllerTest extends MockWebSecurityConfig {
+public class UserControllerSuite11Test extends MockWebSecurityConfig {
 
     @Test
     @Sql("classpath:data.sql")

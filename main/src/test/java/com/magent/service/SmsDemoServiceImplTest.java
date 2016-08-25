@@ -1,7 +1,6 @@
 package com.magent.service;
 
 import com.magent.config.MockWebSecurityConfig;
-import com.magent.config.ServiceConfig;
 import com.magent.domain.SmsPassword;
 import com.magent.domain.TemporaryUser;
 import com.magent.repository.SmsPasswordRepository;
@@ -12,8 +11,6 @@ import com.magent.utils.EntityGenerator;
 import com.magent.utils.SecurityUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.jdbc.Sql;

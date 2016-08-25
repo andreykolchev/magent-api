@@ -83,7 +83,7 @@ public class JpaConfig {
         vendorAdapter.setShowSql(showSql);
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("com.magent.domain");
+        factory.setPackagesToScan("com.magent.repository","com.magent.domain");
         factory.setDataSource(dataSource());
         Properties props = new Properties();
         props.put("connection.pool_size", poolSize);

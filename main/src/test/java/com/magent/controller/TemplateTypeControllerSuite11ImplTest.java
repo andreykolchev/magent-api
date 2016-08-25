@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * TemplateTypeControllerImpl Tester.
  */
-public class TemplateTypeControllerImplTest extends MockWebSecurityConfig {
+public class TemplateTypeControllerSuite11ImplTest extends MockWebSecurityConfig {
     @Autowired
     @Qualifier("templateTypeGeneralService")
     private GeneralService templateTypeGenService;

@@ -3,24 +3,19 @@ package com.magent.controller;
 import com.magent.config.MockWebSecurityConfig;
 import com.magent.domain.User;
 import com.magent.domain.UserPersonal;
-import com.magent.repository.SmsPasswordRepository;
 import com.magent.repository.UserPersonalRepository;
 import com.magent.repository.UserRepository;
-import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.TimeIntervalService;
 import com.magent.service.interfaces.UserService;
 import com.magent.service.scheduleservice.SheduleService;
 import com.magent.utils.SecurityUtils;
 import com.magent.utils.dateutils.DateUtils;
-import com.magent.utils.otpgenerator.OtpGenerator;
 import com.magent.utils.validators.UserValidatorImpl;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.web.client.RestTemplate;
 
 import javax.xml.bind.ValidationException;
 import java.text.DateFormat;
@@ -30,7 +25,6 @@ import java.util.Date;
 
 import static com.magent.domain.enums.TimeIntervalConstants.FORGOT_PASS_INTERVAL;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Created on 11.08.2016.

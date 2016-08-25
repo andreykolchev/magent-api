@@ -9,9 +9,10 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>common</module>
+        <module>model</module>
         <module>main</module>
         <module>integration</module>
+        <module>repository</module>
     </modules>
 
     <packaging>pom</packaging>

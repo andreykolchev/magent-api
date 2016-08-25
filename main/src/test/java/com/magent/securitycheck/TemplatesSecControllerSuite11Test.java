@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by artomov.ihor on 10.06.2016.
  */
-public class TemplatesSecControllerTest extends MockWebSecurityConfig {
+public class TemplatesSecControllerSuite11Test extends MockWebSecurityConfig {
     // this tests checks access according to security filter
     // access to templates should have only admin
     @Test
