@@ -1,5 +1,6 @@
 package com.magent.config;
 
+import com.magent.config.emulatingmethod.MethodEmulator;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DummyServiceTestConfig.class})
 @WebAppConfiguration
-public class MockWebAppConfiguration {
+public class MockWebAppConfiguration extends MethodEmulator{
 
     @Autowired
     protected WebApplicationContext context;

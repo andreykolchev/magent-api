@@ -13,6 +13,7 @@ import java.util.Date;
 public class SmsPassword {
 
     @Id
+    @Column(name = "sms_pwd_pk")
     private Long smsId;
 
     @Column(name = "sms_user_id",unique = true,nullable = false)
@@ -20,24 +21,25 @@ public class SmsPassword {
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "sms_user_id",referencedColumnName = "id",insertable = false,updatable = false)
+    @JoinColumn(name = "sms_user_id",referencedColumnName = "usr_pk",insertable = false,updatable = false)
     private User user;
 
     @JsonIgnore
     @Column(name = "sms_password")
     private String smsPass;
 
+    //changed after end become start
     @Column(name = "endPeriod", nullable = false)
-    private Date endPeriod;
+    private Date startPeriod;
 
     public SmsPassword() {
     }
 
-    public SmsPassword(Long smsId, Long userId, String smsPass, Date endPeriod) {
+    public SmsPassword(Long smsId, Long userId, String smsPass, Date startPeriod) {
         this.smsId = smsId;
         this.userId = userId;
         this.smsPass = smsPass;
-        this.endPeriod = endPeriod;
+        this.startPeriod = startPeriod;
 
     }
 
@@ -73,12 +75,12 @@ public class SmsPassword {
         this.user = user;
     }
 
-    public Date getEndPeriod() {
-        return endPeriod;
+    public Date getStartPeriod() {
+        return startPeriod;
     }
 
-    public void setEndPeriod(Date endPeriod) {
-        this.endPeriod = endPeriod;
+    public void setStartPeriod(Date endPeriod) {
+        this.startPeriod = endPeriod;
     }
 
     @Override

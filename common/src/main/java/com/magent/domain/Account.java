@@ -12,6 +12,7 @@ import java.util.List;
 @Table(name = "ma_accounts")
 public class Account {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "acount_number")
     private Long accountNumber;
 
@@ -27,7 +28,7 @@ public class Account {
 
     @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id",insertable = false,updatable = false)
+    @JoinColumn(name = "user_id",referencedColumnName = "usr_pk",insertable = false,updatable = false)
     private User user;
 
     public Account() {
@@ -37,6 +38,11 @@ public class Account {
         this.accountNumber = accountNumber;
         this.accountBalance = accountBalance;
         this.userId = userId;
+    }
+
+    public Account(User user) {
+        this.accountBalance=0.00;
+        this.userId= user.getId();
     }
 
     public Long getAccountNumber() {

@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
- * Created by artomov.ihor on 13.05.2016.
+ * Created on 14.05.2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {Application.class})
@@ -30,8 +30,12 @@ public class MockWebSecurityConfig extends MockWebAppConfiguration {
     protected final static String header = "refreshToken";
     protected final static String authorizationHeader = "Authorization";
 
-    private final static String backOfficeEmployer = "+380506847580";
+    protected final static String backOfficeEmployer = "+380506847580";
     private final static String backPass = "edd8279b8ebe50c5652ff42e32c3561dd6f85e93";
+
+    protected final static String remoteStaffer = "user2";
+    private final static String remotePass = "edd8279b8ebe50c5652ff42e32c3561dd6f85e93";
+
 
     protected String getToken() throws Exception {
         return mvc.perform(post("/login")
@@ -57,6 +61,18 @@ public class MockWebSecurityConfig extends MockWebAppConfiguration {
         String token = mvc.perform(post("/login")
                 .param("username", backOfficeEmployer)
                 .param("password", backPass))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        JsonParser parser = new JsonParser();
+        JsonObject object = (JsonObject) parser.parse(token);
+        return "bearer" + object.get("access_token").getAsString();
+    }
+
+    protected String getRemoteStafferAccessToken() throws Exception {
+        String token = mvc.perform(post("/login")
+                .param("username", remoteStaffer)
+                .param("password", remotePass))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();

@@ -91,6 +91,10 @@ public class GeneralServiceParametrizedTest {
 
         Identifiable identifiable = (Identifiable) generalService.getById((Number) list.get(0).getId());
         identifiable.setId(0L);
+        if (beanName.equals("templateGeneralService")) {
+            Template template = (Template) identifiable;
+            template.setTemplateTypeId(4L);
+        }
         if (beanName.equals("userGeneralService")) {
             User user = (User) identifiable;
             user.setLogin("new test login");

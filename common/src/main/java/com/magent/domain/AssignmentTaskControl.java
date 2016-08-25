@@ -14,6 +14,7 @@ public class AssignmentTaskControl implements ChangeableEntity,Identifiable<Long
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "asign_tc_pk")
     private Long id;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)

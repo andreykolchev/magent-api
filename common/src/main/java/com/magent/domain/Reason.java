@@ -14,6 +14,7 @@ public class Reason implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "reason_pk")
     private Long id;
 
     @Column(name = "parent_id")
@@ -21,7 +22,7 @@ public class Reason implements Identifiable<Long> {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
-    @JoinColumn(name = "parent_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_parent_id"))
+    @JoinColumn(name = "parent_id", referencedColumnName = "reason_pk", nullable = false, insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_parent_id"))
     @JsonBackReference(value = "parent")
     private Reason parent;
 

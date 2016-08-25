@@ -12,6 +12,7 @@ public class Location implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @Column(name = "loc_pk")
     private Long id;
 
     @Column(name = "latitude")

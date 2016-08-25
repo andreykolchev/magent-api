@@ -1,6 +1,9 @@
 TRUNCATE
 ma_temporary_user,
+ma_tmp_types_roles,
+ma_template_types,
 ma_user_roles,
+ma_user_personal,
 ma_settings,
 ma_activity,
 ma_location,
@@ -21,3 +24,4 @@ ma_user,
 ma_transactions,
 ma_accounts,
 ma_onboards;
+

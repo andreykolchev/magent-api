@@ -5,6 +5,7 @@ import com.magent.securitycheck.AssignmentsSecControllerTest;
 import com.magent.securitycheck.TemplatesSecControllerTest;
 import com.magent.securitycheck.UsersSecControllerTest;
 import com.magent.service.OauthServiceTest;
+import com.magent.service.SmsDemoServiceImplTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -14,18 +15,21 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         AssignmentControllerImplTest.class,
-        DataControllerImplTest.class,
+        MobileControllerImplTest.class,
+        OnboardsControllerImplTest.class,
         DeviceControllerImplTest.class,
         LoginControllerTest.class,
         TemplateControllerImplTest.class,
-        TrackingControllerImplTest.class,
         ReasonControllerImplTest.class,
         UserControllerTest.class,
         ReportsControllerImplTest.class,
         AssignmentsSecControllerTest.class,
         TemplatesSecControllerTest.class,
         UsersSecControllerTest.class,
-        OauthServiceTest.class
+        TemplateTypeControllerImplTest.class,
+        OauthServiceTest.class,
+        UserServiceForgotPwdFullContextTest.class,
+        SmsDemoServiceImplTest.class
 
 })
 public class ControllerSuite {

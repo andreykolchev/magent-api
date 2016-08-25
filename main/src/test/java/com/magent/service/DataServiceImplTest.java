@@ -3,6 +3,7 @@ package com.magent.service;
 import com.magent.config.ServiceConfig;
 import com.magent.domain.Assignment;
 import com.magent.domain.AssignmentAttribute;
+import com.magent.domain.AssignmentStatus;
 import com.magent.domain.User;
 import com.magent.domain.dto.UpdateDataDto;
 import com.magent.service.interfaces.AssignmentAttributeService;
@@ -78,5 +79,12 @@ public class DataServiceImplTest extends ServiceConfig {
         Assert.assertEquals(expectedBalance,user.getAccount().getAccountBalance());
     }
 
+    @Test
+    @Sql("classpath:data.sql")
+    public void testFullRegistartionUpdateData() throws ComissionCalculatorImpl.FormulaNotFound, ParseException, NotFoundException {
+        UpdateDataDto dataDto=EntityGenerator.getUpdateDataDtoForFullRegistrationFull();
+        dataDto=dataService.updateData(dataDto);
+        Assert.assertEquals("check for status should be NEED_CONFIRMATION", AssignmentStatus.NEED_CONFIRMATION,dataDto.getAssignments().get(0).getStatus());
+    }
 
 }

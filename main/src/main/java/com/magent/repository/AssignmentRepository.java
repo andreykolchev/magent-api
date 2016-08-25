@@ -27,10 +27,7 @@ public interface AssignmentRepository extends JpaRepository<Assignment,Long> {
     List<Assignment> findAllByUserId(@Param("userId") Long userId);
 
 
-    @Query("select distinct assign from Assignment assign " +
-           " left join fetch assign.attributes " +
-           " left join fetch assign.tasks" +
-           " where assign.userId=:userId and assign.lastChange>:syncId")
+    @Query(value = "SELECT DISTINCT ass.* FROM ma_assignment ass LEFT JOIN ma_assignment_attribute attr ON ass.assign_pk=attr.assignment_id LEFT JOIN ma_assignment_tasks task ON ass.assign_pk=task.assignment_id  WHERE  ass.lastchange>:syncId OR ass.lastchange ISNULL AND ass.user_id=:userId",nativeQuery = true)
     List<Assignment> findAllByUserIdAndLastChange(@Param("userId") Long userId, @Param("syncId") Long syncId);
 
 

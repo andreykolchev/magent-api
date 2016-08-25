@@ -13,7 +13,7 @@ import java.util.Objects;
 public class Device implements ChangeableEntity, Identifiable<String> {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "device_pk")
     private String deviceId;
 
     @Column

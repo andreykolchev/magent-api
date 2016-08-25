@@ -12,6 +12,7 @@ import javax.persistence.*;
 public class Roles {
 
     @Id
+    @Column(name = "usr_rol_pk")
     private Long id;
 
     @Column(name = "role",updatable = false,nullable = false)

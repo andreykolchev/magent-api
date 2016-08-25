@@ -20,13 +20,13 @@ public class OnBoarding implements Identifiable<Long> {
     @Column(name = "onboard_img", nullable = false)
     private byte[] image;
 
-    @Column(name = "onboard_contents", length = 50)
+    @Column(name = "onboard_contents", length = 250)
     private String content;
 
     @Column(name = "onboard_filename",nullable = false)
     private String fullFileName;
 
-    @Column(name = "onboard_desc", length = 250)
+    @Column(name = "onboard_desc", length = 50)
     private String description;
 
 

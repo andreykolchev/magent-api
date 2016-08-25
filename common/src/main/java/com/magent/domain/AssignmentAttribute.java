@@ -15,6 +15,7 @@ public class AssignmentAttribute implements ChangeableEntity,Identifiable<Long> 
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "asign_attr_pk")
     private Long id;
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -54,7 +55,7 @@ public class AssignmentAttribute implements ChangeableEntity,Identifiable<Long> 
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @ManyToOne(cascade = CascadeType.DETACH,fetch = FetchType.LAZY)
-    @JoinColumn(name = "assignment_id",referencedColumnName = "id", nullable = false, insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_assignment_id"))
+    @JoinColumn(name = "assignment_id",referencedColumnName = "assign_pk", nullable = false, insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_assignment_id"))
     @JsonBackReference(value = "assignmentAttributes")
     private Assignment assignment;
 

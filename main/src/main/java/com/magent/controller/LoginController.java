@@ -6,6 +6,7 @@ import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.UserService;
 import com.magent.service.interfaces.secureservice.OauthService;
 import com.magent.utils.SecurityUtils;
+import com.magent.utils.validators.UserValidatorImpl;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.xml.bind.ValidationException;
 import java.io.IOException;
+import java.text.ParseException;
 
 @Api("Authorization controller")
 @RestController
@@ -39,7 +42,15 @@ public class LoginController implements GeneralController {
     @Qualifier("oauthOtp")
     private OauthService otpOauthService;
     @Autowired
+    @Qualifier("smsServiceImpl")
     private SmsService smsService;
+    @Autowired
+    @Qualifier("smsDemoServiceImpl")
+    private SmsService demoSmsService;
+
+    @Value("${sms.send.real}")
+    private boolean isSmsGateActive;
+
     @Autowired
     private UserService userService;
 
@@ -54,15 +65,15 @@ public class LoginController implements GeneralController {
                                                    @RequestParam(required = true) String username,
                                                    @ApiParam(value = "Hashed password", required = true)
                                                    @RequestParam(required = true) String password,
-                                                   @RequestParam(required = false) boolean withSms) throws IOException, NotFoundException {
-//        LOGGER.debug("Loggin in " + username);
+                                                   @RequestParam(required = false) boolean withSms) throws IOException, NotFoundException, UserValidatorImpl.UserIsBlockedException, ParseException {
+        LOGGER.info("Loggin in " + username);
+        SmsService sender = isSmsGateActive ? smsService : demoSmsService;
         if (!withSms) {
             OAuth2AccessToken token = oauthService.getToken(username, password);
             return new ResponseEntity(token, HttpStatus.OK);
         } else {
             if (userService.isPasswordCorrect(username, password)) {
-                smsService.sendOtpForRegisteredUser(username);
-                return new ResponseEntity(HttpStatus.OK);
+                return getDefaultResponce(sender.sendOtpForRegisteredUser(username), HttpStatus.OK, HttpStatus.BAD_REQUEST);
             } else {
                 throw new NotFoundException("password incorrect");
             }
@@ -77,54 +88,77 @@ public class LoginController implements GeneralController {
 
     @RequestMapping(value = {"/refresh"}, method = {RequestMethod.POST})
     public ResponseEntity<OAuth2AccessToken> refresh(@ApiParam(value = "Refresh token", required = true)
-                                                     @RequestParam(required = true) String refreshToken) {
-        //  LOGGER.debug("Refreshing access token by refresh token = {}", refreshToken);
-        OAuth2AccessToken accessToken = oauthService.refreshToken(refreshToken);
-//        LOGGER.debug("Sent new access token = {} for refresh token = {}", accessToken.getValue(), refreshToken);
-        return new ResponseEntity(accessToken, HttpStatus.OK);
+                                                     @RequestParam(required = true) String refreshToken,
+                                                     @RequestParam(required = false) boolean otp) {
+        if (!otp) {
+            return new ResponseEntity(oauthService.refreshToken(refreshToken), HttpStatus.OK);
+        } else return new ResponseEntity(otpOauthService.refreshToken(refreshToken), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/login/confirmotp", method = RequestMethod.POST)
     public ResponseEntity<OAuth2AccessToken> confirmOtp(@RequestParam(required = true) String username,
                                                         @RequestParam(required = true) String password,
-                                                        @RequestParam(required = true) String otpPass) {
+                                                        @RequestParam(required = true) String otpPass) throws UserValidatorImpl.UserIsBlockedException {
         OAuth2AccessToken accessToken = otpOauthService.getToken(username, hashPass(password, otpPass));
         return new ResponseEntity(accessToken, HttpStatus.OK);
     }
 
     /**
-     * @param login    - present login from DB
+     * @param username - present username from DB
      * @param password - hashed one time password
      * @return
-     * @throws NotFoundException - if not present in db
+     * @throws NotFoundException - if password not correct
      * @throws IOException       - if can't recent otp
      */
-    @RequestMapping(value = "/login/recentotp", method = RequestMethod.POST)
-    public ResponseEntity recentOtpForTegisteredUser(@RequestParam String login,
-                                                     @RequestParam String password) throws NotFoundException, IOException {
-        if (userService.isPasswordCorrect(login, password)) {
-            smsService.sendOtpForRegisteredUser(login);
-            return new ResponseEntity(HttpStatus.OK);
+    @RequestMapping(value = "/login/resendotp", method = RequestMethod.POST)
+    public ResponseEntity<String> recentOtpForTegisteredUser(@RequestParam String username,
+                                                             @RequestParam String password) throws NotFoundException, IOException, UserValidatorImpl.UserIsBlockedException, ParseException {
+        SmsService sender = isSmsGateActive ? smsService : demoSmsService;
+        if (userService.isPasswordCorrect(username, password)) {
+            return getDefaultResponce(sender.sendOtpForRegisteredUser(username), HttpStatus.OK, HttpStatus.BAD_REQUEST);
         } else throw new NotFoundException("password not correct");
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseEntity<String> registerNewUser(@RequestBody TemporaryUser temporaryUser) throws ValidationException {
-        return getDefaultResponce(userService.isNewUserSaved(temporaryUser).getEndPeriod().getTime(), HttpStatus.OK, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> registerNewUser(@RequestBody TemporaryUser temporaryUser) throws ValidationException, ParseException {
+        return getDefaultResponce(userService.isNewUserSaved(temporaryUser), HttpStatus.OK, HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(value = "/signup/recentotp", method = RequestMethod.POST)
-    public ResponseEntity recentOtpForUnregisteredUser(@RequestParam("login") String login) throws NotFoundException {
-        return getDefaultResponceStatusOnly(smsService.recentConfirmation(login), HttpStatus.OK, HttpStatus.NOT_FOUND);
+    /**
+     * @param username - phone number (login)
+     * @return - HttpStatus
+     * @throws NotFoundException - if user not present in db
+     */
+    @RequestMapping(value = "/signup/resendotp", method = RequestMethod.POST)
+    public ResponseEntity<String> recentOtpForUnregisteredUser(@RequestParam("username") String username) throws NotFoundException, ParseException {
+        SmsService sender = isSmsGateActive ? smsService : demoSmsService;
+        return getDefaultResponce(sender.recentConfirmation(username), HttpStatus.OK, HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/signup/registerconfirm", method = RequestMethod.POST)
-    public ResponseEntity confirmRegistration(@RequestParam("login") String login,
+    public ResponseEntity confirmRegistration(@RequestParam("username") String username,
                                               @RequestParam("otp") String otp) throws NotFoundException {
 
-        ResponseEntity responseEntity = getDefaultResponceStatusOnly(userService.confirmRegistration(login, otp), HttpStatus.OK, HttpStatus.NOT_FOUND);
-        smsService.sendSuccessfullRegistration(login);
+        ResponseEntity responseEntity = getDefaultResponceStatusOnly(userService.confirmRegistration(username, otp), HttpStatus.OK, HttpStatus.NOT_FOUND);
+        SmsService sender = isSmsGateActive ? smsService : demoSmsService;
+        sender.sendSuccessfullRegistration(username);
         return responseEntity;
+    }
+
+    @RequestMapping(value = "/login/changePassword", method = RequestMethod.POST)
+    public ResponseEntity<String> sendOtpForForgotPassword(@RequestParam("username") String username) throws ValidationException, ParseException {
+        SmsService sender = isSmsGateActive ? smsService : demoSmsService;
+        //send sms
+        return getDefaultResponce(sender.sendForgotPassword(username), HttpStatus.OK, HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value = "login/changePasswordConfirm", method = RequestMethod.POST)
+    public ResponseEntity confirmChangePassword(@RequestParam("username") String userName,
+                                                @RequestParam("password") String password,
+                                                @RequestParam("otp") String otp) throws ValidationException, UserValidatorImpl.UserIsBlockedException {
+
+        return getDefaultResponceStatusOnly(userService.changePassword(userName, password, otp), HttpStatus.OK, HttpStatus.BAD_REQUEST);
+
     }
 
     private String hashPass(String pass, String otpPass) {

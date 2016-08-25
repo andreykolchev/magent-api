@@ -83,6 +83,7 @@ public final class EntityGenerator {
         assignmentTaskControl.setId(1L);
         assignmentTaskControl.setDesc("ComissionCalculatorImplTest control 1");
         assignmentTaskControl.setValueType(ValueType.TEXT);
+        assignmentTaskControl.setValue("Test value");
         return assignmentTaskControl;
     }
 
@@ -131,10 +132,45 @@ public final class EntityGenerator {
         Set<AssignmentTaskControl> assignmentTaskControls = new HashSet<>();
         assignment.setId(1L);
         assignment.setVersion(1);
-        assignment.setTemplateId(1L);
+        assignment.setTemplateId(3L);
         assignment.setUserId(1L);
         assignment.setDesc("TEST");
         assignment.setLastChange(LocalDate.now().toEpochDay());
+
+        AssignmentAttribute assignmentAttribute = getNewAssignmentAttribute();
+        assignmentAttributes.add(assignmentAttribute);
+        assignment.setAttributes(assignmentAttributes);
+
+        AssignmentTask newAssignmentTask = getNewAssignmentTask();
+        AssignmentTaskControl newAssignmentTaskControl = getNewAssignmentTaskControl();
+
+        assignmentTaskControls.add(newAssignmentTaskControl);
+        newAssignmentTask.setControls(assignmentTaskControls);
+
+        assignmentTasks.add(newAssignmentTask);
+        assignment.setTasks(assignmentTasks);
+
+        assignmentList.add(assignment);
+        dataDto.setAssignments(assignmentList);
+
+        return dataDto;
+    }
+
+    public static UpdateDataDto getUpdateDataDtoForFullRegistrationFull() {
+        UpdateDataDto dataDto = new UpdateDataDto();
+        Assignment assignment = new Assignment();
+        assignment.setStatus(AssignmentStatus.COMPLETE);
+        List<Assignment> assignmentList = new ArrayList<>();
+        Set<AssignmentAttribute> assignmentAttributes = new HashSet<>();
+        Set<AssignmentTask> assignmentTasks = new HashSet<>();
+        Set<AssignmentTaskControl> assignmentTaskControls = new HashSet<>();
+        assignment.setId(1L);
+        assignment.setVersion(1);
+        assignment.setTemplateId(1L);
+        assignment.setUserId(1L);
+        assignment.setDesc("full registration description");
+        assignment.setLastChange(LocalDate.now().toEpochDay());
+        assignment.setStatus(AssignmentStatus.COMPLETE);
 
         AssignmentAttribute assignmentAttribute = getNewAssignmentAttribute();
         assignmentAttributes.add(assignmentAttribute);
@@ -177,7 +213,7 @@ public final class EntityGenerator {
     }
 
     public static Template getNewTestTemplate() {
-        return new Template("test template", "template POST test");
+        return new Template("test template", "template POST test",4L);
     }
 
     public static TemplateAttribute getNewTestTemplateAttribute() {
@@ -215,7 +251,7 @@ public final class EntityGenerator {
         User user = new User();
         user.setId(1L);
         user.setLogin("user1");
-        user.setPassword("edd8279b8ebe50c5652ff42e32c3561dd6f85e93");
+        user.setUserPersonal(new UserPersonal(user.getId(),"edd8279b8ebe50c5652ff42e32c3561dd6f85e93"));
         user.setRole(UserRoles.ADMIN);
         user.setEmail("test@test.com");
         user.setFirstName("ComissionCalculatorImplTest");
@@ -224,13 +260,13 @@ public final class EntityGenerator {
     }
 
     public static ChangePasswordDto getChangePasswordDto() {
-        return new ChangePasswordDto("user1", "edd8279b8ebe50c5652ff42e32c3561dd6f85e93", "edd8279b8ebe50c5652ff42e32c3561dd6f85e93");
+        return new ChangePasswordDto("user1", "edd8279b8ebe50c5652ff42e32c3561dd6f85e93", "ValidPwd");
     }
 
     public static User getNewTestUser(){
         User user = new User();
         user.setLogin("user_test");
-        user.setPassword("test");
+        user.setUserPersonal(new UserPersonal(user.getId(),"test"));
         user.setRole(UserRoles.ADMIN);
         user.setEmail("test@test.com");
         user.setFirstName("ComissionCalculatorImplTest");
@@ -276,6 +312,19 @@ public final class EntityGenerator {
     }
 
     public static TemporaryUser generateUserForRegistration(){
-        return new TemporaryUser("device","test@gmail.com","Tester","Testov","+380978090838",SecurityUtils.hashPassword("pass"));
+        return new TemporaryUser("deviceunique","test@gmail.com","Tester","Testov","+380971112222",SecurityUtils.hashPassword("pass"));
     }
+
+    public static TemplateType generateTestTemplateType(){
+        return new TemplateType("test",Arrays.asList(UserRoles.ADMIN));
+    }
+
+    public static TemplateType generateTestTemplateTypeNegative(){
+        return new TemplateType("test",Arrays.asList());
+    }
+
+    public static TemplateType generateChildTemplateType(Long parentId){
+        return new TemplateType("child",parentId,Arrays.asList(UserRoles.ADMIN));
+    }
+
 }

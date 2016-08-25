@@ -55,7 +55,7 @@ public class Application extends SpringBootServletInitializer {
                 //filters info
                 //passwords information
                 .description("0. ---- Short information about security filters for testers : "+"\r\n"+
-                        "1. url - /login - permit all "+"\r\n"+
+                        "1. url - /username - permit all "+"\r\n"+
                         "2. url - /refresh - permit all "+"\r\n"+
                         "3. url - /templates/** - permit only for ADMIN "+"\r\n"+
                         "4. url - /assignments/** methods GET,POST,PUT permit only for ADMIN,BACK_OFFICE_EMPLOYEE"+"\r\n"+
@@ -69,6 +69,8 @@ public class Application extends SpringBootServletInitializer {
                         "12. url - /data/onboards method get, allowed for any user"+"\r\n"+
                         "13. url - /data/onboards/** allowed only for ADMIN"+"\r\n"+
                         "14. url - /data/onboards methods put, post, delete, allowed only for ADMIN"+"\r\n"+
+                        "15. url - /template-types/** allowed only for ADMIN"+"\r\n"+
+                        "16. url - /data/user-balance method GET allowed only for REMOTE_SELLER_STAFFER,SALES_AGENT_FREELANCER_LEAD_GEN,SALES_AGENT_FREELANCER"+"\r\n"+
                         "\r\n"+
                         "0. ---- Logins and passwords for different roles: " + "\r\n" +
                         "1. ROLE_ADMIN user1 - edd8279b8ebe50c5652ff42e32c3561dd6f85e93 WEB_UI_PASS - user1 " + "\r\n" +

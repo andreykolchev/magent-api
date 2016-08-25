@@ -6,6 +6,7 @@ import com.magent.service.interfaces.TemplateAttributeService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.jdbc.Sql;
 
 /**
  * TemplateAttributeServiceImpl Tester.
@@ -26,6 +27,7 @@ public class TemplateAttributeServiceImplTest extends ServiceConfig {
      * Method: getAttributesByTemplateId(Long templateId)
      */
     @Test
+    @Sql("classpath:data.sql")
     public void testGetAttributesByTemplateId() throws Exception {
         Assert.assertNotNull(attributeService.getAttributesByTemplateId(templateId));
         Assert.assertEquals("checking size of collection", attributeService.getAttributesByTemplateId(templateId).size(), excpectedSizeOfCollection);

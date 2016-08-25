@@ -12,11 +12,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @ImportResource({"classpath:serviceBeans.xml","classpath:objectmapper.xml"})
 @ComponentScan({"com.magent.service"})
 @EnableAspectJAutoProxy
-//@Import({DsIntegrationConfig.class})
 @EnableAsync
 @PropertySources({
         @PropertySource(value = "classpath:magent.properties",ignoreResourceNotFound = true),
-        //@PropertySource(value = "file:${catalina.home}/config/magent.properties", ignoreResourceNotFound = true)
+        @PropertySource(value = "file:/opt/tomcat/config/magentDemo.properties",ignoreResourceNotFound = true)
 })
 public class AppServiceConfig {
 

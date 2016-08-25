@@ -26,13 +26,9 @@
     <logger name="org.springframework" level="info">
         <appender-ref ref="STDOUT"/>
     </logger>
-    <logger name="com.github.isrsal.logging.LoggingFilter" level="DEBUG">
-        <appender-ref ref="STDOUT"/>
-    </logger>
 
     <logger controlName="org.hibernate.tool.hbm2ddl.SchemaExport" level="INFO">
         <appender-ref ref="STDOUT"/>
     </logger>
-
 
 </configuration>

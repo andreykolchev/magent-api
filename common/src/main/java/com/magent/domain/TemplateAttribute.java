@@ -13,6 +13,7 @@ public class TemplateAttribute implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "templ_attr_pk")
     private Long id;
 
 

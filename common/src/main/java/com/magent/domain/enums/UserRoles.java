@@ -1,6 +1,12 @@
 package com.magent.domain.enums;
 
+import com.magent.domain.Roles;
 import javassist.NotFoundException;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created  on 06.06.2016.
@@ -23,6 +29,18 @@ public enum UserRoles {
         return roleId;
     }
 
+    public static List<Roles> getRoles(List<UserRoles> userRolesList) {
+        List<Roles> rolesList = new ArrayList<>();
+        for (UserRoles userRoles : userRolesList) rolesList.add(new Roles(userRoles));
+        return rolesList;
+    }
+
+    public static Set<Roles> getRolesSet(Set<UserRoles> userRolesList) {
+        Set<Roles> rolesList = new HashSet<>();
+        for (UserRoles userRoles : userRolesList) rolesList.add(new Roles(userRoles));
+        return rolesList;
+    }
+
     public static UserRoles getById(Long roleId) throws NotFoundException {
         for (UserRoles roles : UserRoles.values()) {
             if (roleId.equals(roles.getRoleId())) {
@@ -39,4 +57,15 @@ public enum UserRoles {
         throw new NotFoundException("user with current role not found");
     }
 
+    public static List<UserRoles> getUserRoles(Set<Roles> rolesList) throws NotFoundException {
+        List<UserRoles> roles = new ArrayList<>();
+        for (Roles uroles : rolesList) roles.add(getById(uroles.getId()));
+            return roles;
+    }
+
+    public static Set<UserRoles> getUserRolesSet(Set<Roles> rolesList) throws NotFoundException {
+        Set<UserRoles> roles = new HashSet<>();
+        for (Roles uroles : rolesList) roles.add(getById(uroles.getId()));
+        return roles;
+    }
 }

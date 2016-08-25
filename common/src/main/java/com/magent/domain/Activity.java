@@ -12,6 +12,7 @@ public class Activity implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "activity_pk")
     private Long id;
 
     @Column(name = "app_name",nullable = false)

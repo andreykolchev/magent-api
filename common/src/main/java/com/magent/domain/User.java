@@ -16,20 +16,18 @@ public class User implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "usr_pk")
     private Long id;
 
     @Column(nullable = false, unique = true)
     private String login;
-
-    @Column(name = "pwd", nullable = false)
-    private String password;
 
     @Column(name = "u_role", nullable = false)
     private Long role;
 
     @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "u_role", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "u_role", referencedColumnName = "usr_rol_pk", insertable = false, updatable = false)
     private Roles uRole;
 
     @Column
@@ -42,8 +40,8 @@ public class User implements Identifiable<Long> {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinTable(
             name = "ma_user_device",
-            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "device_id", referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "usr_pk")},
+            inverseJoinColumns = {@JoinColumn(name = "device_id", referencedColumnName = "device_pk")})
     private List<Device> devices;
 
     @JsonIgnore
@@ -60,17 +58,21 @@ public class User implements Identifiable<Long> {
     @Column(name = "e_mail")
     private String email;
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "user",cascade = CascadeType.REMOVE)
+    @JsonBackReference(value = "userPersonal")
+    private UserPersonal userPersonal;
+
     public User() {
     }
 
     public User(TemporaryUser temporaryUser) {
-        this.login=temporaryUser.getLogin();
+        this.login=temporaryUser.getUsername();
         this.email=temporaryUser.getEmail();
         this.role=UserRoles.SALES_AGENT_FREELANCER_LEAD_GEN.getRoleId();
         this.enabled=true;
         this.firstName=temporaryUser.getFirstName();
         this.lastName=temporaryUser.getLastName();
-        this.password=temporaryUser.getHashedPwd();
         this.devices=new ArrayList<>(Arrays.asList(new Device(temporaryUser.getDevicesId())));
     }
 
@@ -88,14 +90,6 @@ public class User implements Identifiable<Long> {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public UserRoles getRole() throws NotFoundException {
@@ -154,6 +148,14 @@ public class User implements Identifiable<Long> {
         this.email = email;
     }
 
+    public UserPersonal getUserPersonal() {
+        return userPersonal;
+    }
+
+    public void setUserPersonal(UserPersonal userPersonal) {
+        this.userPersonal = userPersonal;
+    }
+
     public boolean addDevice(Device curDevice) {
         if (devices == null) {
             devices = new ArrayList<>();
@@ -193,7 +195,6 @@ public class User implements Identifiable<Long> {
         return "User{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 ", enabled=" + enabled +
                 ", expirationDate=" + expirationDate +

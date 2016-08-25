@@ -25,8 +25,8 @@ import java.util.Properties;
 @ComponentScan({"com.magent.repository", "com.magent.service, com.magent.domain"})
 @EnableJpaRepositories(value = "com.magent.repository", repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)
 @PropertySources({
-        @PropertySource("classpath:magent.properties"),
-        //@PropertySource(value = "file:/opt/esb/config/magent.properties", ignoreResourceNotFound = true)
+        @PropertySource(value = "classpath:magent.properties",ignoreResourceNotFound = true),
+        @PropertySource(value = "file:/opt/tomcat/config/magentDemo.properties",ignoreResourceNotFound = true)
 })
 public class JpaConfig {
 
@@ -85,7 +85,6 @@ public class JpaConfig {
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("com.magent.domain");
         factory.setDataSource(dataSource());
-
         Properties props = new Properties();
         props.put("connection.pool_size", poolSize);
         props.put("hibernate.show_sql", showSql);

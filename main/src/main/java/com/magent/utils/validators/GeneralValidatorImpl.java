@@ -13,13 +13,6 @@ public class GeneralValidatorImpl implements GeneralValidator {
 
     @Override
     public boolean isEmailValid(String email) {
-       /* try {
-            InternetAddress address = new InternetAddress(email);
-            address.validate();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }*/
         return Pattern.matches("\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b",email);
     }
 
@@ -35,7 +28,7 @@ public class GeneralValidatorImpl implements GeneralValidator {
 
     @Override
     public boolean isPasswordValid(String pwd) {
-        return Pattern.matches("((?=.*[a-z])(?=.*[A-Z]|.*\\d|.*[@#$%]).{6,20})", pwd);
+        return Pattern.matches("((?=.*[a-z])(?=.*[A-Z]|.*\\d)(?!.*[\\W]).{6,20})", pwd);
     }
 
 }

@@ -22,10 +22,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
+import static com.magent.domain.AssignmentStatus.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -57,6 +56,12 @@ public class DataServiceImpl implements DataService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TemplateTypeRpository typeRpository;
+
+    @Autowired
+    private TemplateRepository templateRepository;
+
     @SuppressFBWarnings("EC_UNRELATED_TYPES")
     @Override
     public UpdateDataDto getData(Long userId, Long syncId) {
@@ -66,9 +71,12 @@ public class DataServiceImpl implements DataService {
             assignmentList = assignmentRepository.findAllByUserId(userId);
         } else {
             assignmentList = assignmentRepository.findAllByUserIdAndLastChange(userId, syncId);
+            initializeAttributesAndTasks(assignmentList);
         }
         for (Assignment assignment : assignmentList) {
             initializeControls(assignment);
+            assignment.setTemplateTypeDescription(typeRpository.getByTemplateId(assignment.getTemplateId()).getDescription()
+            );
         }
         UpdateDataDto result = new UpdateDataDto();
         result.setSyncId(new Date().getTime());
@@ -77,58 +85,22 @@ public class DataServiceImpl implements DataService {
     }
 
 
-    @SuppressFBWarnings("NS_DANGEROUS_NON_SHORT_CIRCUIT")
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UpdateDataDto updateData(UpdateDataDto dataDto) throws ComissionCalculatorImpl.FormulaNotFound, NotFoundException, ParseException {
-        //SecurityUtils.checkPrincipalIsNull(DataServiceImpl.class); 
         UpdateDataDto result = new UpdateDataDto();
         if (dataDto != null) {
             List<Assignment> persistedAssignmentList = new ArrayList<>();
             List<Assignment> assignmentList = dataDto.getAssignments();
             if (assignmentList != null) {
-                try {
-                    assignmentRepository.save(assignmentList);
-                } catch (Exception e) {
-                    return null;
-                }
+                //if assignment contains first registration template
+                changeAssignmentForFullRegistration(assignmentList);
+                //persist
+                assignmentRepository.save(assignmentList);
                 for (Assignment assignment : assignmentList) {
-                    if (Objects.nonNull(assignment.getAttributes())) {
-                        List<AssignmentAttribute> attributeList = assignmentAttributeRepository.getByAssignmentId(assignment.getId());
-                        try {
-                            assignmentAttributeRepository.save(assignment.getAttributes());
-                            //calculate possible commission logic by template
-                            if (isFormulaPresent(attributeList)) {
-                                if (isCommissionPresent(attributeList)) {
-                                    Double commission = calculateCommision(attributeList);
-                                    if (commission != null) {
-                                        AssignmentAttribute attribute = assignmentAttributeRepository.getCommssionCost(assignment.getId(), ValueType.COMMISSION_COST);
-                                        attribute.setValue(String.valueOf(commission));
-                                        assignmentAttributeRepository.save(attribute);
-                                    }
-                                }
-                            }
-                        } catch (Exception e) {
-                            return null;
-                        }
-
-                        if (assignment.getStatus().equals(AssignmentStatus.COMPLETE) & isFormulaPresent(attributeList)) {
-                            //transaction logic
-                            addTransaction(assignment);
-                        }
-
-                    }
-                    if (Objects.nonNull(assignment.getTasks())) {
-                        for (AssignmentTask assignmentTask : assignment.getTasks()) {
-                            if (Objects.nonNull(assignmentTask.getControls())) {
-                                try {
-                                    assignmentTaskControlRepository.save(assignmentTask.getControls());
-                                } catch (Exception e) {
-                                    return null;
-                                }
-                            }
-                        }
-                    }
+                    //do operations in attributes
+                    updateDataAttributesOperation(assignment);
+                    updateDataTasks(assignment);
                     Assignment persistedAssignment = assignmentRepository.findOne(assignment.getId());
                     initializeControls(persistedAssignment);
                     persistedAssignmentList.add(persistedAssignment);
@@ -212,4 +184,61 @@ public class DataServiceImpl implements DataService {
             Hibernate.initialize(task.getControls());
         }
     }
+
+    //attributes operation
+    @Transactional(rollbackFor = Exception.class)
+    private void updateDataAttributesOperation(Assignment assignment) throws NotFoundException, ParseException, ComissionCalculatorImpl.FormulaNotFound {
+        if (Objects.nonNull(assignment.getAttributes())) {
+            List<AssignmentAttribute> attributeList = assignmentAttributeRepository.getByAssignmentId(assignment.getId());
+            assignmentAttributeRepository.save(assignment.getAttributes());
+            //calculate possible commission logic by template
+            if (isFormulaPresent(attributeList)) {
+                if (isCommissionPresent(attributeList)) {
+                    Double commission = calculateCommision(attributeList);
+                    AssignmentAttribute attribute = assignmentAttributeRepository.getCommssionCost(assignment.getId(), ValueType.COMMISSION_COST);
+                    attribute.setValue(String.valueOf(commission));
+                    assignmentAttributeRepository.save(attribute);
+                }
+                //full condition for calculate commission
+                if (assignment.getStatus().equals(AssignmentStatus.COMPLETE)) {
+                    //transaction logic
+                    addTransaction(assignment);
+                }
+            }
+
+
+        }
+    }
+
+    //tasks operation
+    @Transactional(rollbackFor = Exception.class)
+    private void updateDataTasks(Assignment assignment) {
+        if (Objects.nonNull(assignment.getTasks())) {
+            for (AssignmentTask assignmentTask : assignment.getTasks()) {
+                if (Objects.nonNull(assignmentTask.getControls())) {
+                    assignmentTaskControlRepository.save(assignmentTask.getControls());
+                }
+            }
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    private void changeAssignmentForFullRegistration(List<Assignment> assignmentList) {
+        //template type 2 is always for full registration only.
+        Long fullRegTemplateId = typeRpository.findOne(2L).getTemplate().getId();
+
+        for (Assignment assignment : assignmentList) {
+            if (assignment.getStatus().equals(COMPLETE)&&assignment.getTemplateId().equals(fullRegTemplateId)) {
+               assignment.setStatus(NEED_CONFIRMATION);
+            }
+        }
+    }
+    @Transactional(readOnly = true)
+    private void initializeAttributesAndTasks (List<Assignment>assignmentList){
+        for (Assignment assignment:assignmentList) {
+            Hibernate.initialize(assignment.getAttributes());
+            Hibernate.initialize(assignment.getTasks());
+        }
+    }
+
 }

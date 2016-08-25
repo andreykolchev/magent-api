@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -28,6 +29,7 @@ import static com.magent.domain.enums.UserRoles.*;
  */
 @Configuration
 @EnableResourceServer
+@EnableWebMvcSecurity
 @ComponentScan("com.magent.config.auth")
 public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
 
@@ -104,10 +106,13 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers("/login/otp*").permitAll()
                 .antMatchers("/signup").permitAll()
 
-                .antMatchers(HttpMethod.GET, "/data/onboards").permitAll()
+                .antMatchers(HttpMethod.GET, "/onboards/").permitAll()
 
                 //*SPRING 20 TASK SAP-13*//*
-                .antMatchers("/templates/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.GET,"/templates/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.POST,"/templates/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.PUT,"/templates/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.DELETE,"/templates/**").hasAnyAuthority(ADMIN.toString())
 
                 .antMatchers(HttpMethod.GET, "/assignments/**").hasAnyAuthority(ADMIN.toString(), BACK_OFFICE_EMPLOYEE.toString())
                 .antMatchers(HttpMethod.POST, "/assignments/**").hasAnyAuthority(ADMIN.toString(), BACK_OFFICE_EMPLOYEE.toString())
@@ -118,39 +123,40 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/users/**").hasAnyAuthority(ADMIN.toString())
                 .antMatchers(HttpMethod.PUT, "/users/**").hasAnyAuthority(ADMIN.toString())
 
-                .antMatchers("/data/**").hasAnyAuthority(ADMIN.toString(), REMOTE_SELLER_STAFFER.toString())
+                .antMatchers(HttpMethod.GET,"/mobile/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString(),ADMIN.toString())
+                .antMatchers(HttpMethod.PUT,"/mobile/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString(),ADMIN.toString())
+                .antMatchers(HttpMethod.POST,"/mobile/**").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString(),ADMIN.toString())
+                .antMatchers(HttpMethod.DELETE,"/mobile/**").hasAnyAuthority(ADMIN.toString())
+                //common controller
+                .antMatchers(HttpMethod.GET,"/data/**").authenticated()
+
                 //on board get by id , and modifying this info allowed only for admin According to SAP_45
-                .antMatchers("/data/onboards/**").hasAnyAuthority(ADMIN.toString())
-                .antMatchers(HttpMethod.POST, "/data/onboards").hasAnyAuthority(ADMIN.toString())
-                .antMatchers(HttpMethod.PUT, "/data/onboards").hasAnyAuthority(ADMIN.toString())
-                .antMatchers(HttpMethod.DELETE, "/data/onboards").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.GET,"/onboards/**").authenticated()
+                .antMatchers(HttpMethod.POST, "/onboards/").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.PUT, "/onboards/").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.DELETE, "/onboards/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.GET,"/data/user-balance*").hasAnyAuthority(REMOTE_SELLER_STAFFER.toString(),SALES_AGENT_FREELANCER_LEAD_GEN.toString(),SALES_AGENT_FREELANCER.toString())
+
+                .antMatchers(HttpMethod.GET,"/template-types/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.PUT,"/template-types/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.POST,"/template-types/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.DELETE,"/template-types/**").hasAnyAuthority(ADMIN.toString())
 
                 .antMatchers("/tracking/**").authenticated()
 
-                .antMatchers("/reports/**").hasAnyAuthority(ADMIN.toString(), BACK_OFFICE_EMPLOYEE.toString())
-                .antMatchers("/testOauth/**").authenticated()
+                .antMatchers(HttpMethod.GET,"/reports/**").hasAnyAuthority(ADMIN.toString(), BACK_OFFICE_EMPLOYEE.toString())
+                .antMatchers(HttpMethod.PUT,"/reports/**").hasAnyAuthority(ADMIN.toString(), BACK_OFFICE_EMPLOYEE.toString())
+                .antMatchers(HttpMethod.POST,"/reports/**").hasAnyAuthority(ADMIN.toString(), BACK_OFFICE_EMPLOYEE.toString())
+                .antMatchers(HttpMethod.DELETE,"/reports/**").hasAnyAuthority(ADMIN.toString(), BACK_OFFICE_EMPLOYEE.toString())
 
                 .antMatchers("/devices/**").authenticated()
 
-                .antMatchers("/reasons/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.GET,"/reasons/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.PUT,"/reasons/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.POST,"/reasons/**").hasAnyAuthority(ADMIN.toString())
+                .antMatchers(HttpMethod.DELETE,"/reasons/**").hasAnyAuthority(ADMIN.toString())
+
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-
-        /*http.csrf().disable()
-                .authorizeRequests()
-                // .antMatchers("/testOauth*").hasAnyAuthority(UserRoles.ADMIN.toString())
-         .antMatchers("/testOauth*").authenticated()
-         .antMatchers("/login*").permitAll()
-         .antMatchers("/refresh").permitAll()
-         .antMatchers("/user/create").permitAll()
-         .antMatchers("/users*").permitAll()
-         .antMatchers("/data*").permitAll()
-         .antMatchers("/devices*").permitAll()
-         .antMatchers("/assignment*").permitAll()
-         .antMatchers("/templates*").permitAll()
-         .antMatchers("/tracking*").permitAll()
-         .antMatchers("/reasons*").permitAll()
-         .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
 
     }
 }
