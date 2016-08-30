@@ -45,7 +45,7 @@
                                     <artifactId>${artifactId}</artifactId>
                                     <version>${version}</version>
                                     <type>${packaging}</type>
-                                    <overWrite>false</overWrite>
+                                    <overWrite>true</overWrite>
                                     <outputDirectory>${pom.basedir}/../${artifact.directory}</outputDirectory>
                                 </artifactItem>
                             </artifactItems>

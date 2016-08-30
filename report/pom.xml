@@ -35,18 +35,6 @@
             <scope>system</scope>
             <systemPath>${pom.basedir}\..\${artifact.directory}\${repository.module.name}</systemPath>
         </dependency>
-        <!--APACHE POI FOR XLS FILES-->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.12</version>
-        </dependency>
-        <!--APACHE POI FOR XLS FILES END-->
     </dependencies>
     <build>
         <plugins>

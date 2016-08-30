@@ -58,7 +58,7 @@
                                     <version>${version}</version>
                                     <type>${packaging}</type>
                                     <overWrite>false</overWrite>
-                                    <outputDirectory>${pom.basedir}/../jars</outputDirectory>
+                                    <outputDirectory>${pom.basedir}/../${artifact.directory}</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
                             <overWriteReleases>false</overWriteReleases>

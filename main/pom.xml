@@ -10,31 +10,40 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <properties>
+        <artifact.directory>jars</artifact.directory>
         <model.module.name>magent.model-1.1.1-SNAPSHOT.jar</model.module.name>
         <repository.module.name>magent.repository-1.1.1-SNAPSHOT.jar</repository.module.name>
         <report.module.name>magent.report-1.1.1-SNAPSHOT.jar</report.module.name>
     </properties>
     <packaging>war</packaging>
     <artifactId>magent.main</artifactId>
+
     <build>
         <finalName>magent-api</finalName>
     </build>
+
     <dependencies>
         <!--MODULES DEPENDENCIES-->
         <dependency>
             <groupId>com.magent</groupId>
             <artifactId>magent.model</artifactId>
             <version>1.1.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}\..\${artifact.directory}\${model.module.name}</systemPath>
         </dependency>
         <dependency>
             <groupId>com.magent</groupId>
             <artifactId>magent.repository</artifactId>
             <version>1.1.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}\..\${artifact.directory}\${repository.module.name}</systemPath>
         </dependency>
         <dependency>
             <groupId>com.magent</groupId>
             <artifactId>magent.report</artifactId>
             <version>1.1.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}\..\${artifact.directory}\${report.module.name}</systemPath>
         </dependency>
         <!--SWAGER -->
         <dependency>

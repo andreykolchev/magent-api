@@ -25,6 +25,10 @@
     </parent>
 
     <properties>
+        <artifact.directory>jars</artifact.directory>
+        <model.module.name>magent.model-1.1.1-SNAPSHOT.jar</model.module.name>
+        <repository.module.name>magent.repository-1.1.1-SNAPSHOT.jar</repository.module.name>
+        <report.module.name>magent.report-1.1.1-SNAPSHOT.jar</report.module.name>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>Application</start-class>
         <java.version>1.8</java.version>
@@ -121,6 +125,18 @@
             <artifactId>swagger-annotations</artifactId>
             <version>1.5.3-M1</version>
         </dependency>
+        <!--APACHE POI FOR XLS FILES-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.12</version>
+        </dependency>
+        <!--APACHE POI FOR XLS FILES END-->
     </dependencies>
     <build>
         <plugins>
@@ -139,13 +155,31 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
-                    <!--<skipTests>true</skipTests>-->
+                    <skipTests>true</skipTests>
                     <goal>package</goal>
                     <includes>
                         <include>**/**Suite.java</include>
                     </includes>
                 </configuration>
             </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>2.1.1</version>
+                    <configuration>
+                        <webResources>
+                            <resource>
+                                <directory>${project.basedir}\..\${artifact.directory}</directory>
+                                <targetPath>WEB-INF/lib</targetPath>
+                                <includes>
+                                    <include>${model.module.name}</include>
+                                    <include>${repository.module.name}</include>
+                                    <include>${report.module.name}</include>
+                                </includes>
+                            </resource>
+                        </webResources>
+                    </configuration>
+                </plugin>
         </plugins>
     </build>
 
