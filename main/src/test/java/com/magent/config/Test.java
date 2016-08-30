@@ -1,13 +1,7 @@
 package com.magent.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.magent.utils.EntityGenerator;
-
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 /**

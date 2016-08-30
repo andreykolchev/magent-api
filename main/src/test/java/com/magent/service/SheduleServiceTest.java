@@ -8,7 +8,7 @@ import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.TimeIntervalService;
 import com.magent.service.interfaces.UserService;
 import com.magent.service.scheduleservice.SheduleService;
-import com.magent.utils.dateutils.DateUtils;
+import com.magent.reportmodule.utils.dateutils.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

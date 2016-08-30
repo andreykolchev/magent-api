@@ -3,13 +3,12 @@ package com.magent.controller;
 import com.magent.config.MockWebSecurityConfig;
 import com.magent.domain.User;
 import com.magent.domain.UserPersonal;
-import com.magent.repository.UserPersonalRepository;
+import com.magent.reportmodule.utils.dateutils.DateUtils;
 import com.magent.repository.UserRepository;
 import com.magent.service.interfaces.TimeIntervalService;
 import com.magent.service.interfaces.UserService;
 import com.magent.service.scheduleservice.SheduleService;
 import com.magent.utils.SecurityUtils;
-import com.magent.utils.dateutils.DateUtils;
 import com.magent.utils.validators.UserValidatorImpl;
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.magent.domain.enums.TimeIntervalConstants.FORGOT_PASS_INTERVAL;
-import static org.mockito.Mockito.mock;
 
 /**
  * Created on 11.08.2016.
@@ -47,9 +45,6 @@ public class UserServiceForgotPwdFullContextTest extends MockWebSecurityConfig {
 
     @Autowired
     private TimeIntervalService timeIntervalService;
-
-    @Autowired
-    private UserPersonalRepository userPersonalRepository;
 
     private final DateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 

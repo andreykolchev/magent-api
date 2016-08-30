@@ -2,7 +2,7 @@ package com.magent.utils.validators;
 
 import com.magent.domain.UserPersonal;
 import com.magent.repository.UserPersonalRepository;
-import com.magent.utils.dateutils.DateUtils;
+import com.magent.reportmodule.utils.dateutils.DateUtils;
 import com.magent.utils.validators.interfaces.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

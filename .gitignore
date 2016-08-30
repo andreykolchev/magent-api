@@ -22,3 +22,7 @@
 /model/magent.model.iml
 /repository/target/
 /repository/magent.repository.iml
+/report/magent.report.iml
+/report/target/
+
+/out/

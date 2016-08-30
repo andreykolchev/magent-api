@@ -9,7 +9,7 @@ import com.magent.repository.UserPersonalRepository;
 import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.TimeIntervalService;
 import com.magent.service.interfaces.UserService;
-import com.magent.utils.dateutils.DateUtils;
+import com.magent.reportmodule.utils.dateutils.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -2,9 +2,9 @@ package com.magent.controller;
 
 import com.magent.controller.interfaces.GeneralController;
 import com.magent.domain.User;
-import com.magent.service.interfaces.TransactionService;
-import com.magent.utils.xlsutil.interfaces.CsvReader;
-import com.magent.utils.xlsutil.interfaces.TransactionsXlsReader;
+import com.magent.reportmodule.reportservice.interfaces.TransactionService;
+import com.magent.reportmodule.utils.xlsutil.interfaces.CsvReader;
+import com.magent.reportmodule.utils.xlsutil.interfaces.TransactionsXlsReader;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,38 +1,19 @@
 package com.magent.config;
 
 import com.magent.domain.Roles;
-import com.magent.domain.Template;
-import com.magent.domain.TemplateType;
 import com.magent.domain.TimeInterval;
 import com.magent.domain.enums.UserRoles;
 import com.magent.repository.RolesRepository;
-import com.magent.repository.TemplateRepository;
-import com.magent.repository.TemplateTypeRpository;
 import com.magent.repository.TimeIntervalRepository;
-import com.magent.utils.dateutils.DateUtils;
-import javassist.NotFoundException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import com.magent.reportmodule.utils.dateutils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 

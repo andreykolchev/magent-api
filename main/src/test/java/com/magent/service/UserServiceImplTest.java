@@ -9,7 +9,7 @@ import com.magent.service.interfaces.GeneralService;
 import com.magent.service.interfaces.TimeIntervalService;
 import com.magent.service.interfaces.UserService;
 import com.magent.utils.SecurityUtils;
-import com.magent.utils.dateutils.DateUtils;
+import com.magent.reportmodule.utils.dateutils.DateUtils;
 import com.magent.utils.validators.UserValidatorImpl;
 import javassist.NotFoundException;
 import org.junit.Assert;

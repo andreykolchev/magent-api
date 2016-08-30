@@ -9,7 +9,7 @@ import com.magent.repository.TimeIntervalRepository;
 import com.magent.repository.UserRepository;
 import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.TimeIntervalService;
-import com.magent.utils.dateutils.DateUtils;
+import com.magent.reportmodule.utils.dateutils.DateUtils;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;

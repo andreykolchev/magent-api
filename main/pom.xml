@@ -9,14 +9,18 @@
         <groupId>com.magent</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
+    <properties>
+        <model.module.name>magent.model-1.1.1-SNAPSHOT.jar</model.module.name>
+        <repository.module.name>magent.repository-1.1.1-SNAPSHOT.jar</repository.module.name>
+        <report.module.name>magent.report-1.1.1-SNAPSHOT.jar</report.module.name>
+    </properties>
     <packaging>war</packaging>
     <artifactId>magent.main</artifactId>
     <build>
         <finalName>magent-api</finalName>
     </build>
-
     <dependencies>
+        <!--MODULES DEPENDENCIES-->
         <dependency>
             <groupId>com.magent</groupId>
             <artifactId>magent.model</artifactId>
@@ -27,13 +31,11 @@
             <artifactId>magent.repository</artifactId>
             <version>1.1.1-SNAPSHOT</version>
         </dependency>
-        <!--DATASOURCE-->
         <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>2.4.5</version>
+            <groupId>com.magent</groupId>
+            <artifactId>magent.report</artifactId>
+            <version>1.1.1-SNAPSHOT</version>
         </dependency>
-        <!--DATASOURCE-->
         <!--SWAGER -->
         <dependency>
             <groupId>com.mangofactory</groupId>
@@ -90,18 +92,7 @@
             <version>0.8.1</version>
             <scope>test</scope>
         </dependency>
-        <!--APACHE POI FOR XLS FILES-->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>3.12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>3.12</version>
-        </dependency>
-        <!--APACHE POI FOR XLS FILES END-->
+
         <!--Exctension for ImageIO for read svg-->
         <dependency>
             <groupId>com.twelvemonkeys.imageio</groupId>
@@ -116,6 +107,4 @@
         <!--Exctension for ImageIO for read svg end-->
         <!--java mail for sending and validation e-mails -->
     </dependencies>
-
-
 </project>

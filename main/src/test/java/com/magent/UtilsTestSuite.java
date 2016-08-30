@@ -10,12 +10,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         ComissionCalculatorImplTest.class,
-        TransactionsXlsReaderImplTest.class,
-        TransactionsXlsWriterImplTest.class,
-        CsvReaderImplTest.class,
-        BalanceUploaderXlsWriterImplTest.class,
         GeneralValidatorImplTest.class
-
 })
 public class UtilsTestSuite {
 }
