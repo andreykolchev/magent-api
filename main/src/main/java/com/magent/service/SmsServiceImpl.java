@@ -12,7 +12,7 @@ import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.TimeIntervalService;
 import com.magent.utils.SecurityUtils;
 import com.magent.reportmodule.utils.dateutils.DateUtils;
-import com.magent.utils.otpgenerator.OtpGenerator;
+import com.magent.authmodule.utils.otpgenerator.OtpGenerator;
 import javassist.NotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;

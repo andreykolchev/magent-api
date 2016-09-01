@@ -2,7 +2,6 @@ package com.magent.utils.ariphmeticbeans;
 
 import com.magent.domain.AssignmentAttribute;
 import com.magent.domain.ValueType;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.SpelEvaluationException;
@@ -18,15 +17,14 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Created by artomov.ihor on 25.05.2016.
+ * Created on 25.05.2016.
  */
-@SuppressFBWarnings({"SPEL_INJECTION", "SPEL_INJECTION"})
+
 @Component
 public class ComissionCalculatorImpl implements ComissionCalculator {
     private final SpelParserConfiguration configuration=new SpelParserConfiguration(true,true);
     private final ExpressionParser parser = new SpelExpressionParser(configuration);
 
-    @SuppressFBWarnings("SPEL_INJECTION")
     @Override
     public Number calculateCommission(List<AssignmentAttribute> attributesList, int roundAfterZeroNumbers) throws FormulaNotFound, SpelEvaluationException {
         String expression = getFormula(attributesList);

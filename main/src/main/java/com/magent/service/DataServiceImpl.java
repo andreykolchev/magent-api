@@ -111,7 +111,6 @@ public class DataServiceImpl implements DataService {
         return result;
     }
 
-    @SuppressFBWarnings("PATH_TRAVERSAL_IN")
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String saveFile(String fileName, String control, MultipartFile file) throws IOException {
@@ -119,15 +118,11 @@ public class DataServiceImpl implements DataService {
         if (file != null && !file.isEmpty()) {
             byte[] fileBytes = file.getBytes();
             String url = uploadPath + (new Date().getTime()) + fileName;
-            try {
 
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(url)));
-                stream.write(fileBytes);
-                stream.close();
-                return url;
-            } catch (Exception e) {
-                throw e;
-            }
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(url)));
+            stream.write(fileBytes);
+            stream.close();
+            return url;
 
         } else {
             throw new IllegalArgumentException("Can't upload. The file is empty.");
@@ -228,14 +223,15 @@ public class DataServiceImpl implements DataService {
         Long fullRegTemplateId = typeRpository.findOne(2L).getTemplate().getId();
 
         for (Assignment assignment : assignmentList) {
-            if (assignment.getStatus().equals(COMPLETE)&&assignment.getTemplateId().equals(fullRegTemplateId)) {
-               assignment.setStatus(NEED_CONFIRMATION);
+            if (assignment.getStatus().equals(COMPLETE) && assignment.getTemplateId().equals(fullRegTemplateId)) {
+                assignment.setStatus(NEED_CONFIRMATION);
             }
         }
     }
+
     @Transactional(readOnly = true)
-    private void initializeAttributesAndTasks (List<Assignment>assignmentList){
-        for (Assignment assignment:assignmentList) {
+    private void initializeAttributesAndTasks(List<Assignment> assignmentList) {
+        for (Assignment assignment : assignmentList) {
             Hibernate.initialize(assignment.getAttributes());
             Hibernate.initialize(assignment.getTasks());
         }

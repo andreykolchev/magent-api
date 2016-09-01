@@ -2,7 +2,7 @@ package com.magent.controller.loggerlevel;
 
 import com.magent.utils.validators.ImageValidatorImpl;
 import com.magent.utils.validators.OnBoardingValidatorImpl;
-import com.magent.utils.validators.UserValidatorImpl;
+import com.magent.authmodule.utils.validators.UserValidatorImpl;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javassist.NotFoundException;
 import org.apache.log4j.Logger;

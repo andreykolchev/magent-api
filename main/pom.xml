@@ -14,6 +14,7 @@
         <model.module.name>magent.model-1.1.1-SNAPSHOT.jar</model.module.name>
         <repository.module.name>magent.repository-1.1.1-SNAPSHOT.jar</repository.module.name>
         <report.module.name>magent.report-1.1.1-SNAPSHOT.jar</report.module.name>
+        <authentication.module.name>magent.authentication-1.1.1-SNAPSHOT.jar</authentication.module.name>
     </properties>
     <packaging>war</packaging>
     <artifactId>magent.main</artifactId>
@@ -45,6 +46,13 @@
             <scope>system</scope>
             <systemPath>${pom.basedir}\..\${artifact.directory}\${report.module.name}</systemPath>
         </dependency>
+        <dependency>
+            <groupId>com.magent</groupId>
+            <artifactId>magent.authentication</artifactId>
+            <version>1.1.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}\..\${artifact.directory}\${authentication.module.name}</systemPath>
+        </dependency>
         <!--SWAGER -->
         <dependency>
             <groupId>com.mangofactory</groupId>
@@ -72,16 +80,6 @@
             <version>2.5.0</version>
         </dependency>
         <!--SWAGGER END-->
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.2.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
-        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>

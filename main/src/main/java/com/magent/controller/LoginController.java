@@ -4,9 +4,9 @@ import com.magent.controller.interfaces.GeneralController;
 import com.magent.domain.TemporaryUser;
 import com.magent.service.interfaces.SmsService;
 import com.magent.service.interfaces.UserService;
-import com.magent.service.interfaces.secureservice.OauthService;
+import com.magent.authmodule.service.interfaces.OauthService;
 import com.magent.utils.SecurityUtils;
-import com.magent.utils.validators.UserValidatorImpl;
+import com.magent.authmodule.utils.validators.UserValidatorImpl;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -35,9 +35,11 @@ public class LoginController implements GeneralController {
     @Autowired
     @Qualifier("tokenServices")
     ResourceServerTokenServices resourceServerTokenServices;
+
     @Autowired
     @Qualifier("oauthSimple")
     private OauthService oauthService;
+
     @Autowired
     @Qualifier("oauthOtp")
     private OauthService otpOauthService;

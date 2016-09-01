@@ -4,7 +4,7 @@ import com.magent.domain.TemporaryUser;
 import com.magent.domain.User;
 import com.magent.domain.UserPersonal;
 import com.magent.domain.dto.ChangePasswordDto;
-import com.magent.utils.validators.UserValidatorImpl;
+import com.magent.authmodule.utils.validators.UserValidatorImpl;
 import javassist.NotFoundException;
 
 import javax.xml.bind.ValidationException;

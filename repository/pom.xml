@@ -15,6 +15,7 @@
     <properties>
         <artifact.directory>jars</artifact.directory>
         <model.module.name>magent.model-1.1.1-SNAPSHOT.jar</model.module.name>
+        <repository.module.name>magent.repository-1.1.1-SNAPSHOT.jar</repository.module.name>
     </properties>
 
     <dependencies>
@@ -24,6 +25,13 @@
             <version>1.1.1-SNAPSHOT</version>
             <scope>system</scope>
             <systemPath>${pom.basedir}\..\jars\${model.module.name}</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.magent</groupId>
+            <artifactId>magent.repository</artifactId>
+            <version>1.1.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}\..\jars\${repository.module.name}</systemPath>
         </dependency>
     </dependencies>
 

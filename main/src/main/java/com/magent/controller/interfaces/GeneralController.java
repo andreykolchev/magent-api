@@ -3,7 +3,6 @@ package com.magent.controller.interfaces;
 import com.magent.domain.User;
 import com.magent.service.interfaces.UserService;
 import com.magent.utils.SecurityUtils;
-import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * Created  on 17.06.2016.
  */
 public interface GeneralController {
-    final Logger LOGGER = Logger.getLogger(GeneralController.class);
 
     default User getActiveUser(UserService userService) {
         SecurityUtils.checkPrincipalIsNull(this.getClass());
