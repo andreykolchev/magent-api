@@ -174,7 +174,18 @@
             <scope>test</scope>
         </dependency>
         <!--GSON dependency end-->
-
+        <!--Exctension for ImageIO for read svg-->
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-batik</artifactId> <!-- svg -->
+            <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>batik</groupId>
+            <artifactId>batik-transcoder</artifactId>
+            <version>1.6-1</version>
+        </dependency>
+        <!--Exctension for ImageIO for read svg end-->
     </dependencies>
     <build>
         <plugins>

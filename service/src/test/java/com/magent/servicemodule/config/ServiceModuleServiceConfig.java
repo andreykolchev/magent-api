@@ -13,4 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class ServiceModuleServiceConfig {
     @Before
     public void setUp(){}
+
+    protected final static String testLogin = "user1";//ADMIN
 }

@@ -1,6 +1,6 @@
-package com.magent.utilbeanstest;
+package com.magent.servicemodule.utilbeantest;
 
-import com.magent.config.ServiceConfig;
+import com.magent.servicemodule.config.ServiceModuleServiceConfig;
 import com.magent.servicemodule.utils.validators.interfaces.GeneralValidator;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @version 1.0
  * @since <pre>???. 8, 2016</pre>
  */
-public class GeneralValidatorImplTest extends ServiceConfig {
+public class GeneralValidatorImplTest extends ServiceModuleServiceConfig {
     @Autowired
     private GeneralValidator generalValidator;
 

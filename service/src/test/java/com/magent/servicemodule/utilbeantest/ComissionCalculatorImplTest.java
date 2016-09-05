@@ -1,7 +1,8 @@
-package com.magent.utilbeanstest;
+package com.magent.servicemodule.utilbeantest;
 
-import com.magent.config.ServiceConfig;
-import com.magent.utils.AssignmentAttributesGenerator;
+
+import com.magent.servicemodule.config.ServiceModuleServiceConfig;
+import com.magent.servicemodule.utils.AssignmentAttributesGenerator;
 import com.magent.servicemodule.utils.ariphmeticbeans.ComissionCalculator;
 import com.magent.servicemodule.utils.ariphmeticbeans.ComissionCalculatorImpl;
 import org.junit.Assert;
@@ -15,7 +16,7 @@ import java.math.RoundingMode;
 /**
  * Created by artomov.ihor on 25.05.2016.
  */
-public class ComissionCalculatorImplTest extends ServiceConfig {
+public class ComissionCalculatorImplTest extends ServiceModuleServiceConfig {
     @Autowired
     ComissionCalculator comissionService;
 

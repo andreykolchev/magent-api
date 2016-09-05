@@ -1,6 +1,7 @@
 package com.magent.servicemodule.service;
 
 import com.magent.authmodule.utils.SecurityUtils;
+import com.magent.domain.SmsPassword;
 import com.magent.domain.TemporaryUser;
 import com.magent.repository.SmsPasswordRepository;
 import com.magent.repository.TemporaryUserRepository;
@@ -42,14 +43,14 @@ public class SmsDemoServiceImplTest extends ServiceModuleServiceConfig {
     @Test
     @Sql("classpath:data.sql")
     public void testSendOtpForRegisteredUser() throws Exception {
-        /*String answer = smsDemoService.sendOtpForRegisteredUser(MockWebSecurityConfig.testLogin);
+        String answer = smsDemoService.sendOtpForRegisteredUser(ServiceModuleServiceConfig.testLogin);
 
         Assert.assertEquals("check generate numbers there are should contains 8 characters", 8, answer.length());
-        Long userId = userRepository.findByLogin(MockWebSecurityConfig.testLogin).getId();
+        Long userId = userRepository.findByLogin(ServiceModuleServiceConfig.testLogin).getId();
         SmsPassword actual = otpRepository.findOne(userId);
         //check it saved and it save current otp
         String hashedOtp = SecurityUtils.hashPassword(SecurityUtils.hashPassword(answer));
-        Assert.assertEquals("check it saved and it save current otp", hashedOtp, actual.getSmsPass());*/
+        Assert.assertEquals("check it saved and it save current otp", hashedOtp, actual.getSmsPass());
     }
 
     /**
@@ -93,15 +94,15 @@ public class SmsDemoServiceImplTest extends ServiceModuleServiceConfig {
     @Transactional
     @Sql("classpath:data.sql")
     public void testSendForgotPassword() throws Exception {
-       /* String answer = smsDemoService.sendForgotPassword(MockWebSecurityConfig.testLogin);
+        String answer = smsDemoService.sendForgotPassword(ServiceModuleServiceConfig.testLogin);
         Assert.assertEquals("check generate numbers there are should contains 8 characters", 8, answer.length());
 
-        Long userId=userRepository.findByLogin(MockWebSecurityConfig.testLogin).getId();
+        Long userId=userRepository.findByLogin(ServiceModuleServiceConfig.testLogin).getId();
         SmsPassword smsPassword=otpRepository.getOne(userId);
 
         Assert.assertEquals("check it saved otp which sended ",
                 SecurityUtils.hashPassword(SecurityUtils.hashPassword(answer)),
-                smsPassword.getSmsPass());*/
+                smsPassword.getSmsPass());
 
     }
 

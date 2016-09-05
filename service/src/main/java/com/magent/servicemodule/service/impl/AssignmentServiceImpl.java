@@ -90,16 +90,14 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Assignment assignToUser(Long assignmentId, Long userId) throws NotFoundException {
-        if (Objects.isNull(userGeneralService.getById(userId))) {
-            return null;
-        } else {
+        if (Objects.nonNull(userGeneralService.getById(userId))) {
             Assignment assignment = (Assignment) assignmentGeneralService.getById(assignmentId);
             if (Objects.nonNull(assignment)) {
                 assignment.setUserId(userId);
-                return assignment;
+                return assignmentRepository.save(assignment);
             }
         }
-        return null;
+        throw new NotFoundException("can't find assignment");
     }
 
 }

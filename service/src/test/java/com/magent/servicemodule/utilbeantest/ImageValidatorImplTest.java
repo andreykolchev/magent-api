@@ -1,8 +1,8 @@
-package com.magent.utilbeanstest;
+package com.magent.servicemodule.utilbeantest;
 
-import com.magent.config.ServiceConfig;
-import com.magent.servicemodule.utils.validators.interfaces.ImageValidator;
+import com.magent.servicemodule.config.ServiceModuleServiceConfig;
 import com.magent.servicemodule.utils.validators.ImageValidatorImpl;
+import com.magent.servicemodule.utils.validators.interfaces.ImageValidator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 /**
  * Created by artomov.ihor on 22.06.2016.
  */
-public class ImageValidatorImplTest extends ServiceConfig {
+public class ImageValidatorImplTest extends ServiceModuleServiceConfig {
     @Autowired
     private ImageValidator imageValidator;
 

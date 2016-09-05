@@ -1,4 +1,4 @@
-package com.magent.utilbeanstest;
+package com.magent.servicemodule.utilbeanstest;
 
 import com.magent.config.ServiceConfig;
 import com.magent.domain.Transactions;

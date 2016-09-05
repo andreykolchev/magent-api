@@ -13,14 +13,15 @@ import org.junit.runners.Suite;
         GeneralServiceParametrizedTest.class,
         ReasonServiceImplTest.class,
         SmsDemoServiceImplTest.class,
-//        SmsServiceImplTest.class,
+        SmsServiceImplTest.class,
         TemplateAttributeServiceImplTest.class,
         TemplateTaskControlServiceImplTest.class,
         TemplateTaskServiceImplTest.class,
         TmpTypeServiceImplTest.class,
         TrackingServiceImplTest.class,
-        UserServiceImplTest.class
+        UserServiceImplTest.class,
+        AssignmentServiceImplTest.class
 
 })
-public class ServiceSuite {
+public class ServiceModuleSuite {
 }
