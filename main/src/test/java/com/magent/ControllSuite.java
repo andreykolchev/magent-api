@@ -4,7 +4,7 @@ import com.magent.controller.*;
 import com.magent.securitycheck.AssignmentsSecControllerSuite11Test;
 import com.magent.securitycheck.TemplatesSecControllerSuite11Test;
 import com.magent.securitycheck.UsersSecControllerSuite11Test;
-import com.magent.service.SmsDemoServiceImplTest;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -26,8 +26,7 @@ import org.junit.runners.Suite;
         TemplatesSecControllerSuite11Test.class,
         UsersSecControllerSuite11Test.class,
         TemplateTypeControllerImplTest.class,
-        UserServiceForgotPwdFullContextTest.class,
-        SmsDemoServiceImplTest.class
+        UserServiceForgotPwdFullContextTest.class
 
 })
 public class ControllSuite {

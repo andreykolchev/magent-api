@@ -4,9 +4,9 @@ import com.magent.config.ServiceConfig;
 import com.magent.domain.SmsPassword;
 import com.magent.domain.TemporaryUser;
 import com.magent.domain.UserPersonal;
-import com.magent.service.interfaces.SmsService;
-import com.magent.service.interfaces.TimeIntervalService;
-import com.magent.service.interfaces.UserService;
+import com.magent.servicemodule.service.interfaces.SmsService;
+import com.magent.servicemodule.service.interfaces.TimeIntervalService;
+import com.magent.servicemodule.service.interfaces.UserService;
 import com.magent.service.scheduleservice.SheduleService;
 import com.magent.reportmodule.utils.dateutils.DateUtils;
 import org.junit.Assert;
@@ -30,6 +30,7 @@ import static com.magent.domain.enums.TimeIntervalConstants.*;
 public class SheduleServiceTest extends ServiceConfig {
     @Autowired
     private SheduleService sheduleService;
+
     @Autowired
     @Qualifier("smsServiceImpl")
     private SmsService smsService;

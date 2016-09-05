@@ -119,6 +119,7 @@
             <scope>test</scope>
         </dependency>
         <!--DATABASE-->
+
         <!--Find Bugs-->
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
@@ -153,7 +154,27 @@
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.1.8.RELEASE</version>
+        </dependency>
+        <!--Hibernate Json-->
+        <!--JSON TEST-->
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>0.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path-assert</artifactId>
+            <version>0.8.1</version>
+            <scope>test</scope>
+        </dependency>
         <!--GSON dependency end-->
+
     </dependencies>
     <build>
         <plugins>

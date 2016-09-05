@@ -23,10 +23,10 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({"com.magent.repository","com.magent.domain"})
+@ComponentScan({"com.magent.repository","com.magent.domain","com.magent.servicemodule"})
 @EnableJpaRepositories(value = "com.magent.repository", repositoryFactoryBeanClass = EnversRevisionRepositoryFactoryBean.class)
 @PropertySources({
-        @PropertySource("classpath:servicetestconf.properties")
+        @PropertySource("classpath:test.properties")
 })
 public class JpaTestConfig {
 

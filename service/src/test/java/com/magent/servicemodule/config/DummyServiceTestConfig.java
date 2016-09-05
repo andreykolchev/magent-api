@@ -9,10 +9,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
  */
 @Configuration
 @ImportResource({"classpath:serviceBeans.xml"})
-@ComponentScan({"com.magent.authmodule.utils","com.magent.repository", "com.magent.authmodule","com.magent.servicemodule","com.magent.domain.enums"})
+@ComponentScan({"com.magent.servicemodule.service","com.magent.servicemodule.utils","com.magent.authmodule.utils","com.magent.repository", "com.magent.authmodule","com.magent.domain.enums"})
 @Import({JpaTestConfig.class})
 @PropertySources({
-        @PropertySource("classpath:servicetestconf.properties")
+        @PropertySource("classpath:test.properties")
 })
 public class DummyServiceTestConfig {
     @Bean

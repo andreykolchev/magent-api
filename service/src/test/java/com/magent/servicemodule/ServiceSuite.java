@@ -13,7 +13,7 @@ import org.junit.runners.Suite;
         GeneralServiceParametrizedTest.class,
         ReasonServiceImplTest.class,
         SmsDemoServiceImplTest.class,
-        SmsServiceImplTest.class,
+//        SmsServiceImplTest.class,
         TemplateAttributeServiceImplTest.class,
         TemplateTaskControlServiceImplTest.class,
         TemplateTaskServiceImplTest.class,
