@@ -2,8 +2,8 @@ package com.magent.controller;
 
 import com.magent.controller.interfaces.GeneralController;
 import com.magent.domain.TemplateType;
-import com.magent.service.interfaces.GeneralService;
-import com.magent.service.interfaces.TemplateTypeService;
+import com.magent.servicemodule.service.interfaces.GeneralService;
+import com.magent.servicemodule.service.interfaces.TemplateTypeService;
 import javassist.NotFoundException;
 import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;

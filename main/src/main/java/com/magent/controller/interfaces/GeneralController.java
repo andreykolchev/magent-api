@@ -1,7 +1,7 @@
 package com.magent.controller.interfaces;
 
 import com.magent.domain.User;
-import com.magent.service.interfaces.UserService;
+import com.magent.servicemodule.service.interfaces.UserService;
 import com.magent.utils.SecurityUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -2,7 +2,7 @@ package com.magent.controller;
 
 import com.magent.config.MockWebSecurityConfig;
 import com.magent.domain.*;
-import com.magent.service.interfaces.GeneralService;
+import com.magent.servicemodule.service.interfaces.GeneralService;
 import com.magent.utils.EntityGenerator;
 import com.magent.utils.JsonConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;

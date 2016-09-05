@@ -2,8 +2,8 @@ package com.magent.utilbeanstest;
 
 import com.magent.config.ServiceConfig;
 import com.magent.utils.AssignmentAttributesGenerator;
-import com.magent.utils.ariphmeticbeans.ComissionCalculator;
-import com.magent.utils.ariphmeticbeans.ComissionCalculatorImpl;
+import com.magent.servicemodule.utils.ariphmeticbeans.ComissionCalculator;
+import com.magent.servicemodule.utils.ariphmeticbeans.ComissionCalculatorImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

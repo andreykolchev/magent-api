@@ -9,15 +9,6 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        GeneralServiceParametrizedTest.class,
-        ReasonServiceImplTest.class,
-        TemplateAttributeServiceImplTest.class,
-        TemplateTaskControlServiceImplTest.class,
-        TemplateTaskServiceImplTest.class,
-        TrackingServiceImplTest.class,
-        UserServiceImplTest.class,
-        DataServiceImplTest.class,
-        TmpTypeServiceImplTest.class,
         SheduleServiceTest.class
 
 })

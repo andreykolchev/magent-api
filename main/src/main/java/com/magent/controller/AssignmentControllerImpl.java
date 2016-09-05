@@ -5,7 +5,7 @@ import com.magent.domain.Assignment;
 import com.magent.domain.AssignmentAttribute;
 import com.magent.domain.AssignmentTask;
 import com.magent.domain.AssignmentTaskControl;
-import com.magent.service.interfaces.*;
+import com.magent.servicemodule.service.interfaces.*;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

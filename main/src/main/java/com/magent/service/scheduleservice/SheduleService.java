@@ -6,9 +6,9 @@ import com.magent.domain.UserPersonal;
 import com.magent.repository.SmsPasswordRepository;
 import com.magent.repository.TemporaryUserRepository;
 import com.magent.repository.UserPersonalRepository;
-import com.magent.service.interfaces.SmsService;
-import com.magent.service.interfaces.TimeIntervalService;
-import com.magent.service.interfaces.UserService;
+import com.magent.servicemodule.service.interfaces.SmsService;
+import com.magent.servicemodule.service.interfaces.TimeIntervalService;
+import com.magent.servicemodule.service.interfaces.UserService;
 import com.magent.reportmodule.utils.dateutils.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import static com.magent.domain.enums.TimeIntervalConstants.*;
 /**
  * Created on 15.06.2016.
  * cleaner service for otp password
- * this service wake up every 5 minutes and delete old otp passwords from db
+ * this service wake up every 3 minutes and delete old otp passwords from db
  * old otp considered if current time more than ds_sms_pass end period
  * end period for otp password calculated (current time + 15 minutes)
  */

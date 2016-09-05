@@ -1,8 +1,8 @@
 package com.magent.utilbeanstest;
 
 import com.magent.config.ServiceConfig;
-import com.magent.utils.validators.interfaces.ImageValidator;
-import com.magent.utils.validators.ImageValidatorImpl;
+import com.magent.servicemodule.utils.validators.interfaces.ImageValidator;
+import com.magent.servicemodule.utils.validators.ImageValidatorImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

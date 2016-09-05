@@ -2,7 +2,7 @@ package com.magent.controller;
 
 import com.magent.controller.interfaces.GeneralController;
 import com.magent.domain.Device;
-import com.magent.service.interfaces.DeviceService;
+import com.magent.servicemodule.service.interfaces.DeviceService;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

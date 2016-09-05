@@ -2,10 +2,10 @@ package com.magent.controller;
 
 import com.magent.controller.interfaces.GeneralController;
 import com.magent.domain.OnBoarding;
-import com.magent.service.interfaces.GeneralService;
-import com.magent.utils.validators.ImageValidatorImpl;
-import com.magent.utils.validators.OnBoardingValidatorImpl;
-import com.magent.utils.validators.interfaces.OnBoardingValidator;
+import com.magent.servicemodule.service.interfaces.GeneralService;
+import com.magent.servicemodule.utils.validators.ImageValidatorImpl;
+import com.magent.servicemodule.utils.validators.OnBoardingValidatorImpl;
+import com.magent.servicemodule.utils.validators.interfaces.OnBoardingValidator;
 import io.swagger.annotations.ApiOperation;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

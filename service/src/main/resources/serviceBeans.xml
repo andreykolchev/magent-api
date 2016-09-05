@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="assignmentGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="assignmentRepository"/>
+    </bean>
+
+    <bean id="assignmentAttributeGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="assignmentAttributeRepository"/>
+    </bean>
+
+    <bean id="assignmentTaskGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="assignmentTaskRepository"/>
+    </bean>
+
+    <bean id="assignmentTaskControlGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="assignmentTaskControlRepository"/>
+    </bean>
+
+    <bean id="templateGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="templateRepository"/>
+    </bean>
+
+    <bean id="templateAttributeGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="templateAttributeRepository"/>
+    </bean>
+
+    <bean id="templateTaskGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="templateTaskRepository"/>
+    </bean>
+
+    <bean id="templateTaskControlGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="templateTaskControlRepository"/>
+    </bean>
+
+    <bean id="activitytGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="activityRepository"/>
+    </bean>
+
+    <bean id="callGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="callRepository"/>
+    </bean>
+
+    <bean id="deviceGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="deviceRepository"/>
+    </bean>
+
+    <bean id="locationGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="locationRepository"/>
+    </bean>
+
+    <bean id="reasonGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="reasonRepository"/>
+    </bean>
+
+    <bean id="settingsGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="settingsRepository"/>
+    </bean>
+
+    <bean id="userGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="userRepository"/>
+    </bean>
+
+    <bean id="accountGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="accountRepository"/>
+    </bean>
+
+    <bean id="transactionGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="transactionRepository"/>
+    </bean>
+
+    <bean id="onBoardingGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="onboardRepository"/>
+    </bean>
+
+    <bean id="templateTypeGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="templateTypeRpository"/>
+    </bean>
+
+</beans>

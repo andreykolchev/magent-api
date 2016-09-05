@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.magent.config.MockWebSecurityConfig;
 import com.magent.domain.TemplateType;
 import com.magent.domain.enums.UserRoles;
-import com.magent.service.interfaces.GeneralService;
+import com.magent.servicemodule.service.interfaces.GeneralService;
 import com.magent.utils.EntityGenerator;
 import javassist.NotFoundException;
 import org.hamcrest.Matchers;

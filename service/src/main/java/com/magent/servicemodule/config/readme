@@ -1,0 +1,2 @@
+all configuration for service module must present in module,in which want to add current module, this module contains only test configuration
+NOTICE !!! serviceBeans.xml configuration file must be imported in module which inherit current module (if need to use general services for crud operations)

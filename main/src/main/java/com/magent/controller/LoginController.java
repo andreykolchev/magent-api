@@ -2,8 +2,8 @@ package com.magent.controller;
 
 import com.magent.controller.interfaces.GeneralController;
 import com.magent.domain.TemporaryUser;
-import com.magent.service.interfaces.SmsService;
-import com.magent.service.interfaces.UserService;
+import com.magent.servicemodule.service.interfaces.SmsService;
+import com.magent.servicemodule.service.interfaces.UserService;
 import com.magent.authmodule.service.interfaces.OauthService;
 import com.magent.utils.SecurityUtils;
 import com.magent.authmodule.utils.validators.UserValidatorImpl;

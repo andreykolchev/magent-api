@@ -1,7 +1,7 @@
 package com.magent.utilbeanstest;
 
 import com.magent.config.ServiceConfig;
-import com.magent.utils.validators.interfaces.GeneralValidator;
+import com.magent.servicemodule.utils.validators.interfaces.GeneralValidator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

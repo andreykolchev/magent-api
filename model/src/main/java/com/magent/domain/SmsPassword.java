@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created  on 13.06.2016.
+ * Created on 13.06.2016.
  */
 @Entity
 @Table(name = "ma_sms_pass")

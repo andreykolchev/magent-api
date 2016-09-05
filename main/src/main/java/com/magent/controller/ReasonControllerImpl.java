@@ -2,8 +2,8 @@ package com.magent.controller;
 
 import com.magent.controller.interfaces.GeneralController;
 import com.magent.domain.Reason;
-import com.magent.service.interfaces.GeneralService;
-import com.magent.service.interfaces.ReasonService;
+import com.magent.servicemodule.service.interfaces.GeneralService;
+import com.magent.servicemodule.service.interfaces.ReasonService;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

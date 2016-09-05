@@ -3,7 +3,7 @@ package com.magent.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.magent.config.MockWebSecurityConfig;
 import com.magent.domain.OnBoarding;
-import com.magent.service.interfaces.GeneralService;
+import com.magent.servicemodule.service.interfaces.GeneralService;
 import com.magent.utils.EntityGenerator;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
