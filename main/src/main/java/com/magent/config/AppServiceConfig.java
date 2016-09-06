@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  */
 @Configuration
 @ImportResource({"classpath:serviceBeans.xml","classpath:objectmapper.xml"})
-@ComponentScan({"com.magent.servicemodule.service", "com.magent.reportmodule.reportservice","com.magent.authmodule.service"})
+@ComponentScan({"com.magent.servicemodule.service", "com.magent.reportmodule.reportservice","com.magent.authmodule.service","com.magent.service","com.magent.servicemodule.utils"})
 @EnableAspectJAutoProxy
 @EnableAsync
 @PropertySources({

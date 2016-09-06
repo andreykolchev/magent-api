@@ -53,7 +53,7 @@ public class SmsDemoServiceImpl implements SmsService {
         String storeSms = SecurityUtils.hashPassword(sendSms);
         storeSms = SecurityUtils.hashPassword(storeSms);
         //storing
-         otpRepository.save(new SmsPassword(user.getId(), user.getId(), storeSms, new Date()));
+        otpRepository.save(new SmsPassword(user.getId(), user.getId(), storeSms, new Date()));
         return sendSms;
     }
 
@@ -70,7 +70,7 @@ public class SmsDemoServiceImpl implements SmsService {
         String hashedPwd = SecurityUtils.hashPassword(temporaryUser.getHashedPwd());
         //password hashed 2 times
         //saved current date. For more information how it's works see SheduleService.class
-        TemporaryUser storedUser=new TemporaryUser(temporaryUser, new Date(), storeSms, SecurityUtils.hashPassword(hashedPwd));
+        TemporaryUser storedUser = new TemporaryUser(temporaryUser, new Date(), storeSms, SecurityUtils.hashPassword(hashedPwd));
         temporaryUserRepository.save(storedUser);
         return sendSms;
     }
@@ -101,12 +101,11 @@ public class SmsDemoServiceImpl implements SmsService {
 
             otpRepository.save(new SmsPassword(personal.getUserId(), personal.getUserId(), storeSms, new Date()));
             Date startDateForSheduler = personal.getAttemptCounter() == 0 ? new Date() : personal.getForgotPwdExpireAttempt();
-            int counter=personal.getAttemptCounter();
+            int counter = personal.getAttemptCounter();
             personal.setAttemptCounter(++counter);
             personal.setForgotPwdExpireAttempt(startDateForSheduler);
-             userPersonalRepository.save(personal);
+            userPersonalRepository.save(personal);
             return sendSms;
-        }
-        else throw new ValidationException("user can change only "+maxAttemptQuantity+" times in a day");
+        } else throw new ValidationException("user can change only " + maxAttemptQuantity + " times in a day");
     }
 }

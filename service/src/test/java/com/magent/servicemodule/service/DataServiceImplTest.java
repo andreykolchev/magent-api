@@ -75,16 +75,41 @@ public class DataServiceImplTest extends ServiceModuleServiceConfig {
         dataService.updateData(dataDto);
         Double cost = CommissionUtils.getCommissionCost(attributeService.getByAssignmentId(1L));
         Assert.assertEquals(expectedSummAdd, cost);
-        User user= (User) userGeneral.getById(assignment.getUserId());
-        Assert.assertEquals(expectedBalance,user.getAccount().getAccountBalance());
+        User user = (User) userGeneral.getById(assignment.getUserId());
+        Assert.assertEquals(expectedBalance, user.getAccount().getAccountBalance());
     }
 
     @Test
     @Sql("classpath:data.sql")
     public void testFullRegistartionUpdateData() throws ComissionCalculatorImpl.FormulaNotFound, ParseException, NotFoundException {
-        UpdateDataDto dataDto=EntityGenerator.getUpdateDataDtoForFullRegistrationFull();
-        dataDto=dataService.updateData(dataDto);
-        Assert.assertEquals("check for status should be NEED_CONFIRMATION", AssignmentStatus.NEED_CONFIRMATION,dataDto.getAssignments().get(0).getStatus());
+        UpdateDataDto dataDto = EntityGenerator.getUpdateDataDtoForFullRegistrationFull();
+        dataDto = dataService.updateData(dataDto);
+        Assert.assertEquals("check for status should be NEED_CONFIRMATION", AssignmentStatus.NEED_CONFIRMATION, dataDto.getAssignments().get(0).getStatus());
+    }
+
+    @Test
+    @Sql("classpath:data.sql")
+    public void getDataTest() {
+        Long userId = 1L;
+        UpdateDataDto updateDataDto = dataService.getData(userId, null);
+        //test
+        Assert.assertNotNull("check is syncId added", updateDataDto.getSyncId());
+        updateDataDto.getAssignments().forEach(assignment -> {
+            Assert.assertEquals("check is it assignments for current user", userId, assignment.getUserId());
+            Assert.assertNotNull("check for Template Type Description ", assignment.getTemplateTypeDescription());
+            Assert.assertNotNull("check is attributes fetched", assignment.getAttributes());
+
+            assignment.getAttributes().forEach(assignmentAttribute -> {
+                Assert.assertEquals(assignment.getId(), assignmentAttribute.getAssignmentId());
+            });
+
+            assignment.getTasks().forEach(assignmentTask -> {
+                assignmentTask.getControls().forEach(assignmentTaskControl -> {
+                    Assert.assertEquals("check is controls inicializing", assignmentTask.getId(), assignmentTaskControl.getAssignmentTaskId());
+                });
+            });
+
+        });
     }
 
 }

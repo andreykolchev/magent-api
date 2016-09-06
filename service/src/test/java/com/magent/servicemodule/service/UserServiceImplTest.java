@@ -9,6 +9,7 @@ import com.magent.domain.UserPersonal;
 import com.magent.domain.dto.ChangePasswordDto;
 import com.magent.servicemodule.config.ServiceModuleServiceConfig;
 import com.magent.servicemodule.service.interfaces.GeneralService;
+import com.magent.servicemodule.service.interfaces.SmsService;
 import com.magent.servicemodule.service.interfaces.TimeIntervalService;
 import com.magent.servicemodule.service.interfaces.UserService;
 import com.magent.servicemodule.utils.dateutils.ServiceDateUtils;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.jdbc.Sql;
 
 import javax.xml.bind.ValidationException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +48,12 @@ public class UserServiceImplTest extends ServiceModuleServiceConfig {
 
     @Autowired
     private TimeIntervalService timeIntervalService;
+    @Autowired
+    @Qualifier("smsDemoServiceImpl")
+    private SmsService smsService;
+
+    private String login = "user1";
+    private String pass = "user1";
 
     /**
      * Method: getUsersByFilter(String filter)
@@ -57,6 +65,34 @@ public class UserServiceImplTest extends ServiceModuleServiceConfig {
         Assert.assertNotNull(userService.getUsersByFilter(filterPattern));
         Assert.assertTrue(userService.getUsersByFilter(filterPattern).size() > 0);
         Assert.assertEquals("checking login", userService.getUsersByFilter(filterPattern).get(0).getLogin(), "user1");
+
+    }
+
+    @Test
+    @Sql("classpath:data.sql")
+    public void testGetUsersByFilterGetById() throws Exception {
+        String filterPattern = "id:1";
+        List<User> userList = userService.getUsersByFilter(filterPattern);
+        Assert.assertNotNull(userList);
+        Assert.assertTrue("check for size", userList.size() > 0);
+        userList.forEach(user -> {
+            Long userIdExpected = 1L;
+            Assert.assertEquals(userIdExpected, user.getId());
+        });
+
+    }
+
+    @Test
+    @Sql("classpath:data.sql")
+    public void testGetUsersByFilterGetByRole() throws Exception {
+        String filterPattern = "role:ADMIN";
+        List<User> userList = userService.getUsersByFilter(filterPattern);
+        Assert.assertNotNull(userList);
+        Assert.assertTrue("check for size", userList.size() > 0);
+        for (User user : userList) {
+            Assert.assertEquals("ADMIN", user.getRole().name());
+        }
+
     }
 
     /**
@@ -79,11 +115,22 @@ public class UserServiceImplTest extends ServiceModuleServiceConfig {
 
     }
 
+    /**
+     * Method : changePassword(String login, String password, String otp)
+     * current void work only if sms.send.real properties is false
+     * logic:
+     * - first of all user must get otp number from smsService - method sendForgotPassword(String toPhone)
+     * - after that user can use method UserPersonal changePassword(String login, String password, String otp) from UserService
+     */
+    @Test
+    @Sql("classpath:data.sql")
+    public void ChangePasswordUserPersonalTest() throws ValidationException, ParseException {
+        String otp=smsService.sendForgotPassword(login);
+    }
+
     @Test
     @Sql("classpath:data.sql")
     public void testIsPasswordCorrect() throws UserValidatorImpl.UserIsBlockedException {
-        String login = "user1";
-        String pass = "user1";
         pass = SecurityUtils.hashPassword(pass);
         Assert.assertTrue(userService.isPasswordCorrect(login, pass));
     }

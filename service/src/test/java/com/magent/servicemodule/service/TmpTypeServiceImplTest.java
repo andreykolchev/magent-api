@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by artomov.ihor on 19.07.2016.
@@ -43,13 +44,21 @@ public class TmpTypeServiceImplTest extends ServiceModuleServiceConfig {
 
         Assert.assertNull(templateTypeGen.getById(type.getId()));
     }
+
     @Test
     @Sql("classpath:data.sql")
     public void testChild() throws NotFoundException {
         TemplateType templateType = (TemplateType) templateTypeGen.save(EntityGenerator.generateTestTemplateType());
+
         templateTypeGen.save(EntityGenerator.generateChildTemplateType(templateType.getId()));
-        TemplateType templateType1= (TemplateType) templateTypeGen.getById(templateType.getId());
+
+        TemplateType templateType1 = (TemplateType) templateTypeGen.getById(templateType.getId());
         Assert.assertNotNull(templateType1.getChildTemplatesTypes());
-        Assert.assertEquals(1,templateType1.getChildTemplatesTypes().size());
+        Assert.assertEquals(1, templateType1.getChildTemplatesTypes().size());
+
+        List<TemplateType> childList = templateTypeService.getChild(templateType.getId());
+        childList.forEach(childTemplateTypes -> {
+            Assert.assertEquals("is it child",templateType.getId(),childTemplateTypes.getParentId());
+        });
     }
 }

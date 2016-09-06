@@ -20,7 +20,9 @@ import org.junit.runners.Suite;
         TmpTypeServiceImplTest.class,
         TrackingServiceImplTest.class,
         UserServiceImplTest.class,
-        AssignmentServiceImplTest.class
+        AssignmentServiceImplTest.class,
+        AssignmentTaskControlServiceImplTest.class,
+        AssignmentTaskServiceImplTest.class
 
 })
 public class ServiceModuleSuite {
