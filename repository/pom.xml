@@ -69,7 +69,7 @@
                                     <outputDirectory>${pom.basedir}/../${artifact.directory}</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
-                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteReleases>true</overWriteReleases>
                         </configuration>
                     </execution>
                 </executions>

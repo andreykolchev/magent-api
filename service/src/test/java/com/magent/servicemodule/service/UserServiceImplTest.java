@@ -7,11 +7,13 @@ import com.magent.domain.TemporaryUser;
 import com.magent.domain.User;
 import com.magent.domain.UserPersonal;
 import com.magent.domain.dto.ChangePasswordDto;
+import com.magent.repository.UserPersonalRepository;
 import com.magent.servicemodule.config.ServiceModuleServiceConfig;
 import com.magent.servicemodule.service.interfaces.GeneralService;
 import com.magent.servicemodule.service.interfaces.SmsService;
 import com.magent.servicemodule.service.interfaces.TimeIntervalService;
 import com.magent.servicemodule.service.interfaces.UserService;
+import com.magent.servicemodule.utils.EntityGenerator;
 import com.magent.servicemodule.utils.dateutils.ServiceDateUtils;
 import javassist.NotFoundException;
 import org.junit.Assert;
@@ -37,6 +39,7 @@ import static com.magent.domain.enums.TimeIntervalConstants.TMP_UNREGISTERED_USE
  */
 public class UserServiceImplTest extends ServiceModuleServiceConfig {
     @Autowired
+    @Qualifier("userServiceImpl")
     UserService userService;
 
     @Autowired
@@ -48,9 +51,12 @@ public class UserServiceImplTest extends ServiceModuleServiceConfig {
 
     @Autowired
     private TimeIntervalService timeIntervalService;
+
     @Autowired
     @Qualifier("smsDemoServiceImpl")
     private SmsService smsService;
+    @Autowired
+    private UserPersonalRepository userPersonalRepository;
 
     private String login = "user1";
     private String pass = "user1";
@@ -124,8 +130,16 @@ public class UserServiceImplTest extends ServiceModuleServiceConfig {
      */
     @Test
     @Sql("classpath:data.sql")
-    public void ChangePasswordUserPersonalTest() throws ValidationException, ParseException {
-        String otp=smsService.sendForgotPassword(login);
+    public void ChangePasswordUserPersonalTest() throws ValidationException, ParseException, UserValidatorImpl.UserIsBlockedException {
+
+        String otp = smsService.sendForgotPassword(login);
+        String newPassword = "testPwd";
+        String hashedNewPwd = SecurityUtils.hashPassword(newPassword);
+        UserPersonal userPersonal = userService.changePassword(login, newPassword, SecurityUtils.hashPassword(otp));
+
+        Assert.assertEquals(SecurityUtils.hashPassword(hashedNewPwd), userPersonal.getPassword());
+        Assert.assertEquals(SecurityUtils.hashPassword(hashedNewPwd), userPersonalRepository.getByLogin(login).getPassword());
+
     }
 
     @Test
@@ -133,6 +147,17 @@ public class UserServiceImplTest extends ServiceModuleServiceConfig {
     public void testIsPasswordCorrect() throws UserValidatorImpl.UserIsBlockedException {
         pass = SecurityUtils.hashPassword(pass);
         Assert.assertTrue(userService.isPasswordCorrect(login, pass));
+    }
+
+    @Test
+    @Sql("classpath:data.sql")
+    public void checkRegistrationOnServiceLevelTest() throws ValidationException, ParseException, NotFoundException {
+        //test signUp
+        TemporaryUser temporaryUser = EntityGenerator.generateUserForRegistration();
+        String otp = userService.isNewUserSaved(temporaryUser);
+        //confirm registration
+        userService.confirmRegistration(temporaryUser.getUsername(),SecurityUtils.hashPassword(otp));
+        Assert.assertNotNull(userService.findUserByLogin(temporaryUser.getUsername()));
     }
 
     @Test

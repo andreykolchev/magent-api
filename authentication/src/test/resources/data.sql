@@ -1,4 +1,3 @@
-
 TRUNCATE
 ma_time_config,
 ma_temporary_user,

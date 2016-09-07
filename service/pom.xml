@@ -63,7 +63,7 @@
                     <!--<skipTests>true</skipTests>-->
                     <goal>package</goal>
                     <includes>
-                        <include>**/**Suite.java</include>
+                        <include>com.magent.servicemodule/**Suite.java</include>
                     </includes>
                 </configuration>
             </plugin>
@@ -89,12 +89,12 @@
                                     <outputDirectory>${pom.basedir}/../${artifact.directory}</outputDirectory>
                                 </artifactItem>
                             </artifactItems>
-                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteReleases>true</overWriteReleases>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
-
 </project>

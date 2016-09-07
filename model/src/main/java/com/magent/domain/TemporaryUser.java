@@ -57,7 +57,7 @@ public class TemporaryUser implements Identifiable<Long> {
         this.hashedOtp=hashedOtp;
         this.lastName=temporaryUser.getLastName();
         this.username =temporaryUser.getUsername();
-        this.hashedPwd=hashedPwd;
+        this.hashedPwd = hashedPwd;
     }
 
     public TemporaryUser(String devicesId, String email, String firstName, String lastName, String username, String hashedPwd){
@@ -66,7 +66,7 @@ public class TemporaryUser implements Identifiable<Long> {
         this.firstName=firstName;
         this.lastName=lastName;
         this.username = username;
-        this.hashedPwd=hashedPwd;
+        this.hashedPwd = hashedPwd;
         this.endPeriod=new Date();
     }
     public Long getId() {

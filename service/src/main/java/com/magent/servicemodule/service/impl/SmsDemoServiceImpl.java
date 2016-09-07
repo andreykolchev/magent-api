@@ -34,7 +34,7 @@ public class SmsDemoServiceImpl implements SmsService {
     private OtpGenerator generator;
 
     @Autowired
-    private SmsPasswordRepository otpRepository;
+    private SmsPasswordRepository smsPasswordRepository;
 
     @Autowired
     private TemporaryUserRepository temporaryUserRepository;
@@ -53,7 +53,7 @@ public class SmsDemoServiceImpl implements SmsService {
         String storeSms = SecurityUtils.hashPassword(sendSms);
         storeSms = SecurityUtils.hashPassword(storeSms);
         //storing
-        otpRepository.save(new SmsPassword(user.getId(), user.getId(), storeSms, new Date()));
+        smsPasswordRepository.save(new SmsPassword(user.getId(), user.getId(), storeSms, new Date()));
         return sendSms;
     }
 
@@ -90,6 +90,12 @@ public class SmsDemoServiceImpl implements SmsService {
         return sendSms;
     }
 
+    /**
+     *
+     * @param toPhone - user login
+     * @return - non hashed otp number as String
+     * @throws ValidationException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String sendForgotPassword(String toPhone) throws ValidationException {
@@ -99,7 +105,7 @@ public class SmsDemoServiceImpl implements SmsService {
             String storeSms = SecurityUtils.hashPassword(sendSms);
             storeSms = SecurityUtils.hashPassword(storeSms);
 
-            otpRepository.save(new SmsPassword(personal.getUserId(), personal.getUserId(), storeSms, new Date()));
+            smsPasswordRepository.save(new SmsPassword(personal.getUserId(), personal.getUserId(), storeSms, new Date()));
             Date startDateForSheduler = personal.getAttemptCounter() == 0 ? new Date() : personal.getForgotPwdExpireAttempt();
             int counter = personal.getAttemptCounter();
             personal.setAttemptCounter(++counter);

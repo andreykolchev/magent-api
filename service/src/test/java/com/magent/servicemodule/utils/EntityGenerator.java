@@ -1,7 +1,6 @@
 package com.magent.servicemodule.utils;
 
 
-import com.magent.authmodule.utils.SecurityUtils;
 import com.magent.domain.*;
 import com.magent.domain.dto.ChangePasswordDto;
 import com.magent.domain.dto.UpdateDataDto;
@@ -312,7 +311,7 @@ public final class EntityGenerator {
     }
 
     public static TemporaryUser generateUserForRegistration(){
-        return new TemporaryUser("deviceunique","test@gmail.com","Tester","Testov","+380971112222", SecurityUtils.hashPassword("pass"));
+        return new TemporaryUser("deviceunique","testnewUser@gmail.com","Tester","Testov","+380971112222", "testPwd");
     }
 
     public static TemplateType generateTestTemplateType(){
