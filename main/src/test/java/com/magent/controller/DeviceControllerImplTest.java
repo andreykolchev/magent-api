@@ -5,6 +5,7 @@ import com.magent.utils.EntityGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class DeviceControllerImplTest extends MockWebSecurityConfig {
 
     @Test
+    @Sql("classpath:data.sql")
     public void testAddOrUpdateDevice() throws Exception {
         mvc.perform(post("/devices/")
                 .header(authorizationHeader, getAccessAdminToken())

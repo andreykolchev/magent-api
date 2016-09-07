@@ -80,7 +80,7 @@ public class SheduleService {
 
     //method cleans old non registered users
     //fixed rate in milliseconds
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW,isolation = Isolation.READ_COMMITTED)
     public void cleanOldNonRegisteredUsers() {
         List<TemporaryUser> list = userService.getUsersWithExpiredTerm(dateUtils.formatToSqlDateTimeInterval(new Date()),
                 dateUtils.converToTimeStamp(timeIntervalService.getByName(TMP_UNREGISTERED_USER_INTERVAL.toString()).getTimeInterval(), TMP_UNREGISTERED_USER_INTERVAL));

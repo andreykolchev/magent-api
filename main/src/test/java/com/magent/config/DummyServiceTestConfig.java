@@ -9,12 +9,8 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
  */
 @Configuration
 @ImportResource("classpath:serviceBeans.xml")
-@ComponentScan({"com.magent.service", "com.magent.servicemodule", "com.magent.reportmodule.utils.xlsutil", "com.magent.reportmodule.utils.comparators", "com.magent.authmodule.utils.otpgenerator", "com.magent.reportmodule.utils.dateutils", "com.magent.authmodule.utils.validators", "com.magent.servicemodule.utils.validators"})
+@ComponentScan({"com.magent.service", "com.magent.utils","com.magent.controller","com.magent.utils","com.magent","com.magent.servicemodule.service.impl","com.magent.reportmodule", "com.magent.reportmodule.utils.xlsutil", "com.magent.reportmodule.utils.comparators", "com.magent.authmodule.utils.otpgenerator", "com.magent.reportmodule.utils.dateutils", "com.magent.authmodule.utils.validators","com.magent.service.scheduleservice"})
 @Import({JpaTestConfig.class})
-@PropertySources({
-        @PropertySource("classpath:magentTest.properties"),
-        //@PropertySource(value = "file:${catalina.home}/config/magentTest.properties", ignoreResourceNotFound = true)
-})
 public class DummyServiceTestConfig {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {

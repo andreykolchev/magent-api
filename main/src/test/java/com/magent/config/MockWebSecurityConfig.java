@@ -1,16 +1,19 @@
 package com.magent.config;
 
 
-import com.magent.Application;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.magent.config.emulatingmethod.MethodEmulator;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -21,9 +24,9 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * Created on 14.05.2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {Application.class})
+@ContextConfiguration(classes = {DummyServiceTestConfig.class,OauthFilterConfig.class})
 @WebAppConfiguration
-public class MockWebSecurityConfig extends MockWebAppConfiguration {
+public class MockWebSecurityConfig extends MethodEmulator {
     protected final static JsonParser parser = new JsonParser();
     protected final static String testLogin = "user1";//ADMIN
     protected final static String testPassword = "edd8279b8ebe50c5652ff42e32c3561dd6f85e93";
@@ -35,7 +38,10 @@ public class MockWebSecurityConfig extends MockWebAppConfiguration {
 
     protected final static String remoteStaffer = "user2";
     private final static String remotePass = "edd8279b8ebe50c5652ff42e32c3561dd6f85e93";
+    @Autowired
+    protected WebApplicationContext context;
 
+    protected MockMvc mvc;
 
     protected String getToken() throws Exception {
         return mvc.perform(post("/login")

@@ -46,6 +46,7 @@ public class LoginController implements GeneralController {
     @Autowired
     @Qualifier("smsServiceImpl")
     private SmsService smsService;
+
     @Autowired
     @Qualifier("smsDemoServiceImpl")
     private SmsService demoSmsService;

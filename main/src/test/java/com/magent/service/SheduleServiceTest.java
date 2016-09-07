@@ -1,14 +1,13 @@
 package com.magent.service;
 
-import com.magent.config.ServiceConfig;
-import com.magent.domain.SmsPassword;
+import com.magent.config.MockWebSecurityConfig;
 import com.magent.domain.TemporaryUser;
 import com.magent.domain.UserPersonal;
+import com.magent.reportmodule.utils.dateutils.DateUtils;
+import com.magent.service.scheduleservice.SheduleService;
 import com.magent.servicemodule.service.interfaces.SmsService;
 import com.magent.servicemodule.service.interfaces.TimeIntervalService;
 import com.magent.servicemodule.service.interfaces.UserService;
-import com.magent.service.scheduleservice.SheduleService;
-import com.magent.reportmodule.utils.dateutils.DateUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ import static com.magent.domain.enums.TimeIntervalConstants.*;
  * @version 1.0
  * @since <pre>????. 3, 2016</pre>
  */
-public class SheduleServiceTest extends ServiceConfig {
+public class SheduleServiceTest extends MockWebSecurityConfig {
     @Autowired
     private SheduleService sheduleService;
 
@@ -44,24 +43,21 @@ public class SheduleServiceTest extends ServiceConfig {
     @Autowired
     private UserService userService;
 
-
     /**
      * Method: cleanOldOtpPasswords()
      */
     @Test
     @Sql("classpath:data.sql")
     public void testCleanOldOtpPasswords() throws Exception {
-
+        //pre condition
+        //start test
         String timeInterval = timeIntervalService.getByName(OTP_INTERVAL_NAME.toString()).getTimeInterval();
         String date = dateUtils.formatToSqlDateTimeInterval(new Date());
-        List<SmsPassword> smsPasswordList = smsService.getOldSmsPass(date, dateUtils.converToTimeStamp(timeInterval, OTP_INTERVAL_NAME));
         //get size before delete
-        int beforeSheduler=smsPasswordList.size();
+        int beforeSheduler=smsService.getOldSmsPass(date, dateUtils.converToTimeStamp(timeInterval, OTP_INTERVAL_NAME)).size();;
         //test
         sheduleService.cleanOldOtpPasswords();
-        smsPasswordList=smsService.getOldSmsPass(date, dateUtils.converToTimeStamp(timeInterval, OTP_INTERVAL_NAME));
-        int afterSheduler=smsPasswordList.size();
-
+        int afterSheduler=smsService.getOldSmsPass(date, dateUtils.converToTimeStamp(timeInterval, OTP_INTERVAL_NAME)).size();
         Assert.assertTrue("check is sheduler works fine",beforeSheduler>afterSheduler);
     }
 

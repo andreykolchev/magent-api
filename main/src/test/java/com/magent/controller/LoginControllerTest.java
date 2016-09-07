@@ -50,6 +50,7 @@ public class LoginControllerTest extends MockWebSecurityConfig {
     private UserRepository userRepository;
     @Autowired
     private DeviceRepository deviceRepository;
+
     @Autowired
     private UserService userService;
 
@@ -81,6 +82,7 @@ public class LoginControllerTest extends MockWebSecurityConfig {
         mvc.perform(post("/login")
                 .param("username", testLogin)
                 .param("password", testPassword))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(print());
     }
