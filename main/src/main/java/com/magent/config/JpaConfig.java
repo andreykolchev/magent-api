@@ -1,6 +1,5 @@
 package com.magent.config;
 
-import com.magent.servicemodule.config.EntityManagerConfig;
 import com.magent.servicemodule.config.RepositoryConfig;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -10,9 +9,12 @@ import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * Created on 17.02.2015.
@@ -75,7 +77,27 @@ public class JpaConfig {
     }
     @Bean
     LocalContainerEntityManagerFactoryBean entityManagerFactory(){
-        return EntityManagerConfig.buildEntitymanager(showSql,dataSource(),poolSize,hbm2ddlAuto,hiberDialect,charsetEncoding,useUnicode,batchSize,orderInserts,orderUpdates);
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setDatabase(Database.POSTGRESQL);
+        vendorAdapter.setShowSql(showSql);
+        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+        factory.setJpaVendorAdapter(vendorAdapter);
+        factory.setPackagesToScan("com.magent.repository", "com.magent.domain");
+        factory.setDataSource(dataSource());
+        Properties props = new Properties();
+        props.put("connection.pool_size", poolSize);
+        props.put("hibernate.show_sql", showSql);
+        props.put("hibernate.hbm2ddl.auto", hbm2ddlAuto);
+        props.put("hibernate.dialect", hiberDialect);
+        props.put("hibernate.connection.charSet", charsetEncoding);
+        props.put("connection.characterEncoding", charsetEncoding);
+        props.put("hibernate.connection.Useunicode", useUnicode);
+        props.put("hibernate.jdbc.batch_size", batchSize);
+        props.put("hibernate.order_inserts", orderInserts);
+        props.put("hibernate.order_updates", orderUpdates);
+        factory.setJpaProperties(props);
+        factory.afterPropertiesSet();
+        return factory;
     }
 
     @Bean(name = "transactionManager")

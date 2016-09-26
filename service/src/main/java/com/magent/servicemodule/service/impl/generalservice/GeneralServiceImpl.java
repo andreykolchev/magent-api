@@ -11,6 +11,8 @@ import java.util.List;
  * @author artomov.ihor general service for CRUD operations
  * @version 1.0
  * @since 25.04.2016
+ * purpose for using current class @see GeneralService interface
+ *
  */
 class GeneralServiceImpl<T> implements GeneralService<T> {
     private final JpaRepository<T, Number> repository;
