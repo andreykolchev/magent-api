@@ -26,3 +26,4 @@
 /report/target/
 
 /out/
+/model/target/maven-archiver/pom.properties

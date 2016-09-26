@@ -37,8 +37,7 @@ public class SheduleService {
     @Autowired
     @Qualifier("smsServiceImpl")
     private SmsService smsService;
-
-    //TODO Реализовать обращение к репозиториям через прослойку Service в модуле magent.service
+    
     @Autowired
     @Qualifier("smsPasswordGeneralService")
     private GeneralService<SmsPassword> passwordRepository;
