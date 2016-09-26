@@ -37,7 +37,7 @@ public class SheduleService {
     @Autowired
     @Qualifier("smsServiceImpl")
     private SmsService smsService;
-    
+
     @Autowired
     @Qualifier("smsPasswordGeneralService")
     private GeneralService<SmsPassword> passwordRepository;

@@ -25,21 +25,21 @@
             <artifactId>magent.model</artifactId>
             <version>1.1.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${pom.basedir}\..\${artifact.directory}\${model.module.name}</systemPath>
+            <systemPath>${pom.basedir}/../${artifact.directory}/${model.module.name}</systemPath>
         </dependency>
         <dependency>
             <groupId>com.magent</groupId>
             <artifactId>magent.repository</artifactId>
             <version>1.1.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${pom.basedir}\..\${artifact.directory}\${repository.module.name}</systemPath>
+            <systemPath>${pom.basedir}/../${artifact.directory}/${repository.module.name}</systemPath>
         </dependency>
         <dependency>
             <groupId>com.magent</groupId>
             <artifactId>magent.authentication</artifactId>
             <version>1.1.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${pom.basedir}\..\${artifact.directory}\${authentication.module.name}</systemPath>
+            <systemPath>${pom.basedir}/../${artifact.directory}/${authentication.module.name}</systemPath>
         </dependency>
     </dependencies>
 

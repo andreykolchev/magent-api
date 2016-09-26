@@ -30,7 +30,7 @@
             <artifactId>magent.model</artifactId>
             <version>1.1.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${pom.basedir}\..\${artifact.directory}\${model.module.name}</systemPath>
+            <systemPath>${pom.basedir}/../${artifact.directory}/${model.module.name}</systemPath>
         </dependency>
           <dependency>
               <groupId>com.magent</groupId>
@@ -43,21 +43,21 @@
             <artifactId>magent.report</artifactId>
             <version>1.1.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${pom.basedir}\..\${artifact.directory}\${report.module.name}</systemPath>
+            <systemPath>${pom.basedir}/../${artifact.directory}/${report.module.name}</systemPath>
         </dependency>
         <dependency>
             <groupId>com.magent</groupId>
             <artifactId>magent.authentication</artifactId>
             <version>1.1.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${pom.basedir}\..\${artifact.directory}\${authentication.module.name}</systemPath>
+            <systemPath>${pom.basedir}/../${artifact.directory}/${authentication.module.name}</systemPath>
         </dependency>
         <dependency>
             <groupId>com.magent</groupId>
             <artifactId>magent.service</artifactId>
             <version>1.1.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${pom.basedir}\..\${artifact.directory}\${service.module.name}</systemPath>
+            <systemPath>${pom.basedir}/../${artifact.directory}/${service.module.name}</systemPath>
         </dependency>
         <!--SWAGER -->
         <dependency>
