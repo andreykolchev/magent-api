@@ -25,6 +25,7 @@ public class AssignmentControllerImpl implements GeneralController {
     @Qualifier("assignmentGeneralService")
     GeneralService assignmentGeneralService;
 
+
     @Autowired
     @Qualifier("assignmentServiceImpl")
     AssignmentService assignmentService;

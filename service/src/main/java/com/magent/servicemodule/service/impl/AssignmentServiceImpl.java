@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
-public class AssignmentServiceImpl implements AssignmentService {
+class AssignmentServiceImpl implements AssignmentService {
 
     @Autowired
     @Qualifier("assignmentGeneralService")

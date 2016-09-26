@@ -3,9 +3,9 @@ package com.magent.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.magent.config.MockWebSecurityConfig;
 import com.magent.domain.User;
-import com.magent.repository.UserRepository;
-import com.magent.utils.JsonConverter;
 import com.magent.reportmodule.utils.xlsutil.interfaces.TransactionsXlsReader;
+import com.magent.servicemodule.service.interfaces.UserService;
+import com.magent.utils.JsonConverter;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class ReportsControllerImplTest extends MockWebSecurityConfig {
     @Value("${tmp.excel.file}")
     private String uploadPath;
     @Autowired
-    private UserRepository userRepository;
+    private UserService userRepository;
     @Autowired
     private JsonConverter converter;
 

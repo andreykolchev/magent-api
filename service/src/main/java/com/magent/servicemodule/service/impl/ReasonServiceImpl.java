@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Service
 @Transactional(readOnly = true)
-public class ReasonServiceImpl implements ReasonService {
+class ReasonServiceImpl implements ReasonService {
     @Autowired
     ReasonRepository reasonRepository;
 

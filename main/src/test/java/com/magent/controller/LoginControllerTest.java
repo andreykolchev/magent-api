@@ -1,23 +1,21 @@
 package com.magent.controller;
 
+import com.magent.authmodule.utils.otpgenerator.OtpGenerator;
 import com.magent.config.MockWebSecurityConfig;
+import com.magent.domain.Device;
 import com.magent.domain.TemporaryUser;
 import com.magent.domain.User;
-import com.magent.repository.DeviceRepository;
-import com.magent.repository.TemporaryUserRepository;
-import com.magent.repository.UserRepository;
-import com.magent.servicemodule.service.interfaces.SmsService;
-import com.magent.servicemodule.service.interfaces.UserService;
+import com.magent.reportmodule.utils.dateutils.DateUtils;
+import com.magent.servicemodule.service.interfaces.*;
 import com.magent.utils.EntityGenerator;
 import com.magent.utils.SecurityUtils;
-import com.magent.reportmodule.utils.dateutils.DateUtils;
-import com.magent.authmodule.utils.otpgenerator.OtpGenerator;
 import javassist.NotFoundException;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,16 +38,30 @@ public class LoginControllerTest extends MockWebSecurityConfig {
     private OtpGenerator generator;
 
     @Autowired
-    private TemporaryUserRepository temporaryUserRepository;
+    private TemporaryUserService temporaryUserRepository;
+
+    @Autowired
+    @Qualifier("temporaryUserGeneralService")
+    private GeneralService<TemporaryUser> temporaryUserGeneralService;
 
     @Autowired
     private DateUtils dateUtils;
 
     private String sendSms;
+
     @Autowired
-    private UserRepository userRepository;
+    private UserService userRepository;
+
     @Autowired
-    private DeviceRepository deviceRepository;
+    @Qualifier("userGeneralService")
+    private GeneralService<User> userGeneralService;
+
+
+    @Autowired
+    private DeviceService deviceRepository;
+    @Autowired
+    @Qualifier("deviceGeneralService")
+    private GeneralService<Device> deviceGeneralService;
 
     @Autowired
     private UserService userService;
@@ -140,12 +152,12 @@ public class LoginControllerTest extends MockWebSecurityConfig {
         if (Objects.isNull(tmpUser)) throw new NotFoundException("current user not found");
 
         User user = new User(tmpUser);
-        userRepository.save(user);
-        deviceRepository.save(user.getDevices());
+        userGeneralService.save(user);
+        deviceGeneralService.saveAll(user.getDevices());
 
         //delete from temp users
         TemporaryUser temporaryUser = temporaryUserRepository.getByLogin(login);
-        if (Objects.nonNull(temporaryUser)) temporaryUserRepository.delete(temporaryUser);
+        if (Objects.nonNull(temporaryUser)) temporaryUserGeneralService.delete(temporaryUser);
 
         return user;
     }
@@ -154,7 +166,7 @@ public class LoginControllerTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void sendOtpForForgotPasswordPossitiveTest() throws Exception {
 
-        User whoChangePwd = userRepository.findOne(3L);
+        User whoChangePwd = userGeneralService.getById(3L);
         String otp = getSendSemeEmulator(whoChangePwd.getLogin(), new Date());
 
         mvc.perform(post("/login/changePasswordConfirm")
@@ -168,7 +180,7 @@ public class LoginControllerTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void sendOtpForForgotPasswordNegativeTest() throws Exception {
 
-        User whoChangePwd = userRepository.findOne(3L);
+        User whoChangePwd = userGeneralService.getById(3L);
         String otp = getSendSemeEmulator(whoChangePwd.getLogin(), new Date());
 
         mvc.perform(post("/login/changePasswordConfirm")
@@ -183,7 +195,7 @@ public class LoginControllerTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void sendOtpForForgotPasswordNegativePassNotValidTest() throws Exception {
 
-        User whoChangePwd = userRepository.findOne(3L);
+        User whoChangePwd = userGeneralService.getById(3L);
         String otp = getSendSemeEmulator(whoChangePwd.getLogin(), new Date());
 
         mvc.perform(post("/login/changePasswordConfirm")

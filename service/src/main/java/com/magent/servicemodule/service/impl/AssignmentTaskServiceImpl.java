@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-public class AssignmentTaskServiceImpl implements AssignmentTaskService {
+class AssignmentTaskServiceImpl implements AssignmentTaskService {
 
     @Autowired
     AssignmentTaskRepository assignmentTaskRepository;

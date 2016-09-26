@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * Created on 07.07.2016.
  */
 @Component
-public class GeneralValidatorImpl implements GeneralValidator {
+class GeneralValidatorImpl implements GeneralValidator {
 
     @Override
     public boolean isEmailValid(String email) {

@@ -157,7 +157,7 @@ public class UserServiceImplTest extends ServiceModuleServiceConfig {
         String otp = userService.isNewUserSaved(temporaryUser);
         //confirm registration
         userService.confirmRegistration(temporaryUser.getUsername(),SecurityUtils.hashPassword(otp));
-        Assert.assertNotNull(userService.findUserByLogin(temporaryUser.getUsername()));
+        Assert.assertNotNull(userService.findByLogin(temporaryUser.getUsername()));
     }
 
     @Test

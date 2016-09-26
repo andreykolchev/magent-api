@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
-public class TrackingServiceImpl implements TrackingService {
+class TrackingServiceImpl implements TrackingService {
 
     @Autowired
     private SettingsRepository settingsRepository;

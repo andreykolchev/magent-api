@@ -14,7 +14,7 @@ public interface GeneralController {
 
     default User getActiveUser(UserService userService) {
         SecurityUtils.checkPrincipalIsNull(this.getClass());
-        return userService.findUserByLogin((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        return userService.findByLogin((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 
     default ResponseEntity getDefaultResponce(Object o, HttpStatus success, HttpStatus failure) {

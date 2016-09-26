@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-public class TemplateTaskControlServiceImpl implements TemplateTaskControlService {
+class TemplateTaskControlServiceImpl implements TemplateTaskControlService {
 
     @Autowired
     private TemplateTaskControlRepository templateTaskControlRepository;

@@ -6,7 +6,7 @@
     <artifactId>magent.repository</artifactId>
     <version>1.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    
+
     <parent>
         <artifactId>magent-api</artifactId>
         <groupId>com.magent</groupId>

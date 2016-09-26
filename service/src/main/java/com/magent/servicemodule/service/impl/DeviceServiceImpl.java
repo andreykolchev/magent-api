@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by lezha on 15.03.2015.
  */
 @Service
-public class DeviceServiceImpl implements DeviceService {
+class DeviceServiceImpl implements DeviceService {
 
     @Autowired
     @Qualifier("userGeneralService")
@@ -32,7 +32,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Device addOrUpdateDevice (Device device){
-        User activeUser = userService.findUserByLogin((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        User activeUser = userService.findByLogin((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         Device currentDevice = insertOrLoad(device);
         currentDevice.addUser(activeUser);
         activeUser.addDevice(currentDevice);

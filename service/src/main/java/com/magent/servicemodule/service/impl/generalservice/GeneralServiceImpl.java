@@ -12,7 +12,7 @@ import java.util.List;
  * @version 1.0
  * @since 25.04.2016
  */
-public class GeneralServiceImpl<T> implements GeneralService<T> {
+class GeneralServiceImpl<T> implements GeneralService<T> {
     private final JpaRepository<T, Number> repository;
 
     public GeneralServiceImpl(JpaRepository<T, Number> repository) {
@@ -71,6 +71,12 @@ public class GeneralServiceImpl<T> implements GeneralService<T> {
         repository.delete(entityId);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(T entity) {
+        repository.delete(entity);
+    }
+
     /**
      * List operatins
      *
@@ -82,8 +88,6 @@ public class GeneralServiceImpl<T> implements GeneralService<T> {
     }
 
     /**
-     * list operations
-     *
      * @param entityList
      */
     @Transactional(rollbackFor = Exception.class)

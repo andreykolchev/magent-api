@@ -36,7 +36,7 @@ import static com.magent.domain.enums.TimeIntervalConstants.TMP_UNREGISTERED_USE
  */
 @Service
 @Transactional(readOnly = true)
-public class UserServiceImpl implements UserService {
+class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
@@ -146,12 +146,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByLogin(String login) {
+    public User findByLogin(String login) {
         return userRepository.findByLogin(login);
     }
 
     @Override
-    public List<User> getUsersForBalanceReport() {
+    public List<User> getAllUsersWithAccount() {
         return userRepository.getAllUsersWithAccount();
     }
 

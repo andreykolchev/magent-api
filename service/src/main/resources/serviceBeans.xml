@@ -7,15 +7,18 @@
         <constructor-arg name="repository" ref="assignmentRepository"/>
     </bean>
 
-    <bean id="assignmentAttributeGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+    <bean id="assignmentAttributeGeneralService"
+          class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
         <constructor-arg name="repository" ref="assignmentAttributeRepository"/>
     </bean>
 
-    <bean id="assignmentTaskGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+    <bean id="assignmentTaskGeneralService"
+          class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
         <constructor-arg name="repository" ref="assignmentTaskRepository"/>
     </bean>
 
-    <bean id="assignmentTaskControlGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+    <bean id="assignmentTaskControlGeneralService"
+          class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
         <constructor-arg name="repository" ref="assignmentTaskControlRepository"/>
     </bean>
 
@@ -23,15 +26,18 @@
         <constructor-arg name="repository" ref="templateRepository"/>
     </bean>
 
-    <bean id="templateAttributeGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+    <bean id="templateAttributeGeneralService"
+          class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
         <constructor-arg name="repository" ref="templateAttributeRepository"/>
     </bean>
 
-    <bean id="templateTaskGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+    <bean id="templateTaskGeneralService"
+          class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
         <constructor-arg name="repository" ref="templateTaskRepository"/>
     </bean>
 
-    <bean id="templateTaskControlGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+    <bean id="templateTaskControlGeneralService"
+          class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
         <constructor-arg name="repository" ref="templateTaskControlRepository"/>
     </bean>
 
@@ -67,7 +73,8 @@
         <constructor-arg name="repository" ref="accountRepository"/>
     </bean>
 
-    <bean id="transactionGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+    <bean id="transactionGeneralService"
+          class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
         <constructor-arg name="repository" ref="transactionRepository"/>
     </bean>
 
@@ -75,8 +82,29 @@
         <constructor-arg name="repository" ref="onboardRepository"/>
     </bean>
 
-    <bean id="templateTypeGeneralService" class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+    <bean id="templateTypeGeneralService"
+          class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
         <constructor-arg name="repository" ref="templateTypeRpository"/>
+    </bean>
+
+    <bean id="temporaryUserGeneralService"
+          class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="temporaryUserRepository"/>
+    </bean>
+
+    <bean id="userPersonalGeneralService"
+          class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="userPersonalRepository"/>
+    </bean>
+
+    <bean id="smsPasswordGeneralService"
+          class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="smsPasswordRepository"/>
+    </bean>
+
+    <bean id="rolesGeneralService"
+          class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
+        <constructor-arg name="repository" ref="rolesRepository"/>
     </bean>
 
 </beans>

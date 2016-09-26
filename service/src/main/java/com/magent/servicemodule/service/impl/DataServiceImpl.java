@@ -28,7 +28,7 @@ import static com.magent.domain.AssignmentStatus.*;
 
 @Service
 @Transactional(readOnly = true)
-public class DataServiceImpl implements DataService {
+class DataServiceImpl implements DataService {
 
     public static final String JPG_EXTENSION = ".jpg";
 

@@ -26,7 +26,7 @@ import java.util.Objects;
  * Created on 17.08.2016.
  */
 @Service
-public class SmsDemoServiceImpl implements SmsService {
+class SmsDemoServiceImpl implements SmsService {
     @Autowired
     private UserRepository userRepository;
 

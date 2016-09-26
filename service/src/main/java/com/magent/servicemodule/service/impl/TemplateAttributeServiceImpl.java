@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Service
 @Transactional(readOnly = true)
-public class TemplateAttributeServiceImpl implements TemplateAttributeService {
+class TemplateAttributeServiceImpl implements TemplateAttributeService {
     @Autowired
     private TemplateAttributeRepository templateAttributeRepository;
 

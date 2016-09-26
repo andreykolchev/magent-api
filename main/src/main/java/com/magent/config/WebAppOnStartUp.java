@@ -3,10 +3,11 @@ package com.magent.config;
 import com.magent.domain.Roles;
 import com.magent.domain.TimeInterval;
 import com.magent.domain.enums.UserRoles;
-import com.magent.repository.RolesRepository;
-import com.magent.repository.TimeIntervalRepository;
 import com.magent.reportmodule.utils.dateutils.DateUtils;
+import com.magent.servicemodule.service.interfaces.GeneralService;
+import com.magent.servicemodule.service.interfaces.TimeIntervalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,17 +26,19 @@ import static com.magent.domain.enums.TimeIntervalConstants.*;
 @Component
 public class WebAppOnStartUp implements ServletContextListener {
     @Autowired
-    private RolesRepository rolesRepository;
+    @Qualifier("rolesGeneralService")
+    private GeneralService<Roles> rolesGeneralService;
 
     @Autowired
     private DateUtils dateUtils;
 
     @Autowired
-    private TimeIntervalRepository intervalRepository;
+    @Qualifier("timeIntervalServiceImpl")
+    private TimeIntervalService timeIntervalService;
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        rolesRepository.save(insertOrUpdateRoles());
+        rolesGeneralService.saveAll(insertOrUpdateRoles());
         checkAndReplaceIfBadConditions();
     }
 
@@ -46,33 +49,33 @@ public class WebAppOnStartUp implements ServletContextListener {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = NullPointerException.class)
     private void checkAndReplaceIfBadConditions() {
-        TimeInterval otp = intervalRepository.getByName(OTP_INTERVAL_NAME.toString());
-        TimeInterval unregisteredUsers = intervalRepository.getByName(TMP_UNREGISTERED_USER_INTERVAL.toString());
-        TimeInterval block = intervalRepository.getByName(BLOCK_INTERVAL.toString());
-        TimeInterval forgotPwd = intervalRepository.getByName(FORGOT_PASS_INTERVAL.toString());
+        TimeInterval otp = timeIntervalService.getByName(OTP_INTERVAL_NAME.toString());
+        TimeInterval unregisteredUsers = timeIntervalService.getByName(TMP_UNREGISTERED_USER_INTERVAL.toString());
+        TimeInterval block = timeIntervalService.getByName(BLOCK_INTERVAL.toString());
+        TimeInterval forgotPwd = timeIntervalService.getByName(FORGOT_PASS_INTERVAL.toString());
         //check and validate if exist
         if (Objects.nonNull(otp)) {
             otp.setTimeInterval(dateUtils.converToTimeStamp(otp.getTimeInterval(), OTP_INTERVAL_NAME));
-            intervalRepository.save(otp);
+            timeIntervalService.save(otp);
         }
         if (Objects.nonNull(unregisteredUsers)) {
             unregisteredUsers.setTimeInterval(dateUtils.converToTimeStamp(unregisteredUsers.getTimeInterval(), TMP_UNREGISTERED_USER_INTERVAL));
-            intervalRepository.save(unregisteredUsers);
+            timeIntervalService.save(unregisteredUsers);
         }
         if (Objects.nonNull(block)) {
             block.setTimeInterval(dateUtils.converToTimeStamp(block.getTimeInterval(), BLOCK_INTERVAL));
-            intervalRepository.save(block);
+            timeIntervalService.save(block);
         }
         if (Objects.nonNull(forgotPwd)) {
             forgotPwd.setTimeInterval(dateUtils.converToTimeStamp(forgotPwd.getTimeInterval(), FORGOT_PASS_INTERVAL));
-            intervalRepository.save(forgotPwd);
+            timeIntervalService.save(forgotPwd);
         }
         //create new if not exist
-        if (Objects.isNull(otp)) intervalRepository.save(new TimeInterval(OTP_INTERVAL_NAME));
+        if (Objects.isNull(otp)) timeIntervalService.save(new TimeInterval(OTP_INTERVAL_NAME));
         if (Objects.isNull(unregisteredUsers))
-            intervalRepository.save(new TimeInterval(TMP_UNREGISTERED_USER_INTERVAL));
-        if (Objects.isNull(block)) intervalRepository.save(new TimeInterval(BLOCK_INTERVAL));
-        if (Objects.isNull(forgotPwd)) intervalRepository.save(new TimeInterval(FORGOT_PASS_INTERVAL));
+            timeIntervalService.save(new TimeInterval(TMP_UNREGISTERED_USER_INTERVAL));
+        if (Objects.isNull(block)) timeIntervalService.save(new TimeInterval(BLOCK_INTERVAL));
+        if (Objects.isNull(forgotPwd)) timeIntervalService.save(new TimeInterval(FORGOT_PASS_INTERVAL));
     }
 
     private List<Roles> insertOrUpdateRoles() {

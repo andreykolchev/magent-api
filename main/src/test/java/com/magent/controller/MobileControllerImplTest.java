@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.magent.config.MockWebSecurityConfig;
 import com.magent.domain.AssignmentAttribute;
 import com.magent.domain.dto.UpdateDataDto;
-import com.magent.repository.UserRepository;
 import com.magent.servicemodule.service.interfaces.AssignmentAttributeService;
 import com.magent.servicemodule.service.interfaces.GeneralService;
+import com.magent.servicemodule.service.interfaces.UserService;
 import com.magent.utils.AssignmentAttributesGenerator;
 import com.magent.utils.CommissionUtils;
 import com.magent.utils.EntityGenerator;
@@ -50,7 +50,7 @@ public class MobileControllerImplTest extends MockWebSecurityConfig {
     private GeneralService onBoardGeneralService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userRepository;
 
     @Test
     public void testGetData() throws Exception {

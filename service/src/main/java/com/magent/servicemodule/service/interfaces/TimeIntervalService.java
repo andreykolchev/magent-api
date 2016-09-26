@@ -7,4 +7,6 @@ import com.magent.domain.TimeInterval;
  */
 public interface TimeIntervalService {
     TimeInterval getByName(String name);
+
+    TimeInterval save(TimeInterval timeInterval);
 }

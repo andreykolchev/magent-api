@@ -13,7 +13,7 @@ import java.util.Date;
  * Created by artomov.ihor on 15.06.2016.
  */
 @Component
-public class ServiceDateUtilsImpl implements ServiceDateUtils {
+class ServiceDateUtilsImpl implements ServiceDateUtils {
     private final DateFormat formatOnlyDays = new SimpleDateFormat("yyyy-MM-dd");
     private final DateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final DateFormat timeStampFormat = new SimpleDateFormat("HH:mm");

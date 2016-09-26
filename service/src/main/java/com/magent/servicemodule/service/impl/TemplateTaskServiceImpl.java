@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Service
 @Transactional(readOnly = true)
-public class TemplateTaskServiceImpl implements TemplateTaskService {
+class TemplateTaskServiceImpl implements TemplateTaskService {
     @Autowired
     private TemplateTaskRepository templateTaskRepository;
     @Override

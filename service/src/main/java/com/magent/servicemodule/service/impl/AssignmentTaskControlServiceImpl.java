@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-public class AssignmentTaskControlServiceImpl implements AssignmentTaskControlService {
+class AssignmentTaskControlServiceImpl implements AssignmentTaskControlService {
 
     @Autowired
     AssignmentTaskControlRepository assignmentTaskControlRepository;

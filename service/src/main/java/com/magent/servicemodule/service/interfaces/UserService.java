@@ -18,8 +18,8 @@ public interface UserService {
     List<User> getUsersByFilter(String filter) throws NotFoundException;
     boolean changePassword(Long id, ChangePasswordDto chPassDto) throws ValidationException;
     UserPersonal changePassword(String login, String password, String otp) throws ValidationException, UserValidatorImpl.UserIsBlockedException;
-    User findUserByLogin(String login);
-    List<User> getUsersForBalanceReport();
+    User findByLogin(String login);
+    List<User> getAllUsersWithAccount();
     boolean isPasswordCorrect(String login,String pass) throws UserValidatorImpl.UserIsBlockedException;
     String isNewUserSaved(TemporaryUser temporaryUser) throws ValidationException, ParseException;
     User confirmRegistration(String login,String otp) throws NotFoundException;

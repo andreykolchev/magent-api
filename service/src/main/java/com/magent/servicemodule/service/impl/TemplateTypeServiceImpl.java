@@ -16,7 +16,7 @@ import java.util.Objects;
  * Created on 19.07.2016.
  */
 @Service
-public class TemplateTypeServiceImpl implements TemplateTypeService {
+class TemplateTypeServiceImpl implements TemplateTypeService {
     @Autowired
     private TemplateTypeRpository templateTypeRpository;
 

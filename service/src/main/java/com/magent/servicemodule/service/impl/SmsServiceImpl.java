@@ -37,7 +37,7 @@ import static com.magent.domain.enums.TimeIntervalConstants.OTP_INTERVAL_NAME;
  * Created on 13.06.2016.
  */
 @Service
-public class SmsServiceImpl implements SmsService {
+class SmsServiceImpl implements SmsService {
     @Value(("${sms.host}"))
     private String smsHost;
 

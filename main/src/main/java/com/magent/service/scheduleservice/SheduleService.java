@@ -3,13 +3,11 @@ package com.magent.service.scheduleservice;
 import com.magent.domain.SmsPassword;
 import com.magent.domain.TemporaryUser;
 import com.magent.domain.UserPersonal;
-import com.magent.repository.SmsPasswordRepository;
-import com.magent.repository.TemporaryUserRepository;
-import com.magent.repository.UserPersonalRepository;
+import com.magent.reportmodule.utils.dateutils.DateUtils;
+import com.magent.servicemodule.service.interfaces.GeneralService;
 import com.magent.servicemodule.service.interfaces.SmsService;
 import com.magent.servicemodule.service.interfaces.TimeIntervalService;
 import com.magent.servicemodule.service.interfaces.UserService;
-import com.magent.reportmodule.utils.dateutils.DateUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,13 +40,16 @@ public class SheduleService {
 
     //TODO Реализовать обращение к репозиториям через прослойку Service в модуле magent.service
     @Autowired
-    private SmsPasswordRepository passwordRepository;
+    @Qualifier("smsPasswordGeneralService")
+    private GeneralService<SmsPassword> passwordRepository;
 
     @Autowired
-    private TemporaryUserRepository temporaryUserRepository;
+    @Qualifier("temporaryUserGeneralService")
+    private GeneralService<TemporaryUser> temporaryUserGeneralService;
 
     @Autowired
-    private UserPersonalRepository userPersonalRepository;
+    @Qualifier("userPersonalGeneralService")
+    private GeneralService<UserPersonal> userPersonalGeneralService;
 
     @Autowired
     private UserService userService;
@@ -74,19 +75,19 @@ public class SheduleService {
         List<SmsPassword> list = smsService.getOldSmsPass(dateUtils.formatToSqlDateTimeInterval(new Date()),
                 dateUtils.converToTimeStamp(timeIntervalService.getByName(OTP_INTERVAL_NAME.toString()).getTimeInterval(), OTP_INTERVAL_NAME));
         if (list.size() > 0) {
-            passwordRepository.delete(list);
+            passwordRepository.deleteAll(list);
             LOGGER.info("old otp password are cleaned " + list.toString());
         }
     }
 
     //method cleans old non registered users
     //fixed rate in milliseconds
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW,isolation = Isolation.READ_COMMITTED)
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     public void cleanOldNonRegisteredUsers() {
         List<TemporaryUser> list = userService.getUsersWithExpiredTerm(dateUtils.formatToSqlDateTimeInterval(new Date()),
                 dateUtils.converToTimeStamp(timeIntervalService.getByName(TMP_UNREGISTERED_USER_INTERVAL.toString()).getTimeInterval(), TMP_UNREGISTERED_USER_INTERVAL));
         if (list.size() > 0) {
-            temporaryUserRepository.delete(list);
+            temporaryUserGeneralService.deleteAll(list);
             LOGGER.info("old non registered users are cleaned " + list.toString());
         }
     }
@@ -101,7 +102,7 @@ public class SheduleService {
                 personal.setBlocked(false);
                 personal.setWrongEntersEntering(0);
                 personal.setBlockExpired(null);
-                userPersonalRepository.save(personal);
+                userPersonalGeneralService.save(personal);
             }
             LOGGER.info("blocked users are unlock " + list.toString());
         }
@@ -116,7 +117,7 @@ public class SheduleService {
             for (UserPersonal personal : list) {
                 personal.setForgotPwdExpireAttempt(null);
                 personal.setAttemptCounter(0);
-                userPersonalRepository.save(personal);
+                userPersonalGeneralService.save(personal);
             }
             LOGGER.info("set to zero forgot password attempt for  " + list.toString() + " users");
         }
