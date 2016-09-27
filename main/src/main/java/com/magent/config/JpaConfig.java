@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
+ * Configuration class for main module , include configuration for datasource (pool config @see application.properties file), entityManager and transactionManager
  * Created on 17.02.2015.
  * @version 1.00
  */
@@ -58,11 +59,11 @@ public class JpaConfig {
     private boolean orderUpdates;
     @Value("${dm.conn.max.life}")
     private long connTimeOut;
+
     @Bean
     @Profile("production")
     public DataSource dataSource() {
         Logger.getLogger(this.getClass()).debug("init production DataSource ");
-
         //configuration
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setDriverClassName(driverClassName);

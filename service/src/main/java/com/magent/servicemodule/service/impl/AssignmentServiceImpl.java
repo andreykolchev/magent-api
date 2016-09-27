@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,46 +20,46 @@ class AssignmentServiceImpl implements AssignmentService {
 
     @Autowired
     @Qualifier("assignmentGeneralService")
-    GeneralService assignmentGeneralService;
+    private GeneralService<Assignment> assignmentGeneralService;
 
     @Autowired
     @Qualifier("assignmentAttributeGeneralService")
-    GeneralService assignmentAttributeGeneralService;
+    private GeneralService<AssignmentAttribute> assignmentAttributeGeneralService;
 
     @Autowired
     @Qualifier("assignmentTaskGeneralService")
-    GeneralService assignmentTaskGeneralService;
+    private GeneralService<AssignmentTask> assignmentTaskGeneralService;
 
     @Autowired
     @Qualifier("assignmentTaskControlGeneralService")
-    GeneralService assignmentTaskControlGeneralService;
+    private GeneralService<AssignmentTaskControl> assignmentTaskControlGeneralService;
 
     @Autowired
     @Qualifier("assignmentTaskControlServiceImpl")
-    AssignmentTaskControlService assignmentTaskControlService;
+    private AssignmentTaskControlService assignmentTaskControlService;
 
     @Autowired
     @Qualifier("templateGeneralService")
-    GeneralService templateGeneralService;
+    private GeneralService<Template> templateGeneralService;
 
     @Autowired
     @Qualifier("userGeneralService")
-    GeneralService userGeneralService;
+    private GeneralService<User> userGeneralService;
 
     @Autowired
-    AssignmentRepository assignmentRepository;
+    private AssignmentRepository assignmentRepository;
 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Assignment createByTemplateId(Assignment assignment) throws NotFoundException {
 
-        Template template = (Template) templateGeneralService.getById(assignment.getTemplateId());
+        Template template = templateGeneralService.getById(assignment.getTemplateId());
         if (Objects.isNull(template)) {
-            throw new IllegalArgumentException("Can't find template");
+            throw new NotFoundException("Can't find template");
         }
 
-        Assignment newAssignment = (Assignment) assignmentGeneralService.save(new Assignment(assignment));
+        Assignment newAssignment = assignmentGeneralService.save(new Assignment(assignment));
 
         newAssignment.setAttributes(
                 template.getAttributes().stream().map(templateAttribute -> {
@@ -91,7 +91,7 @@ class AssignmentServiceImpl implements AssignmentService {
     @Transactional(rollbackFor = Exception.class)
     public Assignment assignToUser(Long assignmentId, Long userId) throws NotFoundException {
         if (Objects.nonNull(userGeneralService.getById(userId))) {
-            Assignment assignment = (Assignment) assignmentGeneralService.getById(assignmentId);
+            Assignment assignment = assignmentGeneralService.getById(assignmentId);
             if (Objects.nonNull(assignment)) {
                 assignment.setUserId(userId);
                 return assignmentRepository.save(assignment);

@@ -11,8 +11,10 @@ public interface OauthService {
     /**
      * @param login unique login for user
      * @param pass  -password for user details , depends on realization (can contains only password or mix password and otp )
-     * @return
+     * @return token from oauth server
+     * @throws UserValidatorImpl.UserIsBlockedException when user is blocked
      * @see - module ds_authServer
+     * @see com.magent.authmodule.utils.validators.interfaces.UserValidator
      */
 
     OAuth2AccessToken getToken(String login, String pass) throws UserValidatorImpl.UserIsBlockedException;

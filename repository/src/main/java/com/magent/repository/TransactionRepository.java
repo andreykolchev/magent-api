@@ -14,6 +14,7 @@ import java.util.List;
  */
 @Repository
 public interface TransactionRepository extends JpaRepository<Transactions, Long> {
+
     @Query(value = "select tr from Transactions tr where tr.transactionDate between :date1 and :date2")
     List<Transactions> getByTwoDates(@Param("date1") Date date1, @Param("date2") Date date2);
 }

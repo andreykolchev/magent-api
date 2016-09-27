@@ -7,7 +7,6 @@ import com.magent.repository.*;
 import com.magent.servicemodule.service.interfaces.DataService;
 import com.magent.servicemodule.utils.ariphmeticbeans.ComissionCalculator;
 import com.magent.servicemodule.utils.ariphmeticbeans.ComissionCalculatorImpl;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javassist.NotFoundException;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
-import static com.magent.domain.AssignmentStatus.*;
+import static com.magent.domain.AssignmentStatus.COMPLETE;
+import static com.magent.domain.AssignmentStatus.NEED_CONFIRMATION;
 
 @Service
 @Transactional(readOnly = true)
@@ -62,7 +65,6 @@ class DataServiceImpl implements DataService {
     @Autowired
     private TemplateRepository templateRepository;
 
-    @SuppressFBWarnings("EC_UNRELATED_TYPES")
     @Override
     public UpdateDataDto getData(Long userId, Long syncId) {
 

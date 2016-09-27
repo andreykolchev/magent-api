@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  * Created on 14.05.2016.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {DummyServiceTestConfig.class,OauthFilterConfig.class})
+@ContextConfiguration(classes = {DummyServiceTestConfig.class})
 @WebAppConfiguration
 public class MockWebSecurityConfig extends MethodEmulator {
     protected final static JsonParser parser = new JsonParser();

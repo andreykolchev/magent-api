@@ -1,6 +1,7 @@
 package com.magent.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.magent.domain.interfaces.Identifiable;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "ma_sms_pass")
-public class SmsPassword {
+public class SmsPassword implements Identifiable<Long> {
 
     @Id
     @Column(name = "sms_pwd_pk")
@@ -43,11 +44,11 @@ public class SmsPassword {
 
     }
 
-    public Long getSmsId() {
+    public Long getId() {
         return smsId;
     }
 
-    public void setSmsId(Long id) {
+    public void setId(Long id) {
         this.smsId = id;
     }
 

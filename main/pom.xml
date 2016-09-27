@@ -15,6 +15,7 @@
         <repository.module.name>magent.repository-1.1.1-SNAPSHOT.jar</repository.module.name>
         <report.module.name>magent.report-1.1.1-SNAPSHOT.jar</report.module.name>
         <authentication.module.name>magent.authentication-1.1.1-SNAPSHOT.jar</authentication.module.name>
+        <service.module.name>magent.service-1.1.1-SNAPSHOT.jar</service.module.name>
     </properties>
     <packaging>war</packaging>
     <artifactId>magent.main</artifactId>

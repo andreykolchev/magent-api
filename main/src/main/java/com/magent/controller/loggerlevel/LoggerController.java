@@ -1,8 +1,8 @@
 package com.magent.controller.loggerlevel;
 
+import com.magent.authmodule.utils.validators.UserValidatorImpl;
 import com.magent.servicemodule.utils.validators.ImageValidatorImpl;
 import com.magent.servicemodule.utils.validators.OnBoardingValidatorImpl;
-import com.magent.authmodule.utils.validators.UserValidatorImpl;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javassist.NotFoundException;
 import org.apache.log4j.Logger;
@@ -28,7 +28,7 @@ import java.util.Arrays;
  */
 @ControllerAdvice
 public class LoggerController {
-    private final static Logger LOGGER = org.apache.log4j.Logger.getLogger(LoggerController.class);
+    private final static Logger LOGGER = Logger.getLogger(LoggerController.class);
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler({
@@ -39,7 +39,7 @@ public class LoggerController {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({NotFoundException.class,NullPointerException.class})
+    @ExceptionHandler({NotFoundException.class, NullPointerException.class})
     public void notFoundException(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
         exceptionWriter(request, response, e);
     }
@@ -64,7 +64,7 @@ public class LoggerController {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({OnBoardingValidatorImpl.InvalidOnboardEntity.class, ImageValidatorImpl.NotCorrectImageExtension.class, ValidationException.class, javax.xml.bind.ValidationException.class,})
+    @ExceptionHandler({OnBoardingValidatorImpl.InvalidOnboardEntity.class, ImageValidatorImpl.NotCorrectImageExtension.class, ValidationException.class})
     public void badOnboardEntity(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
         response.getWriter().println("bad request : " + e.getMessage());
         LOGGER.info("bad request : " + request.getRequestURI() + " with exception " + e);
@@ -80,7 +80,6 @@ public class LoggerController {
         LOGGER.info("accessDinied exception : " + request.getRequestURI() + " with exception " + e);
     }
 
-    @SuppressFBWarnings("CRLF_INJECTION_LOGS")
     private void exceptionWriter(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
         response.getWriter().println("message " + e.getMessage());
         LOGGER.info("exception in : " + request.getRequestURI() + " with exception " + e);

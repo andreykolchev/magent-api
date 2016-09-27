@@ -137,6 +137,7 @@ public class AssignmentControllerImplTest extends MockWebSecurityConfig {
     }
 
     @Test
+    @Sql("classpath:data.sql")
     public void testUpdateTask() throws Exception {
         mvc.perform(put("/assignments/1/tasks/")
                 .header(authorizationHeader, getAccessAdminToken())

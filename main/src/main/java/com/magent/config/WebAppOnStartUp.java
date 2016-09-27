@@ -21,7 +21,9 @@ import java.util.Objects;
 import static com.magent.domain.enums.TimeIntervalConstants.*;
 
 /**
- * Created  on 07.06.2016.
+ * @version 1.00
+ *          configuration when startup application in servlet container.
+ * @see ServletContextListener
  */
 @Component
 public class WebAppOnStartUp implements ServletContextListener {
@@ -36,6 +38,11 @@ public class WebAppOnStartUp implements ServletContextListener {
     @Qualifier("timeIntervalServiceImpl")
     private TimeIntervalService timeIntervalService;
 
+    /**
+     * method adds roles and time intervals in to database
+     *
+     * @see GeneralService
+     */
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         rolesGeneralService.saveAll(insertOrUpdateRoles());
@@ -47,6 +54,13 @@ public class WebAppOnStartUp implements ServletContextListener {
 
     }
 
+    /**
+     * method checks valid values in ma_time_config table in database and if values less than in  com.magent.domain.enums.TimeIntervalConstants enum it replace values for a minimum required
+     *
+     * @see com.magent.servicemodule.service.interfaces.TimeIntervalService
+     * @see com.magent.domain.enums.TimeIntervalConstants
+     * @see com.magent.reportmodule.utils.dateutils.DateUtils
+     */
     @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackFor = NullPointerException.class)
     private void checkAndReplaceIfBadConditions() {
         TimeInterval otp = timeIntervalService.getByName(OTP_INTERVAL_NAME.toString());

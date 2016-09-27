@@ -1,6 +1,7 @@
 package com.magent.domain;
 
 import com.magent.domain.enums.UserRoles;
+import com.magent.domain.interfaces.Identifiable;
 
 import javax.persistence.*;
 
@@ -9,7 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "ma_user_roles")
-public class Roles {
+public class Roles implements Identifiable<Long>{
 
     @Id
     @Column(name = "usr_rol_pk")

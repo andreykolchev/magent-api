@@ -1,5 +1,6 @@
 package com.magent.servicemodule.service.interfaces;
 
+import com.magent.domain.interfaces.Identifiable;
 import javassist.NotFoundException;
 
 import java.util.List;
@@ -11,9 +12,9 @@ import java.util.List;
  * For registration bean as generalService you should register bean into serviceBeans.xml
  * implementation @see com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl class
  */
-public interface GeneralService<T> {
+public interface GeneralService<T extends Identifiable> {
 
-    List<T> getAll() throws NotFoundException;
+    List<T> getAll();
 
     T getById(Number id) throws NotFoundException;
 
@@ -26,6 +27,8 @@ public interface GeneralService<T> {
     void delete(T entity);
 
     void saveAll(List<T> entityList);
+
+    List<T> saveAllWithReturn(List<T> entityList);
 
     void deleteAll(List<T> entityList);
 

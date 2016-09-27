@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import(value = {DummyServiceTestConfig.class})
-@ComponentScan({"com.magent"})
+@ComponentScan(basePackages = {"com.magent.controller"})
 public class MvcConfig {
 }

@@ -2,6 +2,7 @@ package com.magent.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.magent.domain.interfaces.Identifiable;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "ma_user_personal")
-public class UserPersonal {
+public class UserPersonal implements Identifiable<Long> {
 
     @Id
     @Column(name = "user_pers_pk",nullable = false,updatable = false)

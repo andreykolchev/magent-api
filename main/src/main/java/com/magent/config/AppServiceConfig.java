@@ -7,6 +7,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * Created by lezha on 17.02.2015.
+ * configuration for service layer.
+ * see  magentDemo.properties - current properties used for production or demo environment
+ * see magent.properties - current properties used for locat testing (for developers)
  */
 @Configuration
 @ImportResource({"classpath:objectmapper.xml"})

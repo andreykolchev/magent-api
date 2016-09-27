@@ -19,7 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.text.ParseException;
 import java.util.List;
 
-
+/**
+ * Controller for all logic which relates only to mobile application
+ */
 @RestController
 @RequestMapping("/mobile")
 public class MobileControllerImpl implements GeneralController {
@@ -38,11 +40,13 @@ public class MobileControllerImpl implements GeneralController {
 
     @Autowired
     @Qualifier("assignmentServiceImpl")
-    AssignmentService assignmentService;
+    private AssignmentService assignmentService;
 
     /**
-     * @param syncId
-     * @return
+     * @param syncId synchronization id (mobile app decided)
+     * @return UpdateDataDto as json value , current data related only for user who provided token
+     * @see DataService implementation
+     * @see UpdateDataDto
      */
     @RequestMapping(method = RequestMethod.GET, value = "/")
     public ResponseEntity<UpdateDataDto> getData(@RequestParam(required = false) Long syncId) {
@@ -55,8 +59,13 @@ public class MobileControllerImpl implements GeneralController {
     }
 
     /**
-     * @param dataDto
-     * @return
+     * @param dataDto UpdateDataDto entity
+     * @return same data if it updated
+     * @throws ComissionCalculatorImpl.FormulaNotFound if can't find formula ValueType.FORMULA
+     * @throws NotFoundException if commissionSum null and service can't add transaction into db
+     * @deprecated ParseException
+     * @see DataService implementation
+     * @see UpdateDataDto
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/")
     public ResponseEntity<UpdateDataDto> updateData(@RequestBody UpdateDataDto dataDto) throws ComissionCalculatorImpl.FormulaNotFound, NotFoundException, ParseException {
@@ -65,10 +74,10 @@ public class MobileControllerImpl implements GeneralController {
     }
 
     /**
-     * @param name
-     * @param control
-     * @param file
-     * @return
+     * @param name filename
+     * @param control controlId for which AssignmentTaskControl file is related
+     * @param file file from client
+     * @return path to file on server as String
      * @throws Exception
      */
     @RequestMapping(method = RequestMethod.POST, value = "/uploadFile", consumes = "multipart/form-data")
@@ -152,6 +161,7 @@ public class MobileControllerImpl implements GeneralController {
 
     /**
      * endpoint create assignment for current user which sent this information
+     *
      * @param assignment
      * @return
      */
@@ -160,7 +170,7 @@ public class MobileControllerImpl implements GeneralController {
         User activeUser = getActiveUser(userService);
         if (activeUser != null) {
             assignment.setUserId(activeUser.getId());
-            return getDefaultResponce(assignmentService.createByTemplateId(assignment),HttpStatus.CREATED , HttpStatus.NOT_FOUND);
+            return getDefaultResponce(assignmentService.createByTemplateId(assignment), HttpStatus.CREATED, HttpStatus.NOT_FOUND);
         }
         throw new NotFoundException("user not found in System");
     }

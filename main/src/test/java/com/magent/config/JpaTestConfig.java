@@ -27,7 +27,7 @@ import java.util.Properties;
 })
 public class JpaTestConfig {
 
-    @Value("${db.url.test}")
+    @Value("${db.url}")
     private String jdbcUrl;
     @Value("${db.user}")
     private String dbuser;

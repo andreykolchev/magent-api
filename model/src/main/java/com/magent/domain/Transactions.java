@@ -1,5 +1,7 @@
 package com.magent.domain;
 
+import com.magent.domain.interfaces.Identifiable;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -9,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "ma_transactions")
-public class Transactions {
+public class Transactions implements Identifiable<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "trans_pk")
@@ -84,8 +86,7 @@ public class Transactions {
 
         Transactions that = (Transactions) o;
 
-        if (!account_number.equals(that.account_number)) return false;
-        return transactionDate.equals(that.transactionDate);
+        return account_number.equals(that.account_number) && transactionDate.equals(that.transactionDate);
 
     }
 
