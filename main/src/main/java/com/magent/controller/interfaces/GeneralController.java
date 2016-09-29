@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Objects;
+
 /**
  * Created  on 17.06.2016.
  */
@@ -18,12 +20,12 @@ public interface GeneralController {
     }
 
     default ResponseEntity getDefaultResponce(Object o, HttpStatus success, HttpStatus failure) {
-        HttpStatus status = (o == null) ? failure : success;
+        HttpStatus status = (Objects.isNull(o)) ? failure : success;
         return new ResponseEntity<>(o, status);
     }
 
-    default ResponseEntity getDefaultResponceStatusOnly(Object o, HttpStatus success, HttpStatus failure){
-        HttpStatus status = (o == null) ? failure : success;
+    default ResponseEntity getDefaultResponceStatusOnly(Object o, HttpStatus success, HttpStatus failure) {
+        HttpStatus status = (Objects.isNull(o)) ? failure : success;
         return new ResponseEntity<>(status);
     }
 }

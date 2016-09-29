@@ -55,7 +55,6 @@ public class ReportsControllerImplTest extends MockWebSecurityConfig {
     }
 
     @Test
-    @Ignore
     @Sql("classpath:data.sql")
     public void uploadTransactionsCSVTest() throws Exception {
         MultipartFile multipartFile = new MockMultipartFile("test.csv", Files.readAllBytes(Paths.get(uploadPath + "test.csv")));
@@ -64,9 +63,10 @@ public class ReportsControllerImplTest extends MockWebSecurityConfig {
                 .param("fileName", "test.csv")
                 .param("separateSign", ";")
                 .header(authorizationHeader, getAccessAdminToken()))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
-        Assert.assertEquals(res.getResponse().getContentAsString().replaceAll("\"", ""), "upload success");
+        Assert.assertEquals("upload success",res.getResponse().getContentAsString().replaceAll("\"", ""));
 
     }
 

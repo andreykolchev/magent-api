@@ -26,6 +26,7 @@ public class AssignmentControllerImplTest extends MockWebSecurityConfig {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"))
                 .andDo(print());
+
     }
 
     @Test

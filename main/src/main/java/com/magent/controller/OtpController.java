@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * controller for test environment . It's return one time hash for any string
  * Created by artomov.ihor on 16.06.2016.
  */
 @RestController

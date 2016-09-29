@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * class for working with pictures on mobile application
  * Created on 01.08.2016.
  */
 @RestController
@@ -28,7 +29,7 @@ public class OnboardsControllerImpl implements GeneralController {
 
     @Autowired
     @Qualifier("onBoardingGeneralService")
-    private GeneralService onBoardGenService;
+    private GeneralService<OnBoarding> onBoardGenService;
 
     @Autowired
     @Qualifier("onBoardingValidatorImpl")
@@ -36,26 +37,25 @@ public class OnboardsControllerImpl implements GeneralController {
 
     /**
      * @return list of Onboarding entities for displaying on android app
-     * @throws NotFoundException
      */
     @RequestMapping(method = RequestMethod.GET, value = "/")
-    public ResponseEntity<List<OnBoarding>> getOnBoardingInformation() throws NotFoundException {
-        return new ResponseEntity(onBoardGenService.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<OnBoarding>> getOnBoardingInformation() {
+        return new ResponseEntity<>(onBoardGenService.getAll(), HttpStatus.OK);
     }
 
     /**
      * @param id - in ds_onboards
-     * @return OnBoarding entity
-     * @throws NotFoundException
+     * @return OnBoarding entity which has current id
+     * @throws NotFoundException if entity with curent id not present
      */
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<OnBoarding> getOnboardById(@PathVariable("id") Long id) throws NotFoundException {
-        return new ResponseEntity<>((OnBoarding) onBoardGenService.getById(id), HttpStatus.OK);
+        return new ResponseEntity<>(onBoardGenService.getById(id), HttpStatus.OK);
     }
 
     /**
      * @param onBoarding - see OnBoarding.class
-     * @return - updated entity
+     * @return updated entity
      * @throws IOException
      * @throws ImageValidatorImpl.NotCorrectImageExtension
      * @throws OnBoardingValidatorImpl.InvalidOnboardEntity
@@ -68,7 +68,7 @@ public class OnboardsControllerImpl implements GeneralController {
     @RequestMapping(method = RequestMethod.POST, value = "/")
     public ResponseEntity<OnBoarding> createOnBoardEntity(@RequestBody OnBoarding onBoarding) throws IOException, ImageValidatorImpl.NotCorrectImageExtension, OnBoardingValidatorImpl.InvalidOnboardEntity, ValidationException {
         if (onBoardingValidator.isOnBoardEntityValid(onBoarding))
-            return new ResponseEntity<>((OnBoarding) onBoardGenService.save(onBoarding), HttpStatus.CREATED);
+            return new ResponseEntity<>(onBoardGenService.save(onBoarding), HttpStatus.CREATED);
         else throw new OnBoardingValidatorImpl.InvalidOnboardEntity("Invalid image entity");
     }
 
@@ -76,7 +76,7 @@ public class OnboardsControllerImpl implements GeneralController {
     @RequestMapping(method = RequestMethod.PUT, value = "/")
     public ResponseEntity<OnBoarding> updateOnBoardEntity(@RequestBody OnBoarding onBoarding) throws IOException, ImageValidatorImpl.NotCorrectImageExtension, OnBoardingValidatorImpl.InvalidOnboardEntity, ValidationException {
         if (onBoardingValidator.isOnBoardEntityValid(onBoarding))
-            return new ResponseEntity<>((OnBoarding) onBoardGenService.save(onBoarding), HttpStatus.OK);
+            return new ResponseEntity<>(onBoardGenService.save(onBoarding), HttpStatus.OK);
         else throw new OnBoardingValidatorImpl.InvalidOnboardEntity("Invalid image entity");
     }
 

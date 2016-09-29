@@ -91,9 +91,12 @@ public class SheduleService {
         }
     }
 
+    /**
+     * method set to false isBlocked variable in UserPersonal entity
+     */
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
-    public void unlockBlockedUsers() throws ParseException {
+    public void unlockBlockedUsers() {
         List<UserPersonal> list = userService.getBlockedUsers(dateUtils.formatToSqlDateTimeInterval(new Date()),
                 dateUtils.converToTimeStamp(timeIntervalService.getByName(BLOCK_INTERVAL.toString()).getTimeInterval(), BLOCK_INTERVAL));
         if (list.size() > 0) {

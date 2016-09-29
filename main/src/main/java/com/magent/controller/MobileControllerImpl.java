@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
@@ -62,10 +63,10 @@ public class MobileControllerImpl implements GeneralController {
      * @param dataDto UpdateDataDto entity
      * @return same data if it updated
      * @throws ComissionCalculatorImpl.FormulaNotFound if can't find formula ValueType.FORMULA
-     * @throws NotFoundException if commissionSum null and service can't add transaction into db
-     * @deprecated ParseException
+     * @throws NotFoundException                       if commissionSum null and service can't add transaction into db
      * @see DataService implementation
      * @see UpdateDataDto
+     * @deprecated ParseException
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/")
     public ResponseEntity<UpdateDataDto> updateData(@RequestBody UpdateDataDto dataDto) throws ComissionCalculatorImpl.FormulaNotFound, NotFoundException, ParseException {
@@ -74,20 +75,26 @@ public class MobileControllerImpl implements GeneralController {
     }
 
     /**
-     * @param name filename
+     * end point saves file
+     *
+     * @param name    filename
      * @param control controlId for which AssignmentTaskControl file is related
-     * @param file file from client
+     * @param file    file from client
      * @return path to file on server as String
-     * @throws Exception
+     * @throws IOException if can't save file
      */
     @RequestMapping(method = RequestMethod.POST, value = "/uploadFile", consumes = "multipart/form-data")
     public ResponseEntity<String> uploadFile(@RequestParam("name") String name,
                                              @RequestParam(value = "controlId", required = false) String control,
-                                             @RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
+                                             @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         String url = dataService.saveFile(name, control, file);
         return getDefaultResponce(url, HttpStatus.OK, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * @return List of TemplateType which allowed for current users who requesting data
+     * @throws NotFoundException if role can't be found from UserRoles class
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/template-types")
     public List<TemplateType> getAll() throws NotFoundException {
         List<GrantedAuthority> authorities = (List<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
@@ -95,9 +102,7 @@ public class MobileControllerImpl implements GeneralController {
     }
 
     /**
-     * End-point returned balance of current user as String representation
-     *
-     * @return
+     * @return End-point returned balance of current user as String representation
      */
     @RequestMapping(method = RequestMethod.GET, value = "/user-balance")
     public ResponseEntity<String> getCurrentUserBalance() {
@@ -106,7 +111,7 @@ public class MobileControllerImpl implements GeneralController {
     }
 
     /**
-     * @return
+     * @return Settings entity for user who requesting data
      */
     @RequestMapping(value = "tracking/settings/", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Settings> getSettings() {
@@ -120,11 +125,11 @@ public class MobileControllerImpl implements GeneralController {
     }
 
     /**
-     * @param callList
-     * @return
+     * @param callList callist from client
+     * @return HttpStatus.Created if data saved
      */
     @RequestMapping(value = "tracking/calls/", method = RequestMethod.POST)
-    public ResponseEntity createCalls(@RequestBody List<Call> callList) {
+    public ResponseEntity<Object> createCalls(@RequestBody List<Call> callList) {
         User activeUser = getActiveUser(userService);
         if (activeUser != null) {
             trackingService.createCalls(callList, activeUser.getId());
@@ -133,12 +138,9 @@ public class MobileControllerImpl implements GeneralController {
         return new ResponseEntity<>(status);
     }
 
-    /**
-     * @param location
-     * @return
-     */
+
     @RequestMapping(value = "tracking/locations/", method = RequestMethod.POST)
-    public ResponseEntity createLocations(@RequestBody Location location) {
+    public ResponseEntity<User> createLocations(@RequestBody Location location) {
         User activeUser = getActiveUser(userService);
         if (activeUser != null) {
             trackingService.createLocations(location, activeUser.getId());
@@ -146,12 +148,8 @@ public class MobileControllerImpl implements GeneralController {
         return getDefaultResponceStatusOnly(activeUser, HttpStatus.CREATED, HttpStatus.NOT_FOUND);
     }
 
-    /**
-     * @param activityList
-     * @return
-     */
     @RequestMapping(value = "tracking/apps/", method = RequestMethod.POST)
-    public ResponseEntity createActivities(@RequestBody List<Activity> activityList) {
+    public ResponseEntity<User> createActivities(@RequestBody List<Activity> activityList) {
         User activeUser = getActiveUser(userService);
         if (activeUser != null) {
             trackingService.createActivities(activityList, activeUser.getId());
@@ -162,8 +160,8 @@ public class MobileControllerImpl implements GeneralController {
     /**
      * endpoint create assignment for current user which sent this information
      *
-     * @param assignment
-     * @return
+     * @param assignment empty assignment which include only templateId ( it old logic from distance sales )
+     * @return Assignment which created by template
      */
     @RequestMapping(value = "/assignments/createByTemplateId", method = RequestMethod.POST)
     public ResponseEntity<Assignment> createByTemplateId(@RequestBody Assignment assignment) throws NotFoundException {

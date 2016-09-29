@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Created on 19.07.2016.
+ * controller for working with TemplateTypes entity
  */
 @RestController
 @RequestMapping(value = "/template-types")
 public class TemplateTypeControllerImpl implements GeneralController {
     @Autowired
     @Qualifier("templateTypeGeneralService")
-    private GeneralService templateTypeGeneral;
+    private GeneralService<TemplateType> templateTypeGeneral;
 
     @Autowired
     private TemplateTypeService templateTypeService;
@@ -36,9 +36,14 @@ public class TemplateTypeControllerImpl implements GeneralController {
     public ResponseEntity<TemplateType> getById(@PathVariable Long id) throws NotFoundException {
         return getDefaultResponce(templateTypeGeneral.getById(id), HttpStatus.OK, HttpStatus.NOT_FOUND);
     }
-    @RequestMapping(value = "/{id}/childs",method = RequestMethod.GET)
-    public ResponseEntity<List<TemplateType>>getChilds(@PathVariable Long id){
-        return getDefaultResponce(templateTypeService.getChild(id),HttpStatus.OK,HttpStatus.NOT_FOUND);
+
+    /**
+     * @param id TemplateType entity
+     * @return TemplateTypes which related to TemplateType with current id
+     */
+    @RequestMapping(value = "/{id}/childs", method = RequestMethod.GET)
+    public ResponseEntity<List<TemplateType>> getChilds(@PathVariable Long id) {
+        return getDefaultResponce(templateTypeService.getChild(id), HttpStatus.OK, HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
@@ -48,7 +53,7 @@ public class TemplateTypeControllerImpl implements GeneralController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<TemplateType> updateTemplateType(@PathVariable Long id, @RequestBody TemplateType templateType) throws NotFoundException, BadHttpRequest {
-        return getDefaultResponce( templateTypeService.update(templateType, id), HttpStatus.OK, HttpStatus.BAD_REQUEST);
+        return getDefaultResponce(templateTypeService.update(templateType, id), HttpStatus.OK, HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

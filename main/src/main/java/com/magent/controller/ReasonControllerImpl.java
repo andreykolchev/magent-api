@@ -48,7 +48,7 @@ public class ReasonControllerImpl implements GeneralController {
     }
 
     /**
-     * @param reason - Reason enums as JSON object from client
+     * @param reason Reason enums as JSON object from client
      * @return created Reason enums
      */
     @RequestMapping(method = RequestMethod.POST, value = "/")
@@ -59,7 +59,7 @@ public class ReasonControllerImpl implements GeneralController {
 
     /**
      * @param reason - Reason enums as JSON object from client
-     * @return - updated enums
+     * @return updated enums
      * @throws NotFoundException if enums with current id not found in db thows NOT_FOUND exception
      */
     @SuppressFBWarnings("RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE")
@@ -80,8 +80,8 @@ public class ReasonControllerImpl implements GeneralController {
     }
 
     /**
-     * @param id - parent_id column @see Reason
-     * @return - List of Reasons
+     * @param id  parent_id column @see Reason
+     * @return  List of Reasons
      */
     @RequestMapping(value = "/{id}/children", method = RequestMethod.GET)
     public ResponseEntity<List<Reason>> getListByParentId(

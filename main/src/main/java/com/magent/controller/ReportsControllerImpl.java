@@ -17,7 +17,7 @@ import java.text.ParseException;
 import java.util.List;
 
 /**
- * Created  on 03.06.2016.
+ * controller for working with reports.
  */
 @RestController
 @RequestMapping("/reports")
@@ -25,7 +25,7 @@ public class ReportsControllerImpl implements GeneralController {
     @Autowired
     private TransactionService transactionService;
 
-    @ApiOperation(notes = "http://10.77.6.237:8010/job/ds_api/Upload_transactions_Web_Test_interface/", value = "upload transactions file")
+    @ApiOperation(value = "upload transactions file")
     @RequestMapping(method = RequestMethod.POST, value = "/transactions/upload")
     public ResponseEntity<String> uploadTransactions(
             @RequestParam(required = true, value = "file") MultipartFile xlsOrCsv,
@@ -47,7 +47,7 @@ public class ReportsControllerImpl implements GeneralController {
     /**
      * @param date - date in format yyyy-MM-dd
      * @return byte[]array creating by apache poi for xls files
-     * @throws IOException
+     * @throws IOException if can't create xls file
      */
     @ApiOperation(notes = "date MUST be in yyyy-MM-dd format, method returned byte[]array for xls format", value = "get XLS report for transactions by date")
     @RequestMapping(method = RequestMethod.GET, value = "/transactions/bydate")
