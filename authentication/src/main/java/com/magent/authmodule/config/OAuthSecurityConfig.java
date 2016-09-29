@@ -24,6 +24,7 @@ import java.util.Arrays;
 
 /**
  * Created by Sergey on 05.08.2015.
+ *
  * @version 1.1.1
  * @apiNote BE CAREFUL each application which will be use this jar as security module must override (void configure) for their matchers and roles
  * @apiNote each value in configuration must be present in any properties file which point general application
@@ -49,7 +50,7 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
 
     @Value("${oauth.otp.clientid}")
     private String otpClientId;
-
+    // current value must be the same as on oauthServer
     @Value("${oauth.otp.client.secret}")
     private String otpClientSecret;
 
@@ -74,13 +75,13 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
 
     @Bean
     public OauthClientCredentials clientCredentialsOtp() {
-        LOGGER.debug("Using OAuth server: {}", tokenServer);
+        LOGGER.debug("Using OAuth server for gets token with otp: {}", tokenServer);
         return new OauthClientCredentials(tokenServer, otpClientId, otpClientSecret);
     }
 
     @Bean
     public OauthClientCredentials clientCredentials() {
-        LOGGER.debug("Using OAuth server: {}", tokenServer);
+        LOGGER.debug("Using OAuth server for gets token without otp: {}", tokenServer);
         return new OauthClientCredentials(tokenServer, clientId, clientSecret);
     }
 
@@ -98,9 +99,12 @@ public class OAuthSecurityConfig extends ResourceServerConfigurerAdapter {
         return filter;
     }
 
+    /**
+     *
+     * @see org.springframework.security.config.annotation.web.builders.HttpSecurity
+     */
     @Override
     public void configure(HttpSecurity http) throws Exception {
-
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login*").permitAll()

@@ -8,16 +8,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created  on 13.05.2016.
+ * @see javax.servlet.Filter
  */
 
 @Component
-public class SimpleCORSFilter implements Filter  {
+public class SimpleCORSFilter implements Filter {
 
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
-
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH, OPTIONS");
         response.setHeader("Access-Control-Max-Age", "3600");
@@ -30,5 +29,6 @@ public class SimpleCORSFilter implements Filter  {
 
     }
 
-    public void destroy() {}
+    public void destroy() {
+    }
 }

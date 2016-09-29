@@ -27,6 +27,7 @@ import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -81,8 +82,8 @@ public class OauthServiceTest extends MockWebAppConfiguration {
     }
 
     @Test
-    @Sql("classpath:data.sql")
     @Ignore
+    @Sql("classpath:data.sql")
     public void testWithSms() throws UserValidatorImpl.UserIsBlockedException {
         String login = "user1";
         String pass = "user1";
@@ -100,8 +101,8 @@ public class OauthServiceTest extends MockWebAppConfiguration {
     }
 
     @Test
-    @Sql("classpath:data.sql")
     @Ignore
+    @Sql("classpath:data.sql")
     public void viaSmsMvcTest() throws Exception {
         String login = "user1";
         String pass = "user1";
@@ -119,14 +120,16 @@ public class OauthServiceTest extends MockWebAppConfiguration {
                 .param("username", login)
                 .param("password", hashpass)
                 .param("otpPass", SecurityUtils.hashPassword(sms)))
-                .andReturn().getResponse().getContentAsString();
+                .andDo(print())
+                .andReturn()
+                .getResponse().getContentAsString();
         JsonParser parser = new JsonParser();
         JsonObject object = (JsonObject) parser.parse(tokenAsString);
         String token = "bearer" + object.get("access_token").getAsString();
 
         //check is access works
         mvc.perform(get("/assignments/")
-//                .header(authorizationHeader, token)
+                .header(AUTHORIZATION_HEADER, token)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"));

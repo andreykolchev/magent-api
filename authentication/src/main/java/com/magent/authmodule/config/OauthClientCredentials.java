@@ -1,6 +1,6 @@
 package com.magent.authmodule.config;
 
-public class OauthClientCredentials {
+ public class OauthClientCredentials {
     private String tokenServer;
     private String clientId;
     private String clientSecret;

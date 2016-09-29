@@ -33,12 +33,12 @@
             <scope>system</scope>
             <systemPath>${pom.basedir}/../${artifact.directory}/${model.module.name}</systemPath>
         </dependency>
-          <dependency>
-              <groupId>com.magent</groupId>
-              <artifactId>magent.repository</artifactId>
-              <version>1.1.1-SNAPSHOT</version>
-              <scope>test</scope>
-          </dependency>
+        <dependency>
+            <groupId>com.magent</groupId>
+            <artifactId>magent.repository</artifactId>
+            <version>1.1.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.magent</groupId>
             <artifactId>magent.report</artifactId>

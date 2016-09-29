@@ -1,7 +1,6 @@
 package com.magent.authmodule.config;
 
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,6 +15,7 @@ import org.springframework.util.Assert;
 
 /**
  *
+ *
  */
 @Configuration
 @EnableOAuth2Client
@@ -23,7 +23,7 @@ public class OAuthClientConfig implements InitializingBean {
 
     @Autowired(required = false)
     @Qualifier("clientCredentials")
-    OauthClientCredentials clientCredentials;
+    private OauthClientCredentials clientCredentials;
 
     @Autowired(required = false)
     @Qualifier("clientCredentialsOtp")
@@ -33,7 +33,6 @@ public class OAuthClientConfig implements InitializingBean {
     }
 
     public void afterPropertiesSet() throws Exception {
-
         Assert.notNull(this.clientCredentials, "Named bean clientCredentials of type OauthClientCredentials not found in context");
     }
 
@@ -47,20 +46,22 @@ public class OAuthClientConfig implements InitializingBean {
         return createDetails(clientCredentialsOtp);
     }
 
+    /**
+     * template for register with otp
+     */
     @Bean
     public OAuth2RestTemplate otpOauthRestTemplate(OAuth2ClientContext clientContext) {
         return new OAuth2RestTemplate(this.oauthOtpResourceDetails(), clientContext);
     }
 
+    //template for register with otp
     @Bean
-    public OAuth2RestTemplate usbOauthRestTemplate(OAuth2ClientContext clientContext) {
+    public OAuth2RestTemplate oauthRestTemplate(OAuth2ClientContext clientContext) {
         return new OAuth2RestTemplate(this.oauthResourceDetails(), clientContext);
     }
 
-
-    @SuppressFBWarnings("SIC_INNER_SHOULD_BE_STATIC")
-    private final class UsbResourceOwnerPasswordResourceDetails extends ResourceOwnerPasswordResourceDetails {
-        private UsbResourceOwnerPasswordResourceDetails() {
+    private final class MagentResourceOwnerPasswordResourceDetails extends ResourceOwnerPasswordResourceDetails {
+        private MagentResourceOwnerPasswordResourceDetails() {
         }
 
         public boolean isClientOnly() {
@@ -68,9 +69,9 @@ public class OAuthClientConfig implements InitializingBean {
         }
     }
 
-    //not bean , this method for
-    private OAuthClientConfig.UsbResourceOwnerPasswordResourceDetails createDetails(OauthClientCredentials credentials) {
-        OAuthClientConfig.UsbResourceOwnerPasswordResourceDetails details = new OAuthClientConfig.UsbResourceOwnerPasswordResourceDetails();
+    //not bean
+    private MagentResourceOwnerPasswordResourceDetails createDetails(OauthClientCredentials credentials) {
+        MagentResourceOwnerPasswordResourceDetails details = new MagentResourceOwnerPasswordResourceDetails();
         details.setId(credentials.getClientId());
         details.setClientId(credentials.getClientId());
         details.setClientSecret(credentials.getClientSecret());

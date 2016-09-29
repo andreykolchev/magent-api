@@ -14,7 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
- * @author  artomov.ihor
+ * @author artomov.ihor
  * @since 20.04.2016.
  * //
  */
@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @ContextConfiguration(classes = {DummyServiceTestConfig.class})
 @WebAppConfiguration
 public class MockWebAppConfiguration {
+    protected final static String AUTHORIZATION_HEADER = "Authorization";
 
     @Autowired
     protected WebApplicationContext context;
