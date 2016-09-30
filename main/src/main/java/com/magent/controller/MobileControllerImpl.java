@@ -87,7 +87,7 @@ public class MobileControllerImpl implements GeneralController {
     public ResponseEntity<String> uploadFile(@RequestParam("name") String name,
                                              @RequestParam(value = "controlId", required = false) String control,
                                              @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-        String url = dataService.saveFile(name, control, file);
+        String url = dataService.saveFile(name, file);
         return getDefaultResponce(url, HttpStatus.OK, HttpStatus.NOT_FOUND);
     }
 
