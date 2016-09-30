@@ -3,8 +3,6 @@ package com.magent.reportmodule.reportservice.implementation;
 import com.magent.domain.Account;
 import com.magent.domain.Transactions;
 import com.magent.domain.User;
-import com.magent.repository.AccountRepository;
-import com.magent.repository.TransactionRepository;
 import com.magent.reportmodule.reportservice.interfaces.TransactionService;
 import com.magent.reportmodule.utils.comparators.TransactionComparator;
 import com.magent.reportmodule.utils.dateutils.DateUtils;
@@ -12,7 +10,8 @@ import com.magent.reportmodule.utils.xlsutil.interfaces.BalanceUploaderXlsWriter
 import com.magent.reportmodule.utils.xlsutil.interfaces.CsvReader;
 import com.magent.reportmodule.utils.xlsutil.interfaces.TransactionsXlsReader;
 import com.magent.reportmodule.utils.xlsutil.interfaces.TransactionsXlsWriter;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import com.magent.repository.AccountRepository;
+import com.magent.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -117,7 +116,6 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     //saved file in tmp directory not depended is operation successful or not
-    @SuppressFBWarnings("PATH_TRAVERSAL_IN")
     private File saveAsTmpFileAndReturn(MultipartFile multipartFile, String fullFileName) throws IOException {
         String[] tmp = fullFileName.split("\\.");
         File file = new File(uploadPath + "tmp_upload_" + df.format(new Date()) + "." + tmp[1]);

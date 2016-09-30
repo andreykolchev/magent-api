@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.util.List;
 
 /**
+ * interface for reading from xls files
  * Created by artomov.ihor on 27.05.2016.
  */
 public interface TransactionsXlsReader {
@@ -19,11 +20,12 @@ public interface TransactionsXlsReader {
      *             b) - transaction sum second cell
      *             c) - transaction date third cell
      *             d) - sign "+" or "-" another signs not allowed
-     * @return
+     * @return transaction list
      * @throws IOException
      * @throws NotCorrectXLSFileContent
+     * @see Transactions
      */
-    public List<Transactions> readFromExcel(File file) throws IOException, NotCorrectXLSFileContent, ParseException;
+    List<Transactions> readFromExcel(File file) throws IOException, NotCorrectXLSFileContent, ParseException;
 
     class NotCorrectXLSFileContent extends Exception {
         public NotCorrectXLSFileContent(String message) {

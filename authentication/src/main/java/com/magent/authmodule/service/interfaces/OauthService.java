@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
  * see OauthServiceAbstract class
  */
 public interface OauthService {
-    /**
+    /**mvn surefire-report:report-only
      * @param login unique login for user
      * @param pass  password for user details , depends on realization (can contains only password or mix password and otp )
      * @return token from oauth server

@@ -6,14 +6,15 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * interface for write transactions in to xls file
  * Created by artomov.ihor on 27.05.2016.
  */
 public interface TransactionsXlsWriter extends XlsCreator {
 
     /**
      * @param transactionsList - list of transactions from ds_transactions
-     * @return xls file
+     * @return xls file as byte array
      */
-    public byte[] createXlsReport(List<Transactions> transactionsList) throws IOException;
+    byte[] createXlsReport(List<Transactions> transactionsList) throws IOException;
 
 }
