@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Created by lezha on 15.03.2015.
+ * service for Device operations
  */
 @Service
 class DeviceServiceImpl implements DeviceService {
@@ -29,6 +29,11 @@ class DeviceServiceImpl implements DeviceService {
     @Autowired
     private DeviceRepository deviceRepository;
 
+    /**
+     *
+     * @param device Device entity
+     * @return Device entity persisted in DB
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Device addOrUpdateDevice (Device device){
@@ -40,6 +45,11 @@ class DeviceServiceImpl implements DeviceService {
         return currentDevice;
     }
 
+    /**
+     * transactional method
+     * @param device  Device entity
+     * @return Device entity persisted in DB
+     */
     @Transactional(rollbackFor = Exception.class)
     public Device insertOrLoad(Device device) {
         Device persistedDevice = deviceRepository.findOne(device.getId());

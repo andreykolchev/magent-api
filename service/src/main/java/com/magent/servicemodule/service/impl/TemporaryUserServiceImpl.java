@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Created on 26.09.2016.
+ * service for TemporaryUser operations
  */
 @Service
 @Transactional(readOnly = true)
@@ -16,16 +16,32 @@ class TemporaryUserServiceImpl implements TemporaryUserService {
     @Autowired
     private TemporaryUserRepository temporaryUserRepository;
 
+    /**
+     *
+     * @param login
+     * @return TemporaryUser
+     */
     @Override
     public TemporaryUser getByLogin(String login) {
         return temporaryUserRepository.getByLogin(login);
     }
 
+    /**
+     *
+     * @param login
+     * @param otp
+     * @return TemporaryUser
+     */
     @Override
     public TemporaryUser getByLoginAndOtp(String login, String otp) {
         return temporaryUserRepository.getByLoginAndOtp(login, otp);
     }
 
+    /**
+     * Transactional method
+     * @param temporaryUser TemporaryUser object for persist
+     * @return TemporaryUser entity persisted in DB
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public TemporaryUser save(TemporaryUser temporaryUser) {

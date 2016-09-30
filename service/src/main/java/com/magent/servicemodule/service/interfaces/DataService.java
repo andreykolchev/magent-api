@@ -16,6 +16,6 @@ public interface DataService {
 
     UpdateDataDto updateData(UpdateDataDto dataDto) throws ComissionCalculatorImpl.FormulaNotFound, NotFoundException, ParseException;
 
-    String saveFile(String fileName, String control, MultipartFile file) throws IOException;
+    String saveFile(String fileName, MultipartFile file) throws IOException;
 
 }

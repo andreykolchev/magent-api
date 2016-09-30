@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
 import static com.magent.domain.enums.TimeIntervalConstants.TMP_UNREGISTERED_USER_INTERVAL;
 
 /**
- * Created by artomov.ihor on 11.05.2016.
+ * service for User operations.
  */
 @Service
 @Transactional(readOnly = true)
@@ -81,6 +81,12 @@ class UserServiceImpl implements UserService {
     @PersistenceContext
     EntityManager entityManager;
 
+    /**
+     * get users by filter
+     * @param filter
+     * @return list of Users by filter
+     * @throws NotFoundException
+     */
     @Override
     public List<User> getUsersByFilter(String filter) throws NotFoundException {
         Long id = 0L;
@@ -107,6 +113,13 @@ class UserServiceImpl implements UserService {
         return userRepository.findUsersByFilter(id, login, u_role);
     }
 
+    /**
+     * change user password
+     * @param id
+     * @param chPassDto
+     * @return boolean
+     * @throws ValidationException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean changePassword(Long id, ChangePasswordDto chPassDto) throws ValidationException {
@@ -124,7 +137,14 @@ class UserServiceImpl implements UserService {
         return false;
     }
 
-    //from client otp number flew already 1 time hashed
+    /**
+     * @param login
+     * @param password
+     * @param otp
+     * @return UserPersonal
+     * @throws ValidationException
+     * @throws UserValidatorImpl.UserIsBlockedException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserPersonal changePassword(String login, String password, String otp) throws ValidationException, UserValidatorImpl.UserIsBlockedException {
@@ -145,6 +165,11 @@ class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     *
+     * @param login
+     * @return User
+     */
     @Override
     public User findByLogin(String login) {
         return userRepository.findByLogin(login);
@@ -165,7 +190,14 @@ class UserServiceImpl implements UserService {
         return res;
     }
 
-    //password comes already hashed from frontend
+
+    /**
+     * password comes already hashed from frontend
+     * @param temporaryUser TemporaryUser
+     * @return Confirmation
+     * @throws ValidationException
+     * @throws ParseException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String isNewUserSaved(TemporaryUser temporaryUser) throws ValidationException, ParseException {
@@ -183,6 +215,13 @@ class UserServiceImpl implements UserService {
         return (String) sender.sendConfirmationAndSaveUser(temporaryUser);
     }
 
+    /**
+     *
+     * @param login
+     * @param otp
+     * @return User
+     * @throws NotFoundException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public User confirmRegistration(String login, String otp) throws NotFoundException {
@@ -202,10 +241,21 @@ class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     *
+     * @param login
+     * @return Account balance (String)
+     */
     public String getAccountBalanceByUserLogin(String login) {
         return accountRepository.getAccountByUserLogin(login).getAccountBalance().toString();
     }
 
+    /**
+     *
+     * @param sqlDate
+     * @param timeFromConfig
+     * @return list of blocked users (UserPersonal)
+     */
     @Override
     public List<UserPersonal> getBlockedUsers(String sqlDate, String timeFromConfig) {
         Session session = entityManager.unwrap(Session.class);
@@ -214,6 +264,12 @@ class UserServiceImpl implements UserService {
         return query.list();
     }
 
+    /**
+     *
+     * @param sqlDate
+     * @param timeFromConfig
+     * @return list of users
+     */
     @Override
     public List<UserPersonal> setToZeroForgotPassword(String sqlDate, String timeFromConfig) {
         Session session = entityManager.unwrap(Session.class);
@@ -222,6 +278,12 @@ class UserServiceImpl implements UserService {
         return query.list();
     }
 
+    /**
+     *
+     * @param sqlDate
+     * @param timeFromConfig
+     * @return list of users
+     */
     @Override
     public List<TemporaryUser> getUsersWithExpiredTerm(String sqlDate, String timeFromConfig) {
         Session session = entityManager.unwrap(Session.class);
@@ -230,6 +292,11 @@ class UserServiceImpl implements UserService {
         return query.list();
     }
 
+    /**
+     *
+     * @return get time stamp when OTP will die
+     * @throws ParseException
+     */
     @Override
     public String getEndSmsPeriod() throws ParseException {
         return dateUtils.converToTimeStamp(timeIntervalService.getByName(TMP_UNREGISTERED_USER_INTERVAL.toString()).getTimeInterval(), TMP_UNREGISTERED_USER_INTERVAL);

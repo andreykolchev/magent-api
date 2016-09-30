@@ -13,13 +13,20 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created on 19.07.2016.
+ * service for TemplateType operations
  */
 @Service
 class TemplateTypeServiceImpl implements TemplateTypeService {
     @Autowired
     private TemplateTypeRpository templateTypeRpository;
 
+    /**
+     *
+     * @param templateType TemplateType object
+     * @param id TemplateType id for update
+     * @return TemplateType entity persisted in DB
+     * @throws NotFoundException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public TemplateType update(TemplateType templateType, Long id) throws NotFoundException {
@@ -33,12 +40,21 @@ class TemplateTypeServiceImpl implements TemplateTypeService {
         return type;
     }
 
+    /**
+     * @param parentId id of thr parent TemplateType
+     * @return list of child TemplateTypes
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<TemplateType> getChild(Long parentId) {
         return templateTypeRpository.getAllChilds(parentId);
     }
 
+    /**
+     * get list of TemplateTypes for current user role
+     * @param role current user role
+     * @return list of TemplateTypes
+     */
     @Override
     @Transactional(readOnly = true)
     public List<TemplateType> getTemplateTypesForMobApp(Long role) {

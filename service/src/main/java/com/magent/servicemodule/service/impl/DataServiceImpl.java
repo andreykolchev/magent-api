@@ -29,11 +29,12 @@ import java.util.Objects;
 import static com.magent.domain.AssignmentStatus.COMPLETE;
 import static com.magent.domain.AssignmentStatus.NEED_CONFIRMATION;
 
+/**
+ * service for Mobile application
+ */
 @Service
 @Transactional(readOnly = true)
 class DataServiceImpl implements DataService {
-
-    public static final String JPG_EXTENSION = ".jpg";
 
     @Value("${upload.file.path}")
     private String uploadPath;
@@ -62,9 +63,11 @@ class DataServiceImpl implements DataService {
     @Autowired
     private TemplateTypeRpository typeRpository;
 
-    @Autowired
-    private TemplateRepository templateRepository;
-
+    /**
+     * @param userId id of user
+     * @param syncId key for data synchronization (get only updates)
+     * @return UpdateDataDto entity
+     */
     @Override
     public UpdateDataDto getData(Long userId, Long syncId) {
 
@@ -86,7 +89,13 @@ class DataServiceImpl implements DataService {
         return result;
     }
 
-
+    /**
+     * @param dataDto UpdateDataDto entity with predefined params
+     * @return UpdateDataDto entity persisted in DB
+     * @throws ComissionCalculatorImpl.FormulaNotFound
+     * @throws NotFoundException
+     * @throws ParseException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UpdateDataDto updateData(UpdateDataDto dataDto) throws ComissionCalculatorImpl.FormulaNotFound, NotFoundException, ParseException {
@@ -113,9 +122,15 @@ class DataServiceImpl implements DataService {
         return result;
     }
 
+    /**
+     * @param fileName file name for saving on server
+     * @param file     MultipartFile
+     * @return url for saved file
+     * @throws IOException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String saveFile(String fileName, String control, MultipartFile file) throws IOException {
+    public String saveFile(String fileName, MultipartFile file) throws IOException {
 
         if (file != null && !file.isEmpty()) {
             byte[] fileBytes = file.getBytes();
@@ -131,21 +146,44 @@ class DataServiceImpl implements DataService {
         }
     }
 
-    //additional logic for commission calculation
+    /**
+     * additional logic for commission calculation
+     *
+     * @param attributeList list of AssignmentAttribute (data for calculating)
+     * @return calculated commission
+     * @throws ComissionCalculatorImpl.FormulaNotFound
+     */
     private Double calculateCommision(List<AssignmentAttribute> attributeList) throws ComissionCalculatorImpl.FormulaNotFound {
         Number commissionSum = comissionCalculator.calculateCommission(attributeList, 2);
         return commissionSum.doubleValue();
     }
 
+    /**
+     * @param attributeList list of AssignmentAttribute (must contain AssignmentAttribute with formula type)
+     * @return if one of AssignmentAttributes has formula type, return true
+     * @see ValueType
+     */
     private boolean isFormulaPresent(List<AssignmentAttribute> attributeList) {
         return findValueType(attributeList, ValueType.FORMULA);
     }
 
+    /**
+     * @param attributeList list of AssignmentAttribute (must contain AssignmentAttribute with commission type)
+     * @return if one of AssignmentAttributes has commission type, return true
+     * @see ValueType
+     */
     private boolean isCommissionPresent(List<AssignmentAttribute> attributeList) {
         return findValueType(attributeList, ValueType.COMMISSION_COST);
     }
 
-    //this void is only for change balance in update transaction
+
+    /**
+     * procedure for change balance of User in update transaction (Account.setAccountBalance)
+     *
+     * @param assignment Assignment contain AssignmentAttributes with types (FORMULA, COMMISSION_COST)
+     * @throws NotFoundException
+     * @throws ParseException
+     */
     private void addTransaction(Assignment assignment) throws NotFoundException, ParseException {
         List<AssignmentAttribute> attributeList = assignmentAttributeRepository.getByAssignmentId(assignment.getId());
         Double commissionSum = null;
@@ -165,7 +203,13 @@ class DataServiceImpl implements DataService {
         accountRepository.save(account);
     }
 
-    //looking in attribute list current value type
+    /**
+     * looking in attribute list current value type
+     *
+     * @param attributeList list of AssignmentAttribute (must contain AssignmentAttribute with ValueType)
+     * @param valueType
+     * @return if one of AssignmentAttributes has valueType, return true
+     */
     private boolean findValueType(List<AssignmentAttribute> attributeList, ValueType valueType) {
         for (AssignmentAttribute attribute : attributeList) {
             if (attribute.getValueType().equals(valueType)) {
@@ -175,14 +219,25 @@ class DataServiceImpl implements DataService {
         return false;
     }
 
-    //initialize controls
+    /**
+     * initialize controls (lazy) of Assignment (Hibernate.initialize(Object proxy))
+     *
+     * @param assignment Assignment entity
+     */
     private void initializeControls(Assignment assignment) {
         for (AssignmentTask task : assignment.getTasks()) {
             Hibernate.initialize(task.getControls());
         }
     }
 
-    //attributes operation
+    /**
+     * attributes operation
+     *
+     * @param assignment Assignment entity for update
+     * @throws NotFoundException
+     * @throws ParseException
+     * @throws ComissionCalculatorImpl.FormulaNotFound
+     */
     @Transactional(rollbackFor = Exception.class)
     private void updateDataAttributesOperation(Assignment assignment) throws NotFoundException, ParseException, ComissionCalculatorImpl.FormulaNotFound {
         if (Objects.nonNull(assignment.getAttributes())) {
@@ -207,7 +262,11 @@ class DataServiceImpl implements DataService {
         }
     }
 
-    //tasks operation
+    /**
+     * tasks operation
+     *
+     * @param assignment Assignment entity for update
+     */
     @Transactional(rollbackFor = Exception.class)
     private void updateDataTasks(Assignment assignment) {
         if (Objects.nonNull(assignment.getTasks())) {
@@ -219,6 +278,11 @@ class DataServiceImpl implements DataService {
         }
     }
 
+    /**
+     * full registration operation
+     *
+     * @param assignmentList list of Assignments for update
+     */
     @Transactional(rollbackFor = Exception.class)
     private void changeAssignmentForFullRegistration(List<Assignment> assignmentList) {
         //template type 2 is always for full registration only.
@@ -231,6 +295,11 @@ class DataServiceImpl implements DataService {
         }
     }
 
+    /**
+     * initialize attributes and tasks of Assignment (Hibernate.initialize(Object proxy))
+     *
+     * @param assignmentList list of Assignments for initialize
+     */
     @Transactional(readOnly = true)
     private void initializeAttributesAndTasks(List<Assignment> assignmentList) {
         for (Assignment assignment : assignmentList) {

@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * service for TrackingService operations.
+ */
 @Service
 @Transactional(readOnly = true)
 class TrackingServiceImpl implements TrackingService {
@@ -32,12 +35,21 @@ class TrackingServiceImpl implements TrackingService {
     @Autowired
     private ActivityRepository activityRepository;
 
-
+    /**
+     *
+     * @param userId
+     * @return Settings for current user of mobile application
+     */
     @Override
     public Settings getSettings(Long userId) {
         return settingsRepository.findByUserId(userId);
     }
 
+    /**
+     * save calls statistics for current user of mobile application
+     * @param callList list of Call
+     * @param userId
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createCalls(List<Call> callList, Long userId) {
@@ -48,6 +60,11 @@ class TrackingServiceImpl implements TrackingService {
         callRepository.save(calls);
     }
 
+    /**
+     * save locations statistics for current user of mobile application
+     * @param location Location object
+     * @param userId
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createLocations(Location location, Long userId) {
@@ -55,6 +72,11 @@ class TrackingServiceImpl implements TrackingService {
         locationRepository.save(location);
     }
 
+    /**
+     * save applications activity statistics for current user of mobile application
+     * @param activityList
+     * @param userId
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createActivities(List<Activity> activityList, Long userId) {

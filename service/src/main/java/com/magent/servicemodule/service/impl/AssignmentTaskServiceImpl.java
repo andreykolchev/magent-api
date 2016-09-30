@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * service for AssignmentTask operations
+ */
 @Service
 @Transactional(readOnly = true)
 class AssignmentTaskServiceImpl implements AssignmentTaskService {
@@ -16,6 +19,11 @@ class AssignmentTaskServiceImpl implements AssignmentTaskService {
     @Autowired
     AssignmentTaskRepository assignmentTaskRepository;
 
+    /**
+     * @param id Assignment id
+     * @return list of AssignmentTask by Assignment id
+     * @see com.magent.domain.Assignment
+     */
     @Override
     public List<AssignmentTask> getByAssignmentId(Number id) {
         return assignmentTaskRepository.getByAssignmentId(id);

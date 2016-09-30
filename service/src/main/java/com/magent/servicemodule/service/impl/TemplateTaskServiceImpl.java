@@ -10,13 +10,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Created by artomov.ihor on 10.05.2016.
+ * service for TemplateTask operations
  */
 @Service
 @Transactional(readOnly = true)
 class TemplateTaskServiceImpl implements TemplateTaskService {
+
     @Autowired
     private TemplateTaskRepository templateTaskRepository;
+
+    /**
+     * @param templateId Template id
+     * @return list of TemplateTask by Template id
+     * @see com.magent.domain.Template
+     */
     @Override
     public List<TemplateTask> getTaskByTemplateId(Long templateId) {
         return templateTaskRepository.getTaskByTemplateId(templateId);

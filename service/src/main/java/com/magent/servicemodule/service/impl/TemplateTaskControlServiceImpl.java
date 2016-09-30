@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-
+/**
+ * service for TemplateTaskControl operations
+ */
 @Service
 @Transactional(readOnly = true)
 class TemplateTaskControlServiceImpl implements TemplateTaskControlService {
@@ -17,6 +19,12 @@ class TemplateTaskControlServiceImpl implements TemplateTaskControlService {
     @Autowired
     private TemplateTaskControlRepository templateTaskControlRepository;
 
+    /**
+     *
+     * @param id TemplateTask id
+     * @return list of TemplateTaskControl by TemplateTask id
+     * @see com.magent.domain.TemplateTask
+     */
     @Override
     public List<TemplateTaskControl> getByTaskId(Number id) {
         return templateTaskControlRepository.getByTemplateTaskId(id);

@@ -24,6 +24,9 @@ import java.util.Objects;
 
 /**
  * Created on 17.08.2016.
+ * @author artomov.ihor
+ * @since 29/04/2016
+ * service for Sms demo operations
  */
 @Service
 class SmsDemoServiceImpl implements SmsService {
@@ -45,6 +48,12 @@ class SmsDemoServiceImpl implements SmsService {
     @Value("${attempt.quantity}")
     private int maxAttemptQuantity;
 
+    /**
+     * send OTP for the sign in operation
+     * @param toPhone Phone number
+     * @return sms
+     * @throws IOException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String sendOtpForRegisteredUser(String toPhone) throws IOException {
@@ -57,6 +66,12 @@ class SmsDemoServiceImpl implements SmsService {
         return sendSms;
     }
 
+    /**
+     * send OTP for the sign up operation and save TemporaryUser
+     * @param temporaryUser TemporaryUser entity for persist
+     * @return sms
+     * @throws ValidationException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String sendConfirmationAndSaveUser(TemporaryUser temporaryUser) throws ValidationException {
@@ -75,6 +90,12 @@ class SmsDemoServiceImpl implements SmsService {
         return sendSms;
     }
 
+    /**
+     * resend confirmation OTP
+     * @param login login(phone number)
+     * @return sms(OTP)
+     * @throws NotFoundException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String recentConfirmation(String login) throws NotFoundException {
@@ -91,8 +112,8 @@ class SmsDemoServiceImpl implements SmsService {
     }
 
     /**
-     *
-     * @param toPhone - user login
+     * send confirmation OTP for the password change operation
+     * @param toPhone - user login (Phone)
      * @return - non hashed otp number as String
      * @throws ValidationException
      */

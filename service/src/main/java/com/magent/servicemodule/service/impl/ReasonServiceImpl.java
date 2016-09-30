@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * @author artomov.ihor
  * @since 29/04/2016
+ * service for Reason operations
  */
 @Service
 @Transactional(readOnly = true)
@@ -19,6 +20,11 @@ class ReasonServiceImpl implements ReasonService {
     @Autowired
     ReasonRepository reasonRepository;
 
+    /**
+     *
+     * @param id parent_id from ds_reason see db and Reason.class
+     * @return list of Reason
+     */
     @Override
     public List<Reason> getListByParentId(Long id) {
         return reasonRepository.getListByParentId(id);

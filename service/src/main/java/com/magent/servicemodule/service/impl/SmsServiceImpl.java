@@ -35,6 +35,7 @@ import static com.magent.domain.enums.TimeIntervalConstants.OTP_INTERVAL_NAME;
 
 /**
  * Created on 13.06.2016.
+ * service for Sms operations
  */
 @Service
 class SmsServiceImpl implements SmsService {
@@ -73,6 +74,13 @@ class SmsServiceImpl implements SmsService {
     @PersistenceContext
     EntityManager entityManager;
 
+    /**
+     * send OTP for the sign in operation
+     *
+     * @param toPhone Phone number
+     * @return sms
+     * @throws IOException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String sendOtpForRegisteredUser(String toPhone) throws IOException, ParseException {
@@ -88,6 +96,13 @@ class SmsServiceImpl implements SmsService {
         return getEndSmsPeriod();
     }
 
+    /**
+     * send OTP for the sign up operation and save TemporaryUser
+     *
+     * @param temporaryUser TemporaryUser entity for persist
+     * @return sms
+     * @throws ValidationException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String sendConfirmationAndSaveUser(TemporaryUser temporaryUser) throws ValidationException, ParseException {
@@ -108,6 +123,13 @@ class SmsServiceImpl implements SmsService {
         return getEndSmsPeriod();
     }
 
+    /**
+     * resend confirmation OTP
+     *
+     * @param login login(phone number)
+     * @return sms(OTP)
+     * @throws NotFoundException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String recentConfirmation(String login) throws NotFoundException, ParseException {
@@ -123,11 +145,22 @@ class SmsServiceImpl implements SmsService {
         return getEndSmsPeriod();
     }
 
+    /**
+     * send sms after success registration
+     *
+     * @param login
+     */
     @Override
     public void sendSuccessfullRegistration(String login) {
         template.getForObject(smsHost + OtpConstants.PATTERN_FOR_SMS_GATE, String.class, login, OtpConstants.SUCCESS_REGISTRATION + login);
     }
 
+    /**
+     * @param sqlDate
+     * @param timeFromConfig
+     * @return list of SmsPassword
+     * @see SmsPassword
+     */
     @Override
     @Transactional(readOnly = true)
     public List<SmsPassword> getOldSmsPass(String sqlDate, String timeFromConfig) {
@@ -138,12 +171,25 @@ class SmsServiceImpl implements SmsService {
     }
 
 
+    /**
+     * get time stamp when OTP will die
+     *
+     * @return
+     * @throws ParseException
+     */
     @Override
     @Transactional(readOnly = true)
     public String getEndSmsPeriod() throws ParseException {
         return dateUtils.converToTimeStamp(timeIntervalService.getByName(OTP_INTERVAL_NAME.toString()).getTimeInterval(), OTP_INTERVAL_NAME);
     }
 
+    /**
+     * send confirmation OTP for the password change operation
+     *
+     * @param toPhone - user login (Phone)
+     * @return - non hashed otp number as String
+     * @throws ValidationException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String sendForgotPassword(String toPhone) throws ValidationException, ParseException {
@@ -164,6 +210,9 @@ class SmsServiceImpl implements SmsService {
         } else throw new ValidationException("user can change only " + maxAttemptQuantity + " times in a day");
     }
 
+    /**
+     * sms text constants
+     */
     private static final class OtpConstants {
 
         private static final String SEND_LOGIN_CONFIRMATION = "mAgent your temporary password is  ";

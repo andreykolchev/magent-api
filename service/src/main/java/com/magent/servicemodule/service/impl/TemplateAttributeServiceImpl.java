@@ -10,14 +10,21 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * @since 29/04/2016
+ * service for TemplateAttribute operations
  */
 @Service
 @Transactional(readOnly = true)
 class TemplateAttributeServiceImpl implements TemplateAttributeService {
+
     @Autowired
     private TemplateAttributeRepository templateAttributeRepository;
 
+    /**
+     *
+     * @param templateId Template id
+     * @return list of TemplateAttributes by Template id
+     * @see TemplateAttribute
+     */
     @Override
     public List<TemplateAttribute> getAttributesByTemplateId(Long templateId) {
         return templateAttributeRepository.findAllByTemplateId(templateId);
