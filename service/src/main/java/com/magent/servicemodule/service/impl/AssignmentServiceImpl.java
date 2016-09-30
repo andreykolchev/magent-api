@@ -38,10 +38,6 @@ class AssignmentServiceImpl implements AssignmentService {
     private GeneralService<AssignmentTaskControl> assignmentTaskControlGeneralService;
 
     @Autowired
-    @Qualifier("assignmentTaskControlServiceImpl")
-    private AssignmentTaskControlService assignmentTaskControlService;
-
-    @Autowired
     @Qualifier("templateGeneralService")
     private GeneralService<Template> templateGeneralService;
 
