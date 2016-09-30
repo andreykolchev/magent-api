@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * service for  AssignmentAttribute CRUD operations
+ */
 @Service
 @Transactional(readOnly = true)
 class AssignmentAttributeServiceImpl implements AssignmentAttributeService {
@@ -16,6 +19,12 @@ class AssignmentAttributeServiceImpl implements AssignmentAttributeService {
     @Autowired
     AssignmentAttributeRepository assignmentAttributeRepository;
 
+    /**
+     *
+     * @param id Assignment id
+     * @return list of AssignmentAttributes by Assignment id
+     * @see AssignmentAttribute
+     */
     @Override
     public List<AssignmentAttribute> getByAssignmentId(Number id) {
 
