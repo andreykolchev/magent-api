@@ -15,7 +15,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * service for Assignment CRUD operations
+ * service for Assignment operations
  */
 @Service
 @Transactional(readOnly = true)
