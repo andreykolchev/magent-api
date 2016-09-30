@@ -13,11 +13,12 @@ import java.util.List;
 public interface CsvReader {
     /**
      *
-     * @param file - file saved as dublicate before reading
+     * @param file  file saved as dublicate before reading
      * @param separateSign - sign which accepted as separating sign
-     * @return
+     * @return list of transactions
+     * @see Transactions class
      */
-    public List<Transactions> readFromCsv(File file, String separateSign) throws IOException, NotCorrectCsvFileContent, ParseException;
+    List<Transactions> readFromCsv(File file, String separateSign) throws IOException, NotCorrectCsvFileContent, ParseException;
     class NotCorrectCsvFileContent extends Exception {
         public NotCorrectCsvFileContent(String message) {
             super(message);

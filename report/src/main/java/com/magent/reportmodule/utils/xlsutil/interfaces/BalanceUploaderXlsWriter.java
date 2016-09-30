@@ -12,8 +12,8 @@ public interface BalanceUploaderXlsWriter extends XlsCreator {
     /**
      *
      * @param userList for creating report
-     * @return xlsfile as multipartFile
+     * @return xlsfile as byte array
      */
-    public byte[] createXlsReport(List<User> userList) throws IOException;
+     byte[] createXlsReport(List<User> userList) throws IOException;
 
 }

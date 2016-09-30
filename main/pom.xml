@@ -16,13 +16,10 @@
         <report.module.name>magent.report-1.1.1-SNAPSHOT.jar</report.module.name>
         <authentication.module.name>magent.authentication-1.1.1-SNAPSHOT.jar</authentication.module.name>
         <service.module.name>magent.service-1.1.1-SNAPSHOT.jar</service.module.name>
+        <jacoco.reportPath>${project.basedir}/../target/jacoco/mainmodule</jacoco.reportPath>
     </properties>
     <packaging>war</packaging>
     <artifactId>magent.main</artifactId>
-
-    <build>
-        <finalName>magent-api</finalName>
-    </build>
 
     <dependencies>
         <!--MODULES DEPENDENCIES-->
@@ -89,4 +86,35 @@
         <!--SWAGGER END-->
         <!--java mail for sending and validation e-mails -->
     </dependencies>
+
+    <build>
+        <finalName>magent-api</finalName>
+        <plugins>
+            <!--Jacoco code coverage plugin start-->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.7.201606060606</version>
+                <configuration>
+                    <outputDirectory>${jacoco.reportPath}</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--Jacoco code coverage plugin end-->
+        </plugins>
+    </build>
+
 </project>
