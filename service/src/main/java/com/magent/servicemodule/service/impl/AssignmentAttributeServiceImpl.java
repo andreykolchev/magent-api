@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * service for  AssignmentAttribute CRUD operations
+ * service for AssignmentAttribute CRUD operations
  */
 @Service
 @Transactional(readOnly = true)

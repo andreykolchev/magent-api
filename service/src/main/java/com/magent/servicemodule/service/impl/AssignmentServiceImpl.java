@@ -14,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * service for Assignment CRUD operations
+ */
 @Service
 @Transactional(readOnly = true)
 class AssignmentServiceImpl implements AssignmentService {
@@ -50,6 +53,12 @@ class AssignmentServiceImpl implements AssignmentService {
     private AssignmentRepository assignmentRepository;
 
 
+    /**
+     *
+     * @param assignment entity with predefined params
+     * @return Assignment entity persisted in DB
+     * @throws NotFoundException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Assignment createByTemplateId(Assignment assignment) throws NotFoundException {
@@ -87,6 +96,13 @@ class AssignmentServiceImpl implements AssignmentService {
         return newAssignment;
     }
 
+    /**
+     *
+     * @param assignmentId id of assignment
+     * @param userId id of user
+     * @return assignment assigned to another user
+     * @throws NotFoundException
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Assignment assignToUser(Long assignmentId, Long userId) throws NotFoundException {
