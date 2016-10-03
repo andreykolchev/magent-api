@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -96,8 +95,7 @@ class DataServiceImpl implements DataService {
      * @param dataDto UpdateDataDto entity with predefined params
      * @return UpdateDataDto entity persisted in DB
      * @throws ComissionCalculatorImpl.FormulaNotFound
-     * @throws NotFoundException if Commission sum not present
-     * @throws ParseException
+     * @throws NotFoundException                       if Commission sum not present
      * @see DataServiceImpl#changeAssignmentForFullRegistration(List) exmplanation
      * @see DataServiceImpl#updateDataAttributesOperation(Assignment)
      * @see DataServiceImpl#updateDataTasks(Assignment)
@@ -105,7 +103,7 @@ class DataServiceImpl implements DataService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public UpdateDataDto updateData(UpdateDataDto dataDto) throws ComissionCalculatorImpl.FormulaNotFound, NotFoundException, ParseException {
+    public UpdateDataDto updateData(UpdateDataDto dataDto) throws ComissionCalculatorImpl.FormulaNotFound, NotFoundException {
         UpdateDataDto result = new UpdateDataDto();
         if (dataDto != null) {
             List<Assignment> persistedAssignmentList = new ArrayList<>();
@@ -154,11 +152,10 @@ class DataServiceImpl implements DataService {
     }
 
     /**
-     * additional logic for commission calculation
-     *
      * @param attributeList list of AssignmentAttribute (data for calculating)
      * @return calculated commission
-     * @throws ComissionCalculatorImpl.FormulaNotFound
+     * @throws ComissionCalculatorImpl.FormulaNotFound if can't find formula
+     * @see ComissionCalculator#calculateCommission(List, int) implementation
      */
     private Double calculateCommision(List<AssignmentAttribute> attributeList) throws ComissionCalculatorImpl.FormulaNotFound {
         Number commissionSum = comissionCalculator.calculateCommission(attributeList, 2);
@@ -168,7 +165,7 @@ class DataServiceImpl implements DataService {
     /**
      * @param attributeList list of AssignmentAttribute (must contain AssignmentAttribute with formula type)
      * @return if one of AssignmentAttributes has formula type, return true
-     * @see ValueType
+     * @see ValueType#FORMULA
      */
     private boolean isFormulaPresent(List<AssignmentAttribute> attributeList) {
         return findValueType(attributeList, ValueType.FORMULA);
@@ -243,7 +240,7 @@ class DataServiceImpl implements DataService {
      * - if attribute has status complete it calls DataServiceImpl#addTransaction(assignment);<br/>
      *
      * @param assignment Assignment entity for update
-     * @throws NotFoundException from addTransaction(assignment) void
+     * @throws NotFoundException                       from addTransaction(assignment) void
      * @throws ComissionCalculatorImpl.FormulaNotFound if ValueType.FORMULA not present
      * @see DataServiceImpl#addTransaction(Assignment)
      */
@@ -276,8 +273,9 @@ class DataServiceImpl implements DataService {
     /**
      * Tasks operation <br/>
      * Current method store in database assignmentTaskControlRepository class .
-     * @see AssignmentTaskControl
+     *
      * @param assignment Assignment entity for update
+     * @see AssignmentTaskControl
      */
     @Transactional(rollbackFor = Exception.class)
     private void updateDataTasks(Assignment assignment) {
@@ -291,11 +289,11 @@ class DataServiceImpl implements DataService {
     }
 
     /**
-     * current method get id for template with template type id 2. By default template type with id 2 it's a child template for full registration,
-     * and if status Complete and templateId equals of assignment id, it changes status for  NEED_CONFIRMATION and prepare it for post-treatment.
-     * It's hard link and it constant by default.(see main module, resource folder sqlconstants_05_08_2016.sql)
-     * full registration operation
-     * set NEED_CONFIRMATION status for Assignment
+     * current method get id for template with template type id 2. By default template type with id 2 it's a child template for full registration, <br/>
+     * and if status Complete and templateId equals of assignment id, it changes status for  NEED_CONFIRMATION and prepare it for post-treatment. <br/>
+     * It's hard link and it constant by default.(see main module, resource folder sqlconstants_05_08_2016.sql) <br/>
+     * full registration operation <br/>
+     * set NEED_CONFIRMATION status for Assignment <br/>
      * if Assignment.status is COMPLETE and Assignment.templateId is fullRegTemplateId
      *
      * @param assignmentList list of Assignments for update

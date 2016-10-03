@@ -11,8 +11,11 @@ import java.util.List;
 
 /**
  * Created on 06.2016.
+ * Interface created for forking with Sms gateway.<br/>
+ * see explanation in implementation
  */
 public interface SmsService {
+
     String sendOtpForRegisteredUser(String toPhone) throws IOException, ParseException;
 
     Object sendConfirmationAndSaveUser(TemporaryUser temporaryUser) throws ValidationException, ParseException;
