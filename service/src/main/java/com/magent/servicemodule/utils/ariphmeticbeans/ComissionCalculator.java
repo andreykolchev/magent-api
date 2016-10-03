@@ -13,6 +13,9 @@ public interface ComissionCalculator {
      * percents enters as number not as percent: for example if operator wants 2% percent he should enter in value 0.02
      * @param attributesList in list one attribute should have valueType with FORMULA enum
      * @return commission cost as number
+     * @see ComissionCalculatorImpl#calculateCommission(List, int)
+     * @see ComissionCalculatorImpl#getValues(String, List)
+     * @see ComissionCalculatorImpl#getFormula(List)
      */
     Number calculateCommission(List<AssignmentAttribute> attributesList,int roundAfterZeroNumbers) throws ComissionCalculatorImpl.FormulaNotFound;
 }

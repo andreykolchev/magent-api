@@ -90,12 +90,19 @@ class DataServiceImpl implements DataService {
     }
 
     /**
+     * logic explanation:<br/>
+     * if UpdateDataDto#getAssignments() not null it do some logic - see links below:<br/>
+     *
      * @param dataDto UpdateDataDto entity with predefined params
      * @return UpdateDataDto entity persisted in DB
      * @throws ComissionCalculatorImpl.FormulaNotFound
-     * @throws NotFoundException
+     * @throws NotFoundException if Commission sum not present
      * @throws ParseException
+     * @see DataServiceImpl#changeAssignmentForFullRegistration(List) exmplanation
+     * @see DataServiceImpl#updateDataAttributesOperation(Assignment)
+     * @see DataServiceImpl#updateDataTasks(Assignment)
      */
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UpdateDataDto updateData(UpdateDataDto dataDto) throws ComissionCalculatorImpl.FormulaNotFound, NotFoundException, ParseException {
@@ -126,7 +133,7 @@ class DataServiceImpl implements DataService {
      * @param fileName file name for saving on server
      * @param file     MultipartFile
      * @return url for saved file
-     * @throws IOException
+     * @throws IOException if can't save file
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -181,10 +188,9 @@ class DataServiceImpl implements DataService {
      * procedure for change balance of User in update transaction (Account.setAccountBalance)
      *
      * @param assignment Assignment contain AssignmentAttributes with types (FORMULA, COMMISSION_COST)
-     * @throws NotFoundException
-     * @throws ParseException
+     * @throws NotFoundException if Commission sum not present
      */
-    private void addTransaction(Assignment assignment) throws NotFoundException, ParseException {
+    private void addTransaction(Assignment assignment) throws NotFoundException {
         List<AssignmentAttribute> attributeList = assignmentAttributeRepository.getByAssignmentId(assignment.getId());
         Double commissionSum = null;
         for (AssignmentAttribute attribute : attributeList) {
@@ -231,15 +237,20 @@ class DataServiceImpl implements DataService {
     }
 
     /**
-     * attributes operation
+     * Attributes operation.<br/>
+     * Logic Explanation :<br/>
+     * - if attribute has formula and Commission cost present, it calculate commission cost and store it in db.<br/>
+     * - if attribute has status complete it calls DataServiceImpl#addTransaction(assignment);<br/>
      *
      * @param assignment Assignment entity for update
-     * @throws NotFoundException
-     * @throws ParseException
-     * @throws ComissionCalculatorImpl.FormulaNotFound
+     * @throws NotFoundException from addTransaction(assignment) void
+     * @throws ComissionCalculatorImpl.FormulaNotFound if ValueType.FORMULA not present
+     * @see DataServiceImpl#addTransaction(Assignment)
      */
+
     @Transactional(rollbackFor = Exception.class)
-    private void updateDataAttributesOperation(Assignment assignment) throws NotFoundException, ParseException, ComissionCalculatorImpl.FormulaNotFound {
+    private void updateDataAttributesOperation(Assignment assignment)
+            throws NotFoundException, ComissionCalculatorImpl.FormulaNotFound {
         if (Objects.nonNull(assignment.getAttributes())) {
             List<AssignmentAttribute> attributeList = assignmentAttributeRepository.getByAssignmentId(assignment.getId());
             assignmentAttributeRepository.save(assignment.getAttributes());
@@ -263,8 +274,9 @@ class DataServiceImpl implements DataService {
     }
 
     /**
-     * tasks operation
-     *
+     * Tasks operation <br/>
+     * Current method store in database assignmentTaskControlRepository class .
+     * @see AssignmentTaskControl
      * @param assignment Assignment entity for update
      */
     @Transactional(rollbackFor = Exception.class)
@@ -279,6 +291,9 @@ class DataServiceImpl implements DataService {
     }
 
     /**
+     * current method get id for template with template type id 2. By default template type with id 2 it's a child template for full registration,
+     * and if status Complete and templateId equals of assignment id, it changes status for  NEED_CONFIRMATION and prepare it for post-treatment.
+     * It's hard link and it constant by default.(see main module, resource folder sqlconstants_05_08_2016.sql)
      * full registration operation
      * set NEED_CONFIRMATION status for Assignment
      * if Assignment.status is COMPLETE and Assignment.templateId is fullRegTemplateId

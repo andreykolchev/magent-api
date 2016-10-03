@@ -9,7 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.text.ParseException;
 
-
+/**
+ * current class created for cooperation with mobile device
+ * @see com.magent.servicemodule.service.impl.DataServiceImpl class
+ */
 public interface DataService {
 
     UpdateDataDto getData(Long userId, Long syncId);
