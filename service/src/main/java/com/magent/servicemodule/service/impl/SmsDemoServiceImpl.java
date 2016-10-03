@@ -1,5 +1,7 @@
 package com.magent.servicemodule.service.impl;
 
+import com.magent.authmodule.utils.SecurityUtils;
+import com.magent.authmodule.utils.otpgenerator.OtpGenerator;
 import com.magent.domain.SmsPassword;
 import com.magent.domain.TemporaryUser;
 import com.magent.domain.User;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.ValidationException;
-import java.io.IOException;
 import java.util.Date;
 import java.util.Objects;
 
@@ -66,8 +67,8 @@ class SmsDemoServiceImpl implements SmsService {
     /**
      * send OTP for the sign up operation and save TemporaryUser
      * @param temporaryUser TemporaryUser entity for persist
-     * @return sms as string
-     * @throws ValidationException if user or temporary user already present in database
+     * @return sms as String
+     * @throws ValidationException if temporaryUser or user already present in db
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
