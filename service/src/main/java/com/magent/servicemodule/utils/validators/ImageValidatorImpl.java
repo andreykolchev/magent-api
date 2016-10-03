@@ -27,8 +27,8 @@ public class ImageValidatorImpl implements ImageValidator {
      * @param imageBody
      * @param formatName
      * @return is size of image correct
-     * @throws IOException
-     * @throws ValidationException
+     * @throws IOException if ImageInputStream or ImageReader throws exception
+     * @throws ValidationException if imageBody more than 2 mb
      */
     @Override
     public boolean isSizeCorrect(byte[] imageBody, String formatName) throws IOException, ValidationException {
@@ -55,7 +55,7 @@ public class ImageValidatorImpl implements ImageValidator {
      *
      * @param fileName
      * @return extension of image
-     * @throws NotCorrectImageExtension
+     * @throws NotCorrectImageExtension if file name doesn't have extension or not correct image extension
      */
     @Override
     public String getImageFormat(String fileName) throws NotCorrectImageExtension {

@@ -25,9 +25,10 @@ public class OnBoardingValidatorImpl implements OnBoardingValidator {
      *
      * @param onBoarding
      * @return is OnBoard entity correct
-     * @throws ImageValidatorImpl.NotCorrectImageExtension
-     * @throws IOException
-     * @throws ValidationException
+     * @throws ImageValidatorImpl.NotCorrectImageExtension if not correct image file extension
+     * @throws IOException if exception in image file IO
+     * @throws ValidationException if nit correct image size
+     * @see ImageValidator#isSizeCorrect(byte[], String)
      * @see OnBoarding
      */
     @Override

@@ -15,7 +15,6 @@ public interface ServiceDateUtils {
      *
      * @param date
      * @return minus one day in yyyy-MM-dd
-     * @throws ParseException
      */
     String getOneDayMinus(String date) throws ParseException;
 
@@ -23,7 +22,6 @@ public interface ServiceDateUtils {
      *
      * @param date
      * @return plus one day in yyyy-MM-dd
-     * @throws ParseException
      */
     String getOneDayPlus(String date) throws ParseException;
 
