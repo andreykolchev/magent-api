@@ -166,7 +166,7 @@ public class UserServiceImplTest extends ServiceModuleServiceConfig {
         String timeInt = timeIntervalService.getByName(BLOCK_INTERVAL.toString()).getTimeInterval();
         String date = dateUtils.formatToSqlDateTimeInterval(new Date());
         List<UserPersonal> userPersonalList = userService.getBlockedUsers(date,
-                dateUtils.converToTimeStamp(timeInt, BLOCK_INTERVAL));
+                dateUtils.convertToTimeStamp(timeInt, BLOCK_INTERVAL));
         Assert.assertEquals(1, userPersonalList.size());
     }
 
@@ -175,7 +175,7 @@ public class UserServiceImplTest extends ServiceModuleServiceConfig {
     public void getUsersWithExpiredTermTest() {
         String timeInt = timeIntervalService.getByName(TMP_UNREGISTERED_USER_INTERVAL.toString()).getTimeInterval();
         String date = dateUtils.formatToSqlDateTimeInterval(new Date());
-        List<TemporaryUser> temporaryUserList = userService.getUsersWithExpiredTerm(date, dateUtils.converToTimeStamp(timeInt, TMP_UNREGISTERED_USER_INTERVAL));
+        List<TemporaryUser> temporaryUserList = userService.getUsersWithExpiredTerm(date, dateUtils.convertToTimeStamp(timeInt, TMP_UNREGISTERED_USER_INTERVAL));
         Assert.assertEquals(1, temporaryUserList.size());
     }
 } 

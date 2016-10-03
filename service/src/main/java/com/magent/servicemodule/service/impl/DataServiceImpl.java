@@ -61,7 +61,7 @@ class DataServiceImpl implements DataService {
     private UserRepository userRepository;
 
     @Autowired
-    private TemplateTypeRpository typeRpository;
+    private TemplateTypeRepository typeRpository;
 
     /**
      * @param userId id of user

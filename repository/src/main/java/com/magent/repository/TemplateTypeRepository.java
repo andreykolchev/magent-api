@@ -12,7 +12,7 @@ import java.util.List;
  * Created on 19.07.2016.
  */
 @Repository
-public interface TemplateTypeRpository extends JpaRepository<TemplateType,Long>{
+public interface TemplateTypeRepository extends JpaRepository<TemplateType,Long>{
 
     @Override
     @Query("select tmpType from TemplateType tmpType left join fetch tmpType.childTemplatesTypes where tmpType.id=:id")
@@ -26,6 +26,5 @@ public interface TemplateTypeRpository extends JpaRepository<TemplateType,Long>{
 
     @Query(value = "SELECT * FROM ma_template_types tmp WHERE exists(SELECT * FROM ma_tmp_types_roles roles WHERE roles.temp_type_pk=tmp.temp_type_pk AND roles.usr_rol_pk=:userRole)",nativeQuery = true)
     List<TemplateType>getAllowedByRole(@Param("userRole")Long userRole);
-
 
 }

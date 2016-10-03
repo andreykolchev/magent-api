@@ -85,7 +85,7 @@ class UserServiceImpl implements UserService {
      * get users by filter
      * @param filter
      * @return list of Users by filter
-     * @throws NotFoundException
+     * @throws NotFoundException if not found any param:id,login,role
      */
     @Override
     public List<User> getUsersByFilter(String filter) throws NotFoundException {
@@ -118,7 +118,7 @@ class UserServiceImpl implements UserService {
      * @param id
      * @param chPassDto
      * @return boolean
-     * @throws ValidationException
+     * @throws ValidationException if new password not valid
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -142,8 +142,8 @@ class UserServiceImpl implements UserService {
      * @param password
      * @param otp
      * @return UserPersonal
-     * @throws ValidationException
-     * @throws UserValidatorImpl.UserIsBlockedException
+     * @throws ValidationException if otp number or password not valid
+     * @throws UserValidatorImpl.UserIsBlockedException if userValidator.checkForBlock(login) throws exception
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -195,8 +195,8 @@ class UserServiceImpl implements UserService {
      * password comes already hashed from frontend
      * @param temporaryUser TemporaryUser
      * @return Confirmation
-     * @throws ValidationException
-     * @throws ParseException
+     * @throws ValidationException if one of params not valid: Name, Last name, login, password
+     * @throws ParseException if sender.sendConfirmationAndSaveUser(temporaryUser) throws exception
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -220,7 +220,7 @@ class UserServiceImpl implements UserService {
      * @param login
      * @param otp
      * @return User
-     * @throws NotFoundException
+     * @throws NotFoundException if TemporaryUser not found by login and otp
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -295,10 +295,10 @@ class UserServiceImpl implements UserService {
     /**
      *
      * @return get time stamp when OTP will die
-     * @throws ParseException
+     * @throws ParseException if dateUtils.convertToTimeStamp() throws exception
      */
     @Override
     public String getEndSmsPeriod() throws ParseException {
-        return dateUtils.converToTimeStamp(timeIntervalService.getByName(TMP_UNREGISTERED_USER_INTERVAL.toString()).getTimeInterval(), TMP_UNREGISTERED_USER_INTERVAL);
+        return dateUtils.convertToTimeStamp(timeIntervalService.getByName(TMP_UNREGISTERED_USER_INTERVAL.toString()).getTimeInterval(), TMP_UNREGISTERED_USER_INTERVAL);
     }
 }

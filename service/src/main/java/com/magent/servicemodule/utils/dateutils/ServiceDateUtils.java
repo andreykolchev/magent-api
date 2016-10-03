@@ -86,5 +86,5 @@ public interface ServiceDateUtils {
      * @param constants
      * @return TimeStamp Format
      */
-    String converToTimeStamp(String timeHHmm, TimeIntervalConstants constants);
+    String convertToTimeStamp(String timeHHmm, TimeIntervalConstants constants);
 }

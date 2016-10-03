@@ -25,7 +25,6 @@ import org.springframework.web.client.RestTemplate;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.bind.ValidationException;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -79,11 +78,12 @@ class SmsServiceImpl implements SmsService {
      *
      * @param toPhone Phone number
      * @return sms
-     * @throws IOException
+     * @see #getEndSmsPeriod()
+     * @throws ParseException if getEndSmsPeriod() throws ParseException
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String sendOtpForRegisteredUser(String toPhone) throws IOException, ParseException {
+    public String sendOtpForRegisteredUser(String toPhone) throws ParseException {
 
         User user = userRepository.findByLogin(toPhone);
         String sendSms = generator.generate();
@@ -101,7 +101,8 @@ class SmsServiceImpl implements SmsService {
      *
      * @param temporaryUser TemporaryUser entity for persist
      * @return sms
-     * @throws ValidationException
+     * @see #getEndSmsPeriod()
+     * @throws ValidationException if temporaryUser not found by login
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -128,7 +129,9 @@ class SmsServiceImpl implements SmsService {
      *
      * @param login login(phone number)
      * @return sms(OTP)
-     * @throws NotFoundException
+     * @see #getEndSmsPeriod()
+     * @throws NotFoundException if temporaryUserRepository.getByLogin(login) return null
+     * @throws ParseException if getEndSmsPeriod() throws ParseException
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -175,12 +178,12 @@ class SmsServiceImpl implements SmsService {
      * get time stamp when OTP will die
      *
      * @return
-     * @throws ParseException
+     * @throws ParseException if dateUtils.convertToTimeStamp() throws ParseException
      */
     @Override
     @Transactional(readOnly = true)
     public String getEndSmsPeriod() throws ParseException {
-        return dateUtils.converToTimeStamp(timeIntervalService.getByName(OTP_INTERVAL_NAME.toString()).getTimeInterval(), OTP_INTERVAL_NAME);
+        return dateUtils.convertToTimeStamp(timeIntervalService.getByName(OTP_INTERVAL_NAME.toString()).getTimeInterval(), OTP_INTERVAL_NAME);
     }
 
     /**
@@ -188,7 +191,9 @@ class SmsServiceImpl implements SmsService {
      *
      * @param toPhone - user login (Phone)
      * @return - non hashed otp number as String
-     * @throws ValidationException
+     * @see #getEndSmsPeriod()
+     * @throws ValidationException if (UserPersonal.getAttemptCounter() < maxAttemptQuantity) attempt.quantity=5
+     * @throws ParseException if getEndSmsPeriod() throws ParseException
      */
     @Override
     @Transactional(rollbackFor = Exception.class)

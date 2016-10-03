@@ -68,11 +68,11 @@ public class SmsServiceImplTest extends ServiceModuleServiceConfig {
         //test
         String timeInterval = timeIntervalService.getByName(OTP_INTERVAL_NAME.toString()).getTimeInterval();
         String date = dateUtils.formatToSqlDateTimeInterval(new Date());
-        List<SmsPassword>passwordList=smsService.getOldSmsPass(date, dateUtils.converToTimeStamp(timeInterval, OTP_INTERVAL_NAME));
+        List<SmsPassword>passwordList=smsService.getOldSmsPass(date, dateUtils.convertToTimeStamp(timeInterval, OTP_INTERVAL_NAME));
         Assert.assertTrue(passwordList.size()>0);
         smsPasswordRepository.delete(passwordList);
         //after deleting
-        passwordList=smsService.getOldSmsPass(date, dateUtils.converToTimeStamp(timeInterval, OTP_INTERVAL_NAME));
+        passwordList=smsService.getOldSmsPass(date, dateUtils.convertToTimeStamp(timeInterval, OTP_INTERVAL_NAME));
         Assert.assertEquals(0,passwordList.size());
         Assert.assertEquals(userSize,userRepository.findAll().size());
     }
@@ -94,7 +94,7 @@ public class SmsServiceImplTest extends ServiceModuleServiceConfig {
         //test
         String timeInterval = timeIntervalService.getByName(OTP_INTERVAL_NAME.toString()).getTimeInterval();
         String date = dateUtils.formatToSqlDateTimeInterval(new Date());
-        List<SmsPassword> smsPasswordList = smsService.getOldSmsPass(date, dateUtils.converToTimeStamp(timeInterval, OTP_INTERVAL_NAME));
+        List<SmsPassword> smsPasswordList = smsService.getOldSmsPass(date, dateUtils.convertToTimeStamp(timeInterval, OTP_INTERVAL_NAME));
         Assert.assertEquals(2,smsPasswordList.size());
 
 

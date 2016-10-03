@@ -52,11 +52,10 @@ class SmsDemoServiceImpl implements SmsService {
      * send OTP for the sign in operation
      * @param toPhone Phone number
      * @return sms
-     * @throws IOException
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String sendOtpForRegisteredUser(String toPhone) throws IOException {
+    public String sendOtpForRegisteredUser(String toPhone) {
         User user = userRepository.findByLogin(toPhone);
         String sendSms = generator.generate();
         String storeSms = SecurityUtils.hashPassword(sendSms);
@@ -70,7 +69,7 @@ class SmsDemoServiceImpl implements SmsService {
      * send OTP for the sign up operation and save TemporaryUser
      * @param temporaryUser TemporaryUser entity for persist
      * @return sms
-     * @throws ValidationException
+     * @throws ValidationException if temporaryUser not found
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -94,7 +93,7 @@ class SmsDemoServiceImpl implements SmsService {
      * resend confirmation OTP
      * @param login login(phone number)
      * @return sms(OTP)
-     * @throws NotFoundException
+     * @throws NotFoundException if temporaryUser not found by login
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -115,7 +114,7 @@ class SmsDemoServiceImpl implements SmsService {
      * send confirmation OTP for the password change operation
      * @param toPhone - user login (Phone)
      * @return - non hashed otp number as String
-     * @throws ValidationException
+     * @throws ValidationException if (UserPersonal.getAttemptCounter() < maxAttemptQuantity) attempt.quantity=5
      */
     @Override
     @Transactional(rollbackFor = Exception.class)

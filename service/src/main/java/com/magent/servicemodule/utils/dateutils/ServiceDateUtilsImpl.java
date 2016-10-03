@@ -129,7 +129,7 @@ class ServiceDateUtilsImpl implements ServiceDateUtils {
      * @return time stamp format (HH:mm) maximum of two values: timeHHmm, constants
      */
     @Override
-    public String converToTimeStamp(String timeHHmm, TimeIntervalConstants constants) {
+    public String convertToTimeStamp(String timeHHmm, TimeIntervalConstants constants) {
         try {
             Date date = timeStampFormat.parse(timeHHmm);
             Date defaultDate = timeStampFormat.parse(constants.getDefaultTimeInterval());
