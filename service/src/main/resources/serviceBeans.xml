@@ -84,7 +84,7 @@
 
     <bean id="templateTypeGeneralService"
           class="com.magent.servicemodule.service.impl.generalservice.GeneralServiceImpl">
-        <constructor-arg name="repository" ref="templateTypeRpository"/>
+        <constructor-arg name="repository" ref="templateTypeRepository"/>
     </bean>
 
     <bean id="temporaryUserGeneralService"
