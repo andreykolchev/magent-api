@@ -16,8 +16,6 @@ public interface ImageValidator {
      * @param imageBody
      * @param formatName
      * @return is size of image correct
-     * @throws IOException
-     * @throws ValidationException
      */
     boolean isSizeCorrect(byte[] imageBody, String formatName) throws IOException, ValidationException;
 
@@ -26,7 +24,6 @@ public interface ImageValidator {
      *
      * @param fileName
      * @return is format of image correct
-     * @throws ImageValidatorImpl.NotCorrectImageExtension
      */
     String getImageFormat(String fileName) throws ImageValidatorImpl.NotCorrectImageExtension;
 }

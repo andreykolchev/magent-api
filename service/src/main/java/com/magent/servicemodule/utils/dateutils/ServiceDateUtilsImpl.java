@@ -21,7 +21,8 @@ class ServiceDateUtilsImpl implements ServiceDateUtils {
     /**
      * @param date
      * @return date minus one day in yyyy-MM-dd
-     * @throws ParseException
+     * @throws ParseException if getCalendarOnlyForDays() throws exception
+     * @see #getCalendarOnlyForDays(String)
      */
     @Override
     public String getOneDayMinus(String date) throws ParseException {
@@ -33,7 +34,8 @@ class ServiceDateUtilsImpl implements ServiceDateUtils {
     /**
      * @param date
      * @return date plus one day in yyyy-MM-dd
-     * @throws ParseException
+     * @throws ParseException if getCalendarOnlyForDays() throws exception
+     * @see #getCalendarOnlyForDays(String)
      */
     @Override
     public String getOneDayPlus(String date) throws ParseException {
@@ -129,7 +131,7 @@ class ServiceDateUtilsImpl implements ServiceDateUtils {
      * @return time stamp format (HH:mm) maximum of two values: timeHHmm, constants
      */
     @Override
-    public String converToTimeStamp(String timeHHmm, TimeIntervalConstants constants) {
+    public String convertToTimeStamp(String timeHHmm, TimeIntervalConstants constants) {
         try {
             Date date = timeStampFormat.parse(timeHHmm);
             Date defaultDate = timeStampFormat.parse(constants.getDefaultTimeInterval());
@@ -143,7 +145,7 @@ class ServiceDateUtilsImpl implements ServiceDateUtils {
     /**
      * @param date
      * @return Calendar with time setting
-     * @throws ParseException
+     * @throws ParseException if formatOnlyDays.parse(date) throws exception
      */
     private Calendar getCalendarOnlyForDays(String date) throws ParseException {
         Date dateFromUser = formatOnlyDays.parse(date);

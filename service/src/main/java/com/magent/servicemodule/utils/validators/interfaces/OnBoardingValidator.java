@@ -13,9 +13,6 @@ public interface OnBoardingValidator {
     /**
      * @param onBoarding
      * @return is OnBoard entity correct
-     * @throws ImageValidatorImpl.NotCorrectImageExtension
-     * @throws IOException
-     * @throws ValidationException
      * @see OnBoarding
      */
     boolean isOnBoardEntityValid(OnBoarding onBoarding) throws ImageValidatorImpl.NotCorrectImageExtension, IOException, ValidationException;
