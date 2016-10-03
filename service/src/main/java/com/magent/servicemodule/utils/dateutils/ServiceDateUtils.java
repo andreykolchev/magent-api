@@ -11,26 +11,80 @@ import java.util.Date;
  */
 public interface ServiceDateUtils {
 
-    //returns minus one day in yyyy-MM-dd
+    /**
+     *
+     * @param date
+     * @return minus one day in yyyy-MM-dd
+     * @throws ParseException
+     */
     String getOneDayMinus(String date) throws ParseException;
 
-    //returns plus one day in yyyy-MM-dd
+    /**
+     *
+     * @param date
+     * @return plus one day in yyyy-MM-dd
+     * @throws ParseException
+     */
     String getOneDayPlus(String date) throws ParseException;
 
+    /**
+     *
+     * @param currentDate
+     * @return currentDate + 15 Minutes
+     */
     Date add15Minutes(Date currentDate);
 
+    /**
+     *
+     * @param currentDate
+     * @return currentDate + 5 Minutes
+     */
     Date add5Minutes(Date currentDate);
 
+    /**
+     *
+     * @param currentDate
+     * @return currentDate + 2 Minutes
+     */
     Date add2Minutes(Date currentDate);
 
+    /**
+     *
+     * @param date
+     * @return date in SQL format
+     */
     String formatToSqlDate(Date date);
 
+    /**
+     *
+     * @param date
+     * @return TimeInterval in SQL format
+     */
     String formatToSqlDateTimeInterval(Date date);
 
+    /**
+     *
+     * @return days
+     */
     DateFormat getformatOnlyDays();
 
+    /**
+     *
+     * @return DB format
+     */
     DateFormat getDbFormat();
 
+    /**
+     *
+     * @return TimeStamp Format
+     */
     DateFormat getTimeStampFormat();
+
+    /**
+     *
+     * @param timeHHmm
+     * @param constants
+     * @return TimeStamp Format
+     */
     String converToTimeStamp(String timeHHmm, TimeIntervalConstants constants);
 }

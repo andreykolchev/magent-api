@@ -21,9 +21,19 @@ public class ImageValidatorImpl implements ImageValidator {
     @Value("${json.max.size}")
     private int maxFileSize;
 
+    /**
+     * check size of image (should be not less than 2 mb and 230x230 px)
+     *
+     * @param imageBody
+     * @param formatName
+     * @return is size of image correct
+     * @throws IOException
+     * @throws ValidationException
+     */
     @Override
     public boolean isSizeCorrect(byte[] imageBody, String formatName) throws IOException, ValidationException {
-        if (imageBody.length > (maxFileSize * 1000000)) throw new ValidationException("image should be not less than 2 mb");
+        if (imageBody.length > (maxFileSize * 1000000))
+            throw new ValidationException("image should be not less than 2 mb");
         InputStream inputStream = new ByteArrayInputStream(imageBody);
         ImageInputStream imageInputStream = ImageIO.createImageInputStream(inputStream);
         ImageReader reader = ImageIO.getImageReadersByFormatName(formatName).next();
@@ -40,6 +50,13 @@ public class ImageValidatorImpl implements ImageValidator {
         return (height == 230 && width == 230);
     }
 
+    /**
+     * Allowed only svg and png extensions
+     *
+     * @param fileName
+     * @return extension of image
+     * @throws NotCorrectImageExtension
+     */
     @Override
     public String getImageFormat(String fileName) throws NotCorrectImageExtension {
         String[] tmp = fileName.split("\\.");
@@ -48,10 +65,19 @@ public class ImageValidatorImpl implements ImageValidator {
         else throw new NotCorrectImageExtension("Not correct image extension. Supports only svg and png extensions");
     }
 
+    /**
+     * check image extensions
+     *
+     * @param fileExtension
+     * @return is image extension correct
+     */
     private boolean isFormatCorrect(String fileExtension) {
         return fileExtension.equalsIgnoreCase("png") || fileExtension.equalsIgnoreCase("svg");
     }
 
+    /**
+     * Custom Exception for image extension checking
+     */
     public static class NotCorrectImageExtension extends Exception {
         public NotCorrectImageExtension(String message) {
             super(message);

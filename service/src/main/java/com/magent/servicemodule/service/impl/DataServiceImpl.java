@@ -280,6 +280,8 @@ class DataServiceImpl implements DataService {
 
     /**
      * full registration operation
+     * set NEED_CONFIRMATION status for Assignment
+     * if Assignment.status is COMPLETE and Assignment.templateId is fullRegTemplateId
      *
      * @param assignmentList list of Assignments for update
      */

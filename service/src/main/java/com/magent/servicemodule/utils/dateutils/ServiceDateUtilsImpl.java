@@ -18,6 +18,11 @@ class ServiceDateUtilsImpl implements ServiceDateUtils {
     private final DateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final DateFormat timeStampFormat = new SimpleDateFormat("HH:mm");
 
+    /**
+     * @param date
+     * @return date minus one day in yyyy-MM-dd
+     * @throws ParseException
+     */
     @Override
     public String getOneDayMinus(String date) throws ParseException {
         Calendar calendar = getCalendarOnlyForDays(date);
@@ -25,6 +30,11 @@ class ServiceDateUtilsImpl implements ServiceDateUtils {
         return formatOnlyDays.format(calendar.getTime());
     }
 
+    /**
+     * @param date
+     * @return date plus one day in yyyy-MM-dd
+     * @throws ParseException
+     */
     @Override
     public String getOneDayPlus(String date) throws ParseException {
         Calendar calendar = getCalendarOnlyForDays(date);
@@ -32,6 +42,10 @@ class ServiceDateUtilsImpl implements ServiceDateUtils {
         return formatOnlyDays.format(calendar.getTime());
     }
 
+    /**
+     * @param currentDate
+     * @return currentDate + 15 Minutes
+     */
     @Override
     public Date add15Minutes(Date currentDate) {
         Calendar calendar = Calendar.getInstance();
@@ -40,6 +54,10 @@ class ServiceDateUtilsImpl implements ServiceDateUtils {
         return calendar.getTime();
     }
 
+    /**
+     * @param currentDate
+     * @return currentDate + 5 Minutes
+     */
     @Override
     public Date add5Minutes(Date currentDate) {
         Calendar calendar = Calendar.getInstance();
@@ -48,6 +66,10 @@ class ServiceDateUtilsImpl implements ServiceDateUtils {
         return calendar.getTime();
     }
 
+    /**
+     * @param currentDate
+     * @return currentDate + 2 Minutes
+     */
     @Override
     public Date add2Minutes(Date currentDate) {
         Calendar calendar = Calendar.getInstance();
@@ -56,31 +78,56 @@ class ServiceDateUtilsImpl implements ServiceDateUtils {
         return calendar.getTime();
     }
 
+    /**
+     * @param date
+     * @return date in SQL format
+     */
     @Override
     public String formatToSqlDate(Date date) {
         return dbFormat.format(date);
     }
-    //use only for native query
+
+    /**
+     * use only for native query
+     * Formats a Date into a date/time string.
+     *
+     * @param date
+     * @return date in SQL format
+     */
     @Override
     public String formatToSqlDateTimeInterval(Date date) {
-        return  dbFormat.format(date);
+        return dbFormat.format(date);
     }
 
+    /**
+     * @return only days format (yyyy-MM-dd)
+     */
     @Override
     public DateFormat getformatOnlyDays() {
         return formatOnlyDays;
     }
 
+    /**
+     * @return DB format (yyyy-MM-dd HH:mm:ss)
+     */
     @Override
     public DateFormat getDbFormat() {
         return dbFormat;
     }
 
+    /**
+     * @return time stamp format (HH:mm)
+     */
     @Override
     public DateFormat getTimeStampFormat() {
         return timeStampFormat;
     }
 
+    /**
+     * @param timeHHmm
+     * @param constants
+     * @return time stamp format (HH:mm) maximum of two values: timeHHmm, constants
+     */
     @Override
     public String converToTimeStamp(String timeHHmm, TimeIntervalConstants constants) {
         try {
@@ -93,7 +140,11 @@ class ServiceDateUtilsImpl implements ServiceDateUtils {
         }
     }
 
-
+    /**
+     * @param date
+     * @return Calendar with time setting
+     * @throws ParseException
+     */
     private Calendar getCalendarOnlyForDays(String date) throws ParseException {
         Date dateFromUser = formatOnlyDays.parse(date);
         Calendar calendar = Calendar.getInstance();

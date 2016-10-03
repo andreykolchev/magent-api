@@ -20,15 +20,31 @@ public class OnBoardingValidatorImpl implements OnBoardingValidator {
     @Qualifier("imageValidatorImpl")
     private ImageValidator imageValidator;
 
+    /**
+     * check image and text parameters of OnBoarding entity
+     *
+     * @param onBoarding
+     * @return is OnBoard entity correct
+     * @throws ImageValidatorImpl.NotCorrectImageExtension
+     * @throws IOException
+     * @throws ValidationException
+     * @see OnBoarding
+     */
     @Override
     public boolean isOnBoardEntityValid(OnBoarding onBoarding) throws ImageValidatorImpl.NotCorrectImageExtension, IOException, ValidationException {
-        if (imageValidator.getImageFormat(onBoarding.getFullFileName()).equalsIgnoreCase("svg"))return true;
+        if (imageValidator.getImageFormat(onBoarding.getFullFileName()).equalsIgnoreCase("svg")) return true;
         return (imageValidator
                 .isSizeCorrect
                         (onBoarding.getImage(), imageValidator.getImageFormat(onBoarding.getFullFileName())) &&
                 isLenghtCorrect(onBoarding));
     }
 
+    /**
+     * check text parameters of OnBoarding entity
+     *
+     * @param onBoarding
+     * @return is text parameters (length) correct
+     */
     private boolean isLenghtCorrect(OnBoarding onBoarding) {
         if (Objects.nonNull(onBoarding.getContent()) && Objects.nonNull(onBoarding.getDescription()))
             return (onBoarding.getContent().length() < 251 &&
@@ -46,6 +62,9 @@ public class OnBoardingValidatorImpl implements OnBoardingValidator {
         return false;
     }
 
+    /**
+     * Custom Exception for OnBoarding entity checking
+     */
     public static class InvalidOnboardEntity extends Exception {
         public InvalidOnboardEntity(String message) {
             super(message);

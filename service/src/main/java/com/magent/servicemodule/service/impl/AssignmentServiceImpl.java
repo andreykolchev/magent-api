@@ -52,7 +52,7 @@ class AssignmentServiceImpl implements AssignmentService {
      *
      * @param assignment entity with predefined params
      * @return Assignment entity persisted in DB
-     * @throws NotFoundException
+     * @throws NotFoundException if templateGeneralService.getById(assignment.getTemplateId()) return null (not found)
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -96,7 +96,7 @@ class AssignmentServiceImpl implements AssignmentService {
      * @param assignmentId id of assignment
      * @param userId id of user
      * @return assignment assigned to another user
-     * @throws NotFoundException
+     * @throws NotFoundException if assignmentGeneralService.getById(assignmentId) return null (not found)
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
