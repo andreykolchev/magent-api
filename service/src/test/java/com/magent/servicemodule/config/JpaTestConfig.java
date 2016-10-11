@@ -6,8 +6,12 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.core.io.Resource;
 import org.springframework.data.envers.repository.support.EnversRevisionRepositoryFactoryBean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.DatabasePopulator;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
@@ -54,6 +58,8 @@ public class JpaTestConfig {
     private boolean orderInserts;
     @Value("${db.hibernate.order.updates}")
     private boolean orderUpdates;
+    @Value("classpath:/db_patch/db_path_01_09_2016.sql")
+    private Resource initScript;
 
     @Bean
     public DataSource dataSource() {
@@ -70,6 +76,20 @@ public class JpaTestConfig {
     }
 
     @Bean
+    public DataSourceInitializer dataSourceInitializer(final DataSource dataSource) {
+        final DataSourceInitializer initializer = new DataSourceInitializer();
+        initializer.setDataSource(dataSource);
+        initializer.setDatabasePopulator(databasePopulator());
+        return initializer;
+    }
+
+    private DatabasePopulator databasePopulator() {
+        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+        databasePopulator.setContinueOnError(true);
+        databasePopulator.addScript(initScript);
+        return databasePopulator;
+    }
+    @Bean
     public EntityManagerFactory entityManagerFactory() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setDatabase(Database.POSTGRESQL);
@@ -82,9 +102,9 @@ public class JpaTestConfig {
         Properties props = new Properties();
         props.put("connection.pool_size", poolSize);
         props.put("hibernate.show_sql", showSql);
-        props.put("hibernate.hbm2ddl.auto", hbm2ddlAuto);
+//        props.put("hibernate.hbm2ddl.auto", hbm2ddlAuto);
 
-        factory.getJpaPropertyMap().put("hibernate.hbm2ddl.import_files", "/data.sql");
+//        factory.getJpaPropertyMap().put("hibernate.hbm2ddl.import_files", "/data.sql");
 
         props.put("hibernate.dialect", hiberDialect);
         props.put("hibernate.connection.charSet", charsetEncoding);

@@ -1,10 +1,10 @@
 package com.magent.domain;
 
-import com.magent.domain.enums.UserRoles;
-import com.magent.domain.interfaces.Identifiable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.magent.domain.enums.UserRoles;
+import com.magent.domain.interfaces.Identifiable;
 import javassist.NotFoundException;
 
 import javax.persistence.*;
