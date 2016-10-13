@@ -6,7 +6,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
-import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -56,8 +55,8 @@ public class JpaTestConfig {
     @Value("${db.hibernate.order.updates}")
     private boolean orderUpdates;
 
-    @Value("classpath:/db_patch/path_1_00/db_path_01_09_2016.sql")
-    private Resource initScript;
+//    @Value("classpath:/db_patch/path_1_00/db_path_01_09_2016.sql")
+//    private Resource initScript;
     @Bean
     public DataSource dataSource() {
         Logger.getLogger(this.getClass()).debug("init test DataSource");
@@ -83,7 +82,7 @@ public class JpaTestConfig {
     private DatabasePopulator databasePopulator() {
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
         databasePopulator.setContinueOnError(true);
-        databasePopulator.addScript(initScript);
+//        databasePopulator.addScript(initScript);
         return databasePopulator;
     }
 
