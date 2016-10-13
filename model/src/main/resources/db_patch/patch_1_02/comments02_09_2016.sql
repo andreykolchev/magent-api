@@ -185,7 +185,7 @@ COMMENT ON COLUMN ma_temporary_user.login IS 'Логин (номер телеф�
 COMMENT ON TABLE ma_time_config IS 'Конфигурации временных интервалов';
 COMMENT ON COLUMN ma_time_config.tconf_pk IS 'Основной ключ';
 COMMENT ON COLUMN ma_time_config.tconf_name IS 'Имя интервала';
-COMMENT ON COLUMN ma_time_config.tconf_interval_minutes IS 'Интервал в минутах';
+COMMENT ON COLUMN ma_time_config.tconf_interval_minutes IS 'Интервал ввиде строки HH:mm 00:05';
 
 -- COMMENT ON TABLE ma_tmp_types_roles
 COMMENT ON TABLE ma_tmp_types_roles IS 'Список продуктов для роли агента';
@@ -201,10 +201,10 @@ COMMENT ON COLUMN ma_transactions.transactioon_summ IS 'Сумма операц�
 COMMENT ON COLUMN ma_transactions.transaction_date IS 'Дата операции';
 
 -- COMMENT ON TABLE ma_user
-COMMENT ON TABLE ma_user IS 'Таблица временных пользователей (первоначальная регистрация)';
+COMMENT ON TABLE ma_user IS 'Таблица основных пользователей';
 COMMENT ON COLUMN ma_user.usr_pk IS 'Основной ключ';
 COMMENT ON COLUMN ma_user.e_mail IS 'e-mail';
-COMMENT ON COLUMN ma_user.enabled IS 'Флак актульности пользователя';
+COMMENT ON COLUMN ma_user.enabled IS 'Флаг актульности пользователя';
 COMMENT ON COLUMN ma_user.first_name IS 'Имя';
 COMMENT ON COLUMN ma_user.last_name IS 'Фамилия';
 COMMENT ON COLUMN ma_user.login IS 'Логин (номер телефона)';
@@ -218,9 +218,9 @@ COMMENT ON COLUMN ma_user_device.device_id IS 'Ссылка на мобильн�
 -- COMMENT ON TABLE ma_user_personal
 COMMENT ON TABLE ma_user_personal IS 'Обработка блокировки пользователей';
 COMMENT ON COLUMN ma_user_personal.user_pers_pk IS 'Основной ключ';
-COMMENT ON COLUMN ma_user_personal.usr_pers_att_counter IS 'Счетчик';
-COMMENT ON COLUMN ma_user_personal.usr_pers_block_expires IS 'Окончание блокировки';
-COMMENT ON COLUMN ma_user_personal.usr_pers_for_pwd_expire IS 'Окончание пароля';
+COMMENT ON COLUMN ma_user_personal.usr_pers_att_counter IS 'Счетчик попыток востановления пароля';
+COMMENT ON COLUMN ma_user_personal.usr_pers_block_expires IS 'Дата начала блокировки пользователя(вычисление идет начало блокировки + поле из ma_time_config)';
+COMMENT ON COLUMN ma_user_personal.usr_pers_for_pwd_expire IS 'Дата начала действия для окончания действия забития пароля (вычисление идет начало блокировки + поле из ma_time_config)';
 COMMENT ON COLUMN ma_user_personal.usr_pers_is_blocked IS 'Флаг блокировки пользователя';
 COMMENT ON COLUMN ma_user_personal.usr_pers_pwd IS 'Пароль пользователя';
 COMMENT ON COLUMN ma_user_personal.ma_usr_id IS 'Ссылка на пользователя. (user_id->ma_user(usr_pk))';

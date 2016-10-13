@@ -58,7 +58,7 @@ public class JpaTestConfig {
     private boolean orderInserts;
     @Value("${db.hibernate.order.updates}")
     private boolean orderUpdates;
-    @Value("classpath:/db_patch/db_path_01_09_2016.sql")
+    @Value("classpath:/db_patch/path_1_00/db_path_01_09_2016.sql")
     private Resource initScript;
 
     @Bean

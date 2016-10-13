@@ -7,6 +7,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.DatabasePopulator;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
@@ -59,7 +62,11 @@ public class JpaConfig {
     private boolean orderUpdates;
     @Value("${dm.conn.max.life}")
     private long connTimeOut;
+    @Value("${spring.datasource.min-idle}")
+    private int minIdle;
 
+    @Value("${spring.datasource.continue-on-error}")
+    private boolean continueOnError;
     @Bean
     @Profile("production")
     public DataSource dataSource() {
@@ -70,8 +77,9 @@ public class JpaConfig {
         hikariConfig.setJdbcUrl(jdbcUrl);
         hikariConfig.setUsername(dbuser);
         hikariConfig.setPassword(dbpassword);
+        hikariConfig.setMaximumPoolSize(poolSize);
+        hikariConfig.setMinimumIdle(minIdle);
         hikariConfig.setConnectionTimeout(connTimeOut);
-
 
         //datasource
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
@@ -100,6 +108,24 @@ public class JpaConfig {
         factory.setJpaProperties(props);
         factory.afterPropertiesSet();
         return factory;
+    }
+
+    @Bean
+    public DataSourceInitializer dataSourceInitializer(final DataSource dataSource) {
+        final DataSourceInitializer initializer = new DataSourceInitializer();
+        initializer.setDataSource(dataSource);
+        initializer.setDatabasePopulator(databasePopulator());
+        return initializer;
+    }
+
+    /**
+     *
+     * additional configuration for init scripts in auto mode when start app
+     */
+    private DatabasePopulator databasePopulator() {
+        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+        databasePopulator.setContinueOnError(continueOnError);
+        return databasePopulator;
     }
 
     @Bean(name = "transactionManager")
