@@ -39,7 +39,7 @@ class GeneralServiceImpl<T extends Identifiable> implements GeneralService<T> {
     public T getById(Number id) throws NotFoundException {
         T entity = repository.findOne(id);
         if (entity != null) return entity;
-        else throw new NotFoundException("enums is null");
+        else throw new NotFoundException("entity is null");
     }
 
     /**
@@ -62,9 +62,9 @@ class GeneralServiceImpl<T extends Identifiable> implements GeneralService<T> {
      */
     @Transactional(rollbackFor = Exception.class)
     public T update(T entity, Number id) throws NotFoundException {
-        if (repository.findOne(id) != null) {
+        if (repository.findOne(id) != null | entity.getId() == id) {
             return repository.save(entity);
-        } else throw new NotFoundException("enums not present for Update");
+        } else throw new NotFoundException("entity not present for Update");
     }
 
     /**
