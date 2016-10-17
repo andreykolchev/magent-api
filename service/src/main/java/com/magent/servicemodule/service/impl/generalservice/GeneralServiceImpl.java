@@ -62,7 +62,7 @@ class GeneralServiceImpl<T extends Identifiable> implements GeneralService<T> {
      */
     @Transactional(rollbackFor = Exception.class)
     public T update(T entity, Number id) throws NotFoundException {
-        if (repository.findOne(id) != null | entity.getId() == id) {
+        if (repository.findOne(id) != null & entity.getId() == id) {
             return repository.save(entity);
         } else throw new NotFoundException("entity not present for Update");
     }
