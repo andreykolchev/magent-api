@@ -28,11 +28,7 @@
 
     <properties>
         <artifact.directory>jars</artifact.directory>
-        <model.module.name>magent.model-1.1.1-SNAPSHOT.jar</model.module.name>
-        <repository.module.name>magent.repository-1.1.1-SNAPSHOT.jar</repository.module.name>
-        <report.module.name>magent.report-1.1.1-SNAPSHOT.jar</report.module.name>
-        <authentication.module.name>magent.authentication-1.1.1-SNAPSHOT.jar</authentication.module.name>
-        <service.module.name>magent.service-1.1.1-SNAPSHOT.jar</service.module.name>
+
         <jacoco.reportPath>${project.basedir}/../target/jacoco</jacoco.reportPath>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>Application</start-class>
@@ -201,6 +197,28 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.7.201606060606</version>
+                <configuration>
+                    <outputDirectory>${jacoco.reportPath}</outputDirectory>
+                </configuration>
+                <executions>
+                <execution>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+                <execution>
+                    <id>report</id>
+                    <phase>prepare-package</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                </execution>
+            </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
@@ -211,26 +229,6 @@
                         <include>**/**Suite.java</include>
                         <include>**/**Test.java</include>
                     </includes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.1.1</version>
-                <configuration>
-                    <webResources>
-                        <resource>
-                            <directory>${project.basedir}/../${artifact.directory}</directory>
-                            <targetPath>WEB-INF/lib</targetPath>
-                            <includes>
-                                <include>${model.module.name}</include>
-                                <include>${repository.module.name}</include>
-                                <include>${report.module.name}</include>
-                                <include>${authentication.module.name}</include>
-                                <include>${service.module.name}</include>
-                            </includes>
-                        </resource>
-                    </webResources>
                 </configuration>
             </plugin>
         </plugins>
