@@ -1,7 +1,7 @@
 package com.magent.config;
 
 
-import com.magent.testconfig.testconfig.GeneralJpaTestConfig;
+import com.magent.testconfig.GeneralJpaTestConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

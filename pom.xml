@@ -17,7 +17,7 @@
         <module>report</module>
         <module>authentication</module>
         <module>service</module>
-        <module>config_for_test</module>
+        <module>configtest</module>
     </modules>
 
     <parent>
@@ -222,7 +222,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
-                    <!--<skipTests>true</skipTests>-->
+                    <skipTests>true</skipTests>
                     <goal>package</goal>
                     <includes>
                         <include>**/**Suite.java</include>
