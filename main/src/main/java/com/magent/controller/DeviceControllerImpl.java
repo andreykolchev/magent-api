@@ -21,7 +21,6 @@ public class DeviceControllerImpl implements GeneralController {
 
     @Autowired
     private DeviceService deviceService;
-
     /**
      * @param device Device entity in json format
      * @return id of created Device entity with HttpStatus.Ok if created else NOT_FOUND status

@@ -1,9 +1,10 @@
 package com.magent.config;
 
 import com.magent.servicemodule.config.RepositoryConfig;
-import org.springframework.context.annotation.*;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -15,13 +16,5 @@ import org.springframework.test.context.ContextConfiguration;
 @ImportResource({"classpath:objectmapper.xml"})
 @ContextConfiguration(classes = RepositoryConfig.class)
 public class DummyServiceTestConfig {
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer propertyPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
 
-    @Bean
-    MappingJackson2HttpMessageConverter jacksonConverter() {
-        return new MappingJackson2HttpMessageConverter();
-    }
 }

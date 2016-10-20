@@ -17,6 +17,7 @@
         <module>report</module>
         <module>authentication</module>
         <module>service</module>
+        <module>config_for_test</module>
     </modules>
 
     <parent>
@@ -27,8 +28,6 @@
     </parent>
 
     <properties>
-        <artifact.directory>jars</artifact.directory>
-
         <jacoco.reportPath>${project.basedir}/../target/jacoco</jacoco.reportPath>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>Application</start-class>
@@ -231,6 +230,7 @@
                     </includes>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 

@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 /**
  * @author artomov.ihor
  * @since 20.04.2016.
- * //
+ *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DummyServiceTestConfig.class})

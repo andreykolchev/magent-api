@@ -32,6 +32,12 @@
             <artifactId>magent.authentication</artifactId>
             <version>1.1.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.magent</groupId>
+            <artifactId>magent.config</artifactId>
+            <version>1.1.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

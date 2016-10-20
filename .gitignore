@@ -27,3 +27,5 @@
 
 /out/
 /model/target/maven-archiver/pom.properties
+/config_for_test/magent.config.test.iml
+/config_for_test/target/
