@@ -10,17 +10,15 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * OnboardsControllerImpl Tester.
@@ -31,7 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class OnboardsControllerImplTest extends MockWebSecurityConfig {
 
-
+    @Value("${resource.path}")
+    private String resourcepath;
     @Autowired
     @Qualifier("onBoardingGeneralService")
     private GeneralService onBoardGeneralService;
@@ -43,7 +42,7 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void getOnBoardingInformationTestPositive() throws Exception {
         //pre conditions
-        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
+        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng(resourcepath);
         onBoardGeneralService.save(onBoarding);
         //test
         mvc.perform(get("/onboards/"))
@@ -58,7 +57,7 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
     @Test
     @Sql("classpath:data.sql")
     public void getOnboardByIdTestPositive() throws Exception {
-        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
+        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng(resourcepath);
         onBoardGeneralService.save(onBoarding);
         List<OnBoarding> onBoardingList = onBoardGeneralService.getAll();
         Assert.assertEquals(1, onBoardingList.size());
@@ -85,7 +84,7 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
         mvc.perform(post("/onboards/")
                 .header(authorizationHeader, getAccessAdminToken())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPossitivePng())))
+                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPossitivePng(resourcepath))))
                 .andExpect(status().isCreated());
         //additional assert for db
         Assert.assertEquals(1, onBoardGeneralService.getAll().size());
@@ -97,7 +96,7 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
         mvc.perform(post("/onboards/")
                 .header(authorizationHeader, getAccessAdminToken())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPositiveSVG())))
+                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPositiveSVG(resourcepath))))
                 .andExpect(status().isCreated())
                 .andDo(print());
         //additional assert for db
@@ -110,7 +109,7 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
         mvc.perform(post("/onboards/")
                 .header(authorizationHeader, getAccessAdminToken())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPositiveSVGWithNullFields())))
+                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPositiveSVGWithNullFields(resourcepath))))
                 .andExpect(status().isCreated());
         //additional assert for db
         Assert.assertEquals(1, onBoardGeneralService.getAll().size());
@@ -122,7 +121,7 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
         mvc.perform(post("/onboards/")
                 .header(authorizationHeader, getRemoteStafferAccessToken())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardNegativeSVG())))
+                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardNegativeSVG(resourcepath))))
 //                .andExpect(status().isBadRequest())
                 .andDo(print());
     }
@@ -131,7 +130,7 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
     public void createOnBoardEntityTestNegativeSeq() throws Exception {
         mvc.perform(post("/onboards/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPossitivePng())))
+                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardPossitivePng(resourcepath))))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -140,7 +139,7 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
         mvc.perform(post("/onboards/")
                 .header(authorizationHeader, getAccessAdminToken())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardWrongImage())))
+                .content(new ObjectMapper().writeValueAsBytes(EntityGenerator.getOnBoardWrongImage(resourcepath))))
                 .andExpect(status().isBadRequest());
     }
 
@@ -148,11 +147,11 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void updateOnBoardEntityTestPositive() throws Exception {
         //pre condition
-        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
+        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng(resourcepath);
         onBoardGeneralService.save(onBoarding);
         OnBoarding fromDb = (OnBoarding) onBoardGeneralService.getAll().get(0);
-        fromDb.setImage(EntityGenerator.getOnBoardPositiveSVG().getImage());
-        fromDb.setFullFileName(EntityGenerator.getOnBoardPositiveSVG().getFullFileName());
+        fromDb.setImage(EntityGenerator.getOnBoardPositiveSVG(resourcepath).getImage());
+        fromDb.setFullFileName(EntityGenerator.getOnBoardPositiveSVG(resourcepath).getFullFileName());
         //test
         mvc.perform(put("/onboards/")
                 .header(authorizationHeader, getAccessAdminToken())
@@ -166,11 +165,11 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void updateOnBoardEntityTestNegative() throws Exception {
         //pre condition
-        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
+        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng(resourcepath);
         onBoardGeneralService.save(onBoarding);
         OnBoarding fromDb = (OnBoarding) onBoardGeneralService.getAll().get(0);
-        fromDb.setImage(EntityGenerator.getOnBoardWrongImage().getImage());
-        fromDb.setFullFileName(EntityGenerator.getOnBoardWrongImage().getFullFileName());
+        fromDb.setImage(EntityGenerator.getOnBoardWrongImage(resourcepath).getImage());
+        fromDb.setFullFileName(EntityGenerator.getOnBoardWrongImage(resourcepath).getFullFileName());
         //test
         mvc.perform(put("/onboards/")
                 .header(authorizationHeader, getAccessAdminToken())
@@ -184,11 +183,11 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void updateOnBoardEntityTestNegativeWrongImageSize() throws Exception {
         //pre condition
-        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
+        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng(resourcepath);
         onBoardGeneralService.save(onBoarding);
         OnBoarding fromDb = (OnBoarding) onBoardGeneralService.getAll().get(0);
-        fromDb.setImage(EntityGenerator.getOnBoardNegativeSVG().getImage());
-        fromDb.setFullFileName(EntityGenerator.getOnBoardNegativeSVG().getFullFileName());
+        fromDb.setImage(EntityGenerator.getOnBoardNegativeSVG(resourcepath).getImage());
+        fromDb.setFullFileName(EntityGenerator.getOnBoardNegativeSVG(resourcepath).getFullFileName());
         //test
         mvc.perform(put("/onboards/")
                 .header(authorizationHeader, getRemoteStafferAccessToken())
@@ -202,11 +201,11 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void updateOnBoardEntityTestNegativeSeq() throws Exception {
         //pre condition
-        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
+        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng(resourcepath);
         onBoardGeneralService.save(onBoarding);
         OnBoarding fromDb = (OnBoarding) onBoardGeneralService.getAll().get(0);
-        fromDb.setImage(EntityGenerator.getOnBoardNegativeSVG().getImage());
-        fromDb.setFullFileName(EntityGenerator.getOnBoardNegativeSVG().getFullFileName());
+        fromDb.setImage(EntityGenerator.getOnBoardNegativeSVG(resourcepath).getImage());
+        fromDb.setFullFileName(EntityGenerator.getOnBoardNegativeSVG(resourcepath).getFullFileName());
         //test
         mvc.perform(put("/onboards/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -218,7 +217,7 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void deleteOnboardEntityTestPositive() throws Exception {
         //pre condition
-        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
+        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng(resourcepath);
         onBoardGeneralService.save(onBoarding);
         OnBoarding fromDb = (OnBoarding) onBoardGeneralService.getAll().get(0);
         //test
@@ -233,7 +232,7 @@ public class OnboardsControllerImplTest extends MockWebSecurityConfig {
     @Sql("classpath:data.sql")
     public void deleteOnboardEntityTestNegativeSeq() throws Exception {
         //pre condition
-        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng();
+        OnBoarding onBoarding = EntityGenerator.getOnBoardPossitivePng(resourcepath);
         onBoardGeneralService.save(onBoarding);
         OnBoarding fromDb = (OnBoarding) onBoardGeneralService.getAll().get(0);
         //test

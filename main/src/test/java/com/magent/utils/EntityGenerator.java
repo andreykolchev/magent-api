@@ -7,7 +7,6 @@ import com.magent.domain.dto.UpdateDataDto;
 import com.magent.domain.enums.UserRoles;
 
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -274,38 +273,38 @@ public final class EntityGenerator {
         return user;
     }
 
-    public static OnBoarding getOnBoardPossitivePng() throws IOException {
+    public static OnBoarding getOnBoardPossitivePng(String resourcepath) throws IOException {
         String pngFileName = "mAgent.png";
-        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/mAgent.png")))));
+        byte[] imageBody = Files.readAllBytes(Paths.get(resourcepath+"testimages/mAgent.png"));
         String desc = "mAgent onboarding test";
         String content = "onboard content test";
         return new OnBoarding(imageBody, content, pngFileName, desc);
     }
-    public static OnBoarding getOnBoardWrongImage() throws IOException {
+    public static OnBoarding getOnBoardWrongImage(String resourcepath) throws IOException {
         String pngFileName = "testimage.jpg";
-        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/testimage.png")))));
+        byte[] imageBody = Files.readAllBytes(Paths.get(resourcepath+"testimages/testimage.png"));
         String desc = "onboard test";
         String content = "onboard content";
         return new OnBoarding(imageBody, content, pngFileName, desc);
     }
 
-    public static OnBoarding getOnBoardPositiveSVG() throws IOException {
+    public static OnBoarding getOnBoardPositiveSVG(String resourcepath) throws IOException {
         String svgFileName = "positiveSvg.svg";
-        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/positiveSvg.svg")))));
+        byte[] imageBody = Files.readAllBytes(Paths.get(resourcepath+"testimages/positiveSvg.svg"));
         String desc = "onboard test";
         String content = "onboard content";
         return new OnBoarding(imageBody, content, svgFileName, desc);
     }
 
-    public static OnBoarding getOnBoardPositiveSVGWithNullFields() throws IOException {
+    public static OnBoarding getOnBoardPositiveSVGWithNullFields(String resourcepath) throws IOException {
         String svgFileName = "positiveSvg.svg";
-        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/positiveSvg.svg")))));
+        byte[] imageBody = Files.readAllBytes(Paths.get(resourcepath+"testimages/positiveSvg.svg"));
         return new OnBoarding(imageBody,svgFileName);
     }
 
-    public static OnBoarding getOnBoardNegativeSVG() throws IOException {
+    public static OnBoarding getOnBoardNegativeSVG(String resourcepath) throws IOException {
         String pngFileName = "svgimage.svg";
-        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/svgimage.svg")))));
+        byte[] imageBody = Files.readAllBytes(Paths.get(resourcepath+"testimages/svgimage.svg"));
         String desc = "onboard test";
         String content = "onboard content";
         return new OnBoarding(imageBody, content, pngFileName, desc);

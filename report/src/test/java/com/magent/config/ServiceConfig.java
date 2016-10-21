@@ -2,6 +2,7 @@ package com.magent.config;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -17,4 +18,7 @@ public class ServiceConfig {
     @Before
     @Sql("classpath:data.sql")
     public void setUp(){}
+
+    @Value("${resource.path}")
+    protected String resourcePath;
 }

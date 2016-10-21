@@ -1,8 +1,8 @@
 package com.magent.servicemodule.service;
 
-import com.magent.servicemodule.config.DummyServiceTestConfig;
 import com.magent.domain.*;
 import com.magent.domain.interfaces.Identifiable;
+import com.magent.servicemodule.config.DummyServiceTestConfig;
 import com.magent.servicemodule.service.interfaces.GeneralService;
 import javassist.NotFoundException;
 import org.apache.log4j.Logger;
@@ -17,7 +17,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -37,10 +36,13 @@ public class GeneralServiceParametrizedTest {
     private GeneralService generalService;
     private String beanName;
 
+    private String resourcePath=context.getEnvironment().getProperty("resource.path");
+
     public GeneralServiceParametrizedTest(String beanName) throws SQLException, IOException {
         this.beanName = beanName;
         this.generalService = (GeneralService) context.getBean(beanName);
-        String content = new String(Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("data.sql"))))));
+
+        String content = new String(Files.readAllBytes(Paths.get(resourcePath +"data.sql")));
         DataSource dataSource = (DataSource) context.getBean("dataSource");
         Connection connection=dataSource.getConnection();
         try {

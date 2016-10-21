@@ -25,7 +25,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @Import(ServiceTestConfig.class)
 @PropertySources({
-        @PropertySource("classpath:mAgentTestProperties.properties")
+        @PropertySource(value = "classpath:mAgentTestProperties.properties")
 })
 public class GeneralJpaTestConfig {
     @Value("${db.url.test}")

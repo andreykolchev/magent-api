@@ -7,12 +7,10 @@ import com.magent.reportmodule.utils.xlsutil.interfaces.TransactionsXlsWriter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.URI;
 import java.util.List;
 
 /**
@@ -23,9 +21,6 @@ import java.util.List;
  * @since <pre>????. 27, 2016</pre>
  */
 public class TransactionsXlsWriterImplTest extends ServiceConfig {
-
-    @Value("${upload.file.path}")
-    private String uploadPath;
 
     @Autowired
     TransactionsXlsWriter xlsWriter;
@@ -38,13 +33,13 @@ public class TransactionsXlsWriterImplTest extends ServiceConfig {
      */
     @Test
     public void testCreateXlsReport() throws Exception {
-        File xlsFile = new File(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("xlstestdata/testBookSimplePositive.xls"))));
+        File xlsFile = new File(resourcePath+"xlstestdata/testBookSimplePositive.xls");
         List<Transactions> transactionsList = transactionsXlsReader.readFromExcel(xlsFile);
         byte[] res = xlsWriter.createXlsReport(transactionsList);
-        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(uploadPath + "upload.xls")));
+        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(resourcePath + "upload.xls")));
         stream.write(res);
         stream.close();
-        File newXlsFile = new File(uploadPath + "upload.xls");
+        File newXlsFile = new File(resourcePath + "upload.xls");
         List<Transactions> transactionsListRes = transactionsXlsReader.readFromExcel(newXlsFile);
 
         Assert.assertEquals(transactionsListRes.size(), transactionsList.size());

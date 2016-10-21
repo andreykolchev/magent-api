@@ -6,10 +6,10 @@ import com.magent.servicemodule.utils.validators.interfaces.ImageValidator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.xml.bind.ValidationException;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -19,29 +19,32 @@ import java.nio.file.Paths;
 public class ImageValidatorImplTest extends ServiceModuleServiceConfig {
     @Autowired
     private ImageValidator imageValidator;
+    @Value("${resource.path}")
+    private String resourcePath;
 
     @Test
     public void checkSizePositivePngTest() throws IOException, ValidationException {
-        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/testimage.png")))));
+
+        byte[] imageBody = Files.readAllBytes(Paths.get((resourcePath+"testimages/testimage.png")));
         Assert.assertTrue(imageValidator.isSizeCorrect(imageBody, "png"));
 
     }
 
     @Test
     public void checkSizeNegativePngTest() throws IOException, ValidationException {
-        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/testimagenegative.png")))));
+        byte[] imageBody = Files.readAllBytes(Paths.get((resourcePath+"testimages/testimagenegative.png")));
         Assert.assertFalse(imageValidator.isSizeCorrect(imageBody, "png"));
     }
 
     @Test
     public void checkSizePositiveSvgTest() throws IOException, ValidationException {
-        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/positiveSvg.svg")))));
+        byte[] imageBody = Files.readAllBytes(Paths.get(resourcePath+"testimages/positiveSvg.svg"));
         Assert.assertTrue(imageValidator.isSizeCorrect(imageBody, "svg"));
     }
 
     @Test
     public void checkSizeNegativeSvgTest() throws IOException, ValidationException {
-        byte[] imageBody = Files.readAllBytes(Paths.get(URI.create(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("testimages/svgimage.svg")))));
+        byte[] imageBody = Files.readAllBytes(Paths.get(resourcePath+"testimages/svgimage.svg"));
         Assert.assertFalse(imageValidator.isSizeCorrect(imageBody, "svg"));
     }
 
